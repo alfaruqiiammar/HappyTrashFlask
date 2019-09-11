@@ -24,7 +24,7 @@ class ListOrders(db.Model):
         'time' : fields.DateTime,
         'photo' : fields.String,
         'status' : fields.String,
-        'total_qty' : fields.Integer,
+        'total_qty' : fields.Float,
         'total_price' : fields.Integer,
         'total_point' : fields.Integer,
         'created_at' : fields.DateTime

@@ -14,6 +14,28 @@ api = Api(bp_orders)
 
 class OrdersResource(Resource):
 
+  def addDetails(self,arr,order):
+    for detail in arr:
+
+        trash = ListTrash.query.get(detail['trash_id'])
+        trash = marshal(trash,ListTrash.response_fields)
+        
+        total_price = int(trash['price'] * detail['qty'])
+        order.total_qty += detail['qty']
+        
+        point = int(detail['qty']) * trash['point']
+        
+        new = detail.update({"order_id" : int(order.id), "total_price" : total_price, "point" : point})
+        new_detail = ListOrderDetails(detail)
+        
+        order.total_qty += detail['qty']
+        order.total_price += total_price
+        order.total_point += point
+        order.status = 'done'
+        db.session.add(new_detail)
+        db.session.commit()
+        
+
   def __init__(self):
     pass
   
@@ -76,20 +98,7 @@ class OrdersResource(Resource):
     
     if args['status'] == 'done':
       details = args['details']
-      for detail in details:
-        trash = ListTrash.query.get(detail['trash_id'])
-        trash = marshal(trash,ListTrash.response_fields)
-        total_price = int(trash['price'] * detail['qty'])
-        order.total_qty += detail['qty']
-        point = int(detail['qty'] * trash['point'])
-        new = detail.update({"order_id" : int(id), "total_price" : total_price, "point" : point})
-        new_detail = ListOrderDetails(detail)
-        db.session.add(new_detail)
-        order.total_qty += detail['qty']
-        order.total_price += total_price
-        order.total_point += point
-        order.status = 'done'
-        db.session.commit() 
+      self.addDetails(details,order)
       order.status = 'done'
       db.session.commit()
       return {"details_added" : details }, 200, {'Content_Type': 'application/json'}
@@ -97,7 +106,16 @@ class OrdersResource(Resource):
 
 
   def get(self):
-    pass
+    
+    orders = ListOrders.query
+    order_list = []
+    for order in orders:
+      order = marshal(order, ListOrders.response_fields)
+      order_list.append(order)
+    
+    return order_list, 200, {'Content_Type': 'application/json'}
+
+
 
 api.add_resource(OrdersResource, '', '/<id>')
   
