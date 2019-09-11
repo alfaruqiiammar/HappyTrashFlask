@@ -1,3 +1,4 @@
+
 from flask import Flask, request
 import json
 import os
@@ -90,6 +91,7 @@ def after_request(response):
     )
     return response
 
+
 #########################################
 # import blueprints
 #########################################
@@ -99,5 +101,8 @@ from apps.user_attributes.resources import bp_user_attributes
 app.register_blueprint(bp_users, url_prefix='/v1/users')
 app.register_blueprint(bp_user_attributes, url_prefix='/v1/user_attributes')
 
-
+from apps.trash_categories.resources import bp_trash_categories
+from apps.trashes.resources import bp_trashes
+app.register_blueprint(bp_trash_categories, url_prefix='/trash_category')
+app.register_blueprint(bp_trashes, url_prefix = '/trash')
 db.create_all()

@@ -1,9 +1,8 @@
 import pytest, json, logging
 from flask import Flask, request, json
-from apps import app
+from apps import app, db
 from app import cache
 import json
-from apps import db
 
 def call_client(request):
     client = app.test_client()
