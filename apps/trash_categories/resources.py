@@ -86,7 +86,7 @@ class TrashCategoriesResource(Resource):
 
         if category is None:
             return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
-            
+
         if not args['category_name']:
             return {"Warning" : "Name can not be null"}, 400, {'Content_Type' : 'application/json'}
 
@@ -102,6 +102,8 @@ class TrashCategoriesResource(Resource):
             return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
         
         db.session.delete(category)
+        db.session.commit()
+        return {"Status" : f"The data with id {id} is deleted"}, 200, {'Content_Type' : 'application/json'}
         
 
 
