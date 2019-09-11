@@ -93,6 +93,9 @@ def after_request(response):
 #########################################
 # import blueprints
 #########################################
+from apps.users.resources import bp_users
+
+app.register_blueprint(bp_users, url_prefix='/v1/users')
 
 
 db.create_all()
