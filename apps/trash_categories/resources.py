@@ -86,7 +86,10 @@ class TrashCategoriesResource(Resource):
 
         if category is None:
             return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
-        
+            
+        if not args['category_name']:
+            return {"Warning" : "Name can not be null"}, 400, {'Content_Type' : 'application/json'}
+
         category.category_name = args['category_name']
         category.updated_at = datetime.datetime.utcnow()
         return marshal(category, ListTrashCategory.response_fields), 200, {'Content_Type' : 'application/json'}

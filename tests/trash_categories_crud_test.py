@@ -26,6 +26,25 @@ class TestTrashCategoriesCrud():
     res = client.put(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', data = json.dumps(new_name), content_type = 'application/json')
     assert res.status_code == 200
   
+  def testTrashCategoriesPutInvalidName(self, client):
+    new_name = {
+      "category_name" : None
+    }
+
+    res = client.put(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', data = json.dumps(new_name), content_type = 'application/json')
+    assert res.status_code == 400
+  
+  def testTrashCategoriesPutInvalidId(self, client):
+    new_name = {
+      "category_name" : "dummyname"
+    }
+    res = client.put('/trash_category/none', data = json.dumps(new_name), content_type = 'application/json')
+    assert res.status_code == 404
+
   def testTrashCategoriesDelete(self, client):
     res = client.delete(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', content_type = 'application/json')
-    assert res.status_code == 200    
+    assert res.status_code == 200 
+
+  def testTrashCategoriesDeleteInvalidId(self, client):
+    res = client.delete('/trash_category/none', content_type = 'application/json')
+    assert res.status_code == 404   
