@@ -8,7 +8,7 @@ class TestUsersRegister():
 
 ######### post
 
-    def test_user_register(self, client):
+    def testUserRegister(self, client):
         data = {
             "name": "dadang",
             "email": "dadang@conello.com",
@@ -22,5 +22,20 @@ class TestUsersRegister():
         res_json=json.loads(res.data)
 
         assert res.status_code == 200
+
+    def testUserRegisterInvalidEmail(self, client):
+        data = {
+            "name": "dadang",
+            "email": "dadang@conello",
+            "mobile_number": "08121212123",
+            "password": "dadangajah"
+        }
+        res=client.post('/v1/users', 
+                        data=json.dumps(data),
+                        content_type='application/json')
+
+        res_json=json.loads(res.data)
+
+        assert res.status_code == 400
 
 
