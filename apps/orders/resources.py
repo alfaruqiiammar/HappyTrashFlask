@@ -104,7 +104,7 @@ class OrdersResource(Resource):
       return {"details_added" : details }, 200, {'Content_Type': 'application/json'}
 
 
-
+  # @adminRequired
   def get(self):
     
     orders = ListOrders.query
@@ -116,6 +116,26 @@ class OrdersResource(Resource):
     return order_list, 200, {'Content_Type': 'application/json'}
 
 
+class UserOrdersResource(Resource):
+  
+  def __init__(self):
+    pass
+  
+  def options(self, id=None):
+    return {"Status" : "ok"}, 200
+  
+  @userRequired
+  def get(self):
+    user = get_jwt_claims()
+    orders = ListOrders.query.filter_by(user_id=user['id'])
+    order_list = []
+    for order in orders:
+      order = marshal(order, ListOrders.response_fields)
+      order_list.append(order)
+    
+    return order_list, 200, {'Content_Type': 'application/json'}
+
 
 api.add_resource(OrdersResource, '', '/<id>')
+api.add_resource(UserOrdersResource,'/user')
   
