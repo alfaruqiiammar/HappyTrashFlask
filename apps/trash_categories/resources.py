@@ -1,4 +1,5 @@
 import json
+import datetime
 from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from sqlalchemy import desc
@@ -53,10 +54,28 @@ class TrashCategoriesResource(Resource):
         return trash_categories, 200, {'Content_Type' : 'application/json'}
 
     def put(self, id):
-        pass
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('category_name', location = 'json', required = True)
+
+        args.parse_args()
+        category = ListTrashCategory.query.get(id)
+
+        if category is None:
+            return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
+        
+        category.category_name = args['category_name']
+        return marshal(category, ListTrashCategory.response_fields), 200, {'Content_Type' : 'application/json'}
+        
 
     def delete(self, id):
-        pass
+        category = ListTrashCategory.query.get(id)
+
+        if category is None:
+            return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
+        
+        db.session.delete(category)
+        
 
 
 api.add_resource(TrashCategoriesResource, '', '/<id>')
