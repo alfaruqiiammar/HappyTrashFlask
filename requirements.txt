@@ -8,5 +8,7 @@ flask-jwt-extended
 requests
 pytest
 flask-cors
+pytest-cov
+coverage
 mock
 passlib
