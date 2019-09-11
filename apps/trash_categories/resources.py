@@ -43,7 +43,14 @@ class TrashCategoriesResource(Resource):
         return marshal(trash_category, ListTrashCategory.response_fields), 200, {'Content_Type': 'application/json'}
 
     def get(self):
-        pass
+        categories = ListTrashCategory.query
+
+        trash_categories = []
+        for category in categories:
+            category = marshal(category, ListTrashCategory.response_fields)
+            trash_categories.append(category)
+        
+        return trash_categories, 200, {'Content_Type' : 'application/json'}
 
     def put(self, id):
         pass
