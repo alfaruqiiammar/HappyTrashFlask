@@ -18,4 +18,14 @@ class TestTrashCategoriesCrud():
     res = client.get('/trash_category', content_type = 'application/json')
     assert res.status_code == 200
   
+  def testTrashCategoriesPut(self, client):
+    new_name = {
+      "category_name" : "newdummy"
+    }
+
+    res = client.put(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', data = json.dumps(new_name), content_type = 'application/json')
+    assert res.status_code == 200
   
+  def testTrashCategoriesDelete(self, client):
+    res = client.delete(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', data = json.dumps(new_name), content_type = 'application/json')
+    assert res.status_code == 200    
