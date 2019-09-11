@@ -37,13 +37,7 @@ class TrashCategoriesResource(Resource):
 
         args = parser.parse_args()
 
-        new_trash_category = {
-            'category_name': args['category_name'],
-            'created_at': args['created_at'],
-            'updated_at': args['updated_at']
-        }
-
-        trash_category = ListTrashCategory(new_trash_category)
+        trash_category = ListTrashCategory(args['category_name'])
         db.session.add(trash_category)
         db.session.commit()
 

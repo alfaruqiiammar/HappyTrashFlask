@@ -18,7 +18,6 @@ class ListTrashCategory(db.Model):
         'updated_at': fields.DateTime
     }
 
-    def __init__(self, data):
-        self.category_name = data['category_name']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+    def __init__(self, category_name):
+        self.category_name = category_name
+

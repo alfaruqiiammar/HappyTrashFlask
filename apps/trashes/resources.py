@@ -37,8 +37,6 @@ class TrashResource(Resource):
         parser.add_argument('price', location='json', type=int, required=True)
         parser.add_argument('photo', location='json')
         parser.add_argument('point', location='json', type=int, required=True)
-        parser.add_argument('created_at', location='json')
-        parser.add_argument('updated_at', location='json')
 
         args = parser.parse_args()
 
@@ -47,9 +45,7 @@ class TrashResource(Resource):
             'trash_name': args['trash_name'],
             'price': args['price'],
             'photo': args['photo'],
-            'point': args['point'],
-            'created_at': args['created_at'],
-            'updated_at': args['updated_at']
+            'point': args['point']
         }
 
         trash = ListTrash(new_trash)
