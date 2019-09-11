@@ -3,6 +3,7 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal
 from sqlalchemy import desc
 from .model import ListOrders
+from apps.order_details.model import ListOrderDetails
 from apps import db,app
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from apps import adminRequired, userRequired
@@ -45,8 +46,37 @@ class OrdersResource(Resource):
 
     return marshal(order, ListOrders.response_fields), 200, {'Content_Type' : 'application/json'}
 
+  # @adminRequired
   def put(self, id):
-    pass
+    parser = reqparse.RequestParser()
+
+    parser.add_argument('status', location='json', required = True)
+    parser.add_argument('details', location='json', type = list)
+
+    args = parser.parse_args()
+
+    order = ListOrders.query.get(id)
+
+    if order is None:
+      return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+    
+    if args['status'] == 'cancelled':
+      order.status = 'cancelled'
+      db.session.commit()
+      return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
+    
+    if args['status'] == 'done':
+      details = args['details']
+      for detail in details:
+        new = detail.update({"order_id" : int(id)})
+        new_detail = ListOrderDetails(detail)
+        db.session.add(new_detail)
+        db.session.commit() 
+      order.status = 'done'
+      db.session.commit()
+      return {"details_added" : details }, 200, {'Content_Type': 'application/json'}
+
+
 
   def get(self):
     pass
