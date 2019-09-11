@@ -97,5 +97,7 @@ def after_request(response):
 #########################################
 
 from apps.trash_categories.resources import bp_trash_categories
+from apps.trashes.resources import bp_trashes
 app.register_blueprint(bp_trash_categories, url_prefix='/trash_category')
+app.register_blueprint(bp_trashes, url_prefix = '/trash')
 db.create_all()
