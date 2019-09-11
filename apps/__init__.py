@@ -94,8 +94,9 @@ def after_request(response):
 # import blueprints
 #########################################
 from apps.users.resources import bp_users
+from apps.user_attributes.resources import bp_user_attributes
 
-app.register_blueprint(bp_users, url_prefix='/v1/users')
+app.register_blueprint(bp_user_attributes, url_prefix='/v1/user_attributes')
 
 
 db.create_all()
