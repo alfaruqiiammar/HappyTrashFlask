@@ -58,14 +58,14 @@ class TrashCategoriesResource(Resource):
 
         parser.add_argument('category_name', location = 'json', required = True)
 
-        args.parse_args()
+        args = parser.parse_args()
         category = ListTrashCategory.query.get(id)
 
         if category is None:
             return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
         
         category.category_name = args['category_name']
-        category.updated_at = datetime.datetime.utcnow
+        category.updated_at = datetime.datetime.utcnow()
         return marshal(category, ListTrashCategory.response_fields), 200, {'Content_Type' : 'application/json'}
         
 

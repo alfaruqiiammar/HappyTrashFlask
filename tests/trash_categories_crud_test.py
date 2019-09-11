@@ -27,5 +27,5 @@ class TestTrashCategoriesCrud():
     assert res.status_code == 200
   
   def testTrashCategoriesDelete(self, client):
-    res = client.delete(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', data = json.dumps(new_name), content_type = 'application/json')
+    res = client.delete(f'/trash_category/{TestTrashCategoriesCrud.temp_id}', content_type = 'application/json')
     assert res.status_code == 200    
