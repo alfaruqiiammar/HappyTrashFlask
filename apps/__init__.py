@@ -1,3 +1,4 @@
+
 from flask import Flask, request
 import json
 import os
@@ -90,9 +91,11 @@ def after_request(response):
     )
     return response
 
+
 #########################################
 # import blueprints
 #########################################
 
-
+from apps.trash_categories.resources import bp_trash_categories
+app.register_blueprint(bp_trash_categories, url_prefix='/trash_category')
 db.create_all()
