@@ -1,0 +1,1 @@
+[2019-09-11 21:49:20,289]{/home/alta13/Music/HappyTrash/apps/__init__.py:89} WARNING - REQUEST_LOG	{"method": "PUT", "code": "200 OK", "uri": "/trash_category/12?", "request": {"category_name": "testuto"}, "response": {"id": 12, "category_name": "testuto", "created_at": "Wed, 11 Sep 2019 13:36:29 -0000", "updated_at": "Wed, 11 Sep 2019 14:49:20 -0000"}}

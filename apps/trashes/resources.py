@@ -19,36 +19,37 @@ class TrashResource(Resource):
     def options(self):
         return {"status": "Ok"}, 200
 
-    #@adminRequired
+    # @adminRequired
     def post(self):
         """ Post a new trash to trashes table
 
         Args: 
             new_trash: A new trash that admin has input 
-        
+
         Returns:
             A dictionary contains the data that has been input to the table, and success status code
         """
         parser = reqparse.RequestParser()
 
-        parser.add_argument('trash_category_id', location='json', type = int, required=True)
-        parser.add_argument('trash_name', location = 'json', required = True)
-        parser.add_argument('price', location = 'json', type = int, required = True)
-        parser.add_argument('photo', location = 'json')
-        parser.add_argument('point', location = 'json', type = int, required = True)
+        parser.add_argument('trash_category_id',
+                            location='json', type=int, required=True)
+        parser.add_argument('trash_name', location='json', required=True)
+        parser.add_argument('price', location='json', type=int, required=True)
+        parser.add_argument('photo', location='json')
+        parser.add_argument('point', location='json', type=int, required=True)
         parser.add_argument('created_at', location='json')
         parser.add_argument('updated_at', location='json')
 
         args = parser.parse_args()
 
         new_trash = {
-            'trash_category_id' : args['trash_category_id'],
-            'trash_name' : args['trash_name'],
-            'price' : args['price'],
-            'photo' : args['photo'],
-            'point' : args['point'],
-            'created_at' : args['created_at'],
-            'updated_at' : args['updated_at']
+            'trash_category_id': args['trash_category_id'],
+            'trash_name': args['trash_name'],
+            'price': args['price'],
+            'photo': args['photo'],
+            'point': args['point'],
+            'created_at': args['created_at'],
+            'updated_at': args['updated_at']
         }
 
         trash = ListTrash(new_trash)
@@ -67,53 +68,52 @@ class TrashResource(Resource):
         for trash in trashes:
             trash = marshal(trash, ListTrash.response_fields)
             trashes_list.append(trash)
-        
-        return trashes_list, 200, {'Content_Type' : 'application/json'}
+
+        return trashes_list, 200, {'Content_Type': 'application/json'}
 
     def put(self, id):
-        
+
         parser = reqparse.RequestParser()
 
-        parser.add_argument('trash_category_id', location='json', type = int)
-        parser.add_argument('trash_name', location = 'json')
-        parser.add_argument('price', location = 'json', type = int)
-        parser.add_argument('photo', location = 'json')
-        parser.add_argument('point', location = 'json', type = int)
+        parser.add_argument('trash_category_id', location='json', type=int)
+        parser.add_argument('trash_name', location='json')
+        parser.add_argument('price', location='json', type=int)
+        parser.add_argument('photo', location='json')
+        parser.add_argument('point', location='json', type=int)
 
         args = parser.parse_args()
         trash = ListTrash.query.get(id)
 
         if trash is None:
-            return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
-        
+            return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+
         if args['trash_category_id'] is not None:
-          trash.trash_category_id = args['trash_category_id']
+            trash.trash_category_id = args['trash_category_id']
         if args['trash_name'] is not None:
-          trash.trash_name = args['trash_name']
+            trash.trash_name = args['trash_name']
 
         if args['price'] is not None:
-          trash.price = args['price']
+            trash.price = args['price']
 
         if args['photo'] is not None:
-          trash.photo = args['photo']
+            trash.photo = args['photo']
 
         if args['point'] is not None:
-          trash.point = args['point']
+            trash.point = args['point']
 
         trash.updated_at = datetime.datetime.utcnow()
-        return marshal(trash, ListTrash.response_fields), 200, {'Content_Type' : 'application/json'}
-
+        db.session.commit()
+        return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}
 
     def delete(self, id):
         trash = ListTrash.query.get(id)
 
         if trash is None:
-            return {'status' : 'Not Found'}, 404, {'Content_Type' : 'application/json'}
-        
+            return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+
         db.session.delete(trash)
         db.session.commit()
-        return {"Status" : f"The data with id {id} is deleted"}, 200, {'Content_Type' : 'application/json'}
-        
+        return {"Status": f"The data with id {id} is deleted"}, 200, {'Content_Type': 'application/json'}
 
 
 api.add_resource(TrashResource, '', '/<id>')
