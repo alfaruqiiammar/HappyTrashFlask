@@ -12,8 +12,8 @@ class Config():
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_user}:{db_password}@127.0.0.1:3306/e_commerce_project'
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_user}:{db_password}@127.0.0.1:3306/happy_trash'
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_user}:{db_password}@127.0.0.1:3306/e_commerce_project_testing'
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_user}:{db_password}@127.0.0.1:3306/happy_trash_testing'
