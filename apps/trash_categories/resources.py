@@ -104,7 +104,7 @@ class TrashCategoriesResource(Resource):
 
         db.session.delete(category)
         db.session.commit()
-        return {"Status": f"The data with id {id} is deleted"}, 200, {'Content_Type': 'application/json'}
+        return {"Status": "The data with id {} is deleted".format(id)}, 200, {'Content_Type': 'application/json'}
 
 
 api.add_resource(TrashCategoriesResource, '', '/<id>')
