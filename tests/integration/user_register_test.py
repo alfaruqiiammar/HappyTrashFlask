@@ -6,6 +6,11 @@ class TestUsersRegister():
 
     reset_database()
 
+######### options
+    def test_users_option(self, client):
+        res = client.options('/v1/users')
+        assert res.status_code == 200    
+
 ######### post
 
     def testUserRegister(self, client):
@@ -57,7 +62,7 @@ class TestUsersRegister():
         data = {
             "name": "dadang",
             "email": "dadang@conello.com",
-            "mobile_number": "0812121212",
+            "mobile_number": "08121212123",
             "password": "dadangajah"
         }
         res=client.post('/v1/users', 

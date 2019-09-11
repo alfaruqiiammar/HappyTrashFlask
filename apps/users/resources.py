@@ -17,7 +17,7 @@ class UsersResource(Resource):
         """Init function needed to indicate this is a class, but never used"""
         pass
 
-    def options(self, id):
+    def options(self):
         """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'OK'}, 200	
 
