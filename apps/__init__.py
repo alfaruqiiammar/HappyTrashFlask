@@ -25,15 +25,27 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
 jwt = JWTManager(app)
 
 
-def internal_required(fn):
+def adminRequired(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
-        role = get_jwt_claims()
-        if role.status == 'admin':
+        claims = get_jwt_claims()
+        if claims.status:
             return fn(*args, **kwargs)
         else:
-            return {'status': 'Forbidden', 'message': 'internal only'}, 403
+            return {'status': 'Forbidden', 'message': 'admin only'}, 403
+    return wrapper
+
+
+def userRequired(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        verify_jwt_in_request()
+        claims = get_jwt_claims()
+        if not claims.status:
+            return fn(*args, **kwargs)
+        else:
+            return {'status': 'Forbidden', 'message': 'user only'}, 403
     return wrapper
 ####################
 # Database
