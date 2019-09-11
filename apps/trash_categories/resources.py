@@ -21,6 +21,14 @@ class TrashCategoriesResource(Resource):
 
     #@adminRequired
     def post(self):
+        """ Post a new trash category to trash_categories table
+
+        Args: 
+            new_trash_category: A new trash category that user has input 
+        
+        Returns:
+            A dictionary contains the data that has been input to the table, and success status code
+        """
         parser = reqparse.RequestParser()
 
         parser.add_argument('category_name', location='json', required=True)
@@ -44,6 +52,15 @@ class TrashCategoriesResource(Resource):
         return marshal(trash_category, ListTrashCategory.response_fields), 200, {'Content_Type': 'application/json'}
 
     def get(self):
+        """ Gets all trash category from trash_categories table
+
+        Args: 
+            categories: Contains the data of all categories from table
+            trash_categories : An empty list that later will be filled by data of each category in form of dictionary  
+        
+        Returns:
+            This function returns trash_categories above, and success status code
+        """
         categories = ListTrashCategory.query
 
         trash_categories = []
@@ -54,6 +71,12 @@ class TrashCategoriesResource(Resource):
         return trash_categories, 200, {'Content_Type' : 'application/json'}
 
     def put(self, id):
+        """ Edits category_name from a single row in trash_category table specified by id 
+        
+        Returns:
+            A dictionary that contains the updated data from the row edited.
+            If the id is not on the table, returns not found status
+        """
         parser = reqparse.RequestParser()
 
         parser.add_argument('category_name', location = 'json', required = True)
