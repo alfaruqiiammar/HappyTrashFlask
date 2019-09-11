@@ -12,7 +12,7 @@ class ListOrders(db.Model):
     time = db.Column(db.DateTime, default = datetime.datetime.utcnow)
     photo = db.Column(db.String(500))
     status = db.Column(db.String(20), nullable = False)
-    total_qty = db.Column(db.Integer, default = 0)
+    total_qty = db.Column(db.Float, default = 0)
     total_price = db.Column(db.Integer, default = 0)
     total_point = db.Column(db.Integer, default = 0)
     created_at = db.Column(db.DateTime, default = datetime.datetime.utcnow)

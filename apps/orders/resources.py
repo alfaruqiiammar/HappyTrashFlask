@@ -4,6 +4,7 @@ from flask_restful import Resource, Api, reqparse, marshal
 from sqlalchemy import desc
 from .model import ListOrders
 from apps.order_details.model import ListOrderDetails
+from apps.trashes.model import ListTrash
 from apps import db,app
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from apps import adminRequired, userRequired
@@ -19,9 +20,9 @@ class OrdersResource(Resource):
   def options(self, id=None):
     return {"Status" : "ok"}, 200
   
-  @userRequired
+  # @userRequired
   def post(self):
-    claims = get_jwt_claims()
+    # claims = get_jwt_claims()
     parser = reqparse.RequestParser()
 
     parser.add_argument('adress', location='json', required = True)
@@ -31,7 +32,8 @@ class OrdersResource(Resource):
     args = parser.parse_args()
 
     new_order = {
-      "user_id" : claims['id'] ,
+      # "user_id" : claims['id'] ,
+      "user_id" : 1,
       "adress" : args['adress'],
       "time" : args['time'],
       "photo" : args['photo'],
@@ -48,6 +50,13 @@ class OrdersResource(Resource):
 
   # @adminRequired
   def put(self, id):
+    """
+    takes 2 argument from user
+    status
+    details
+    penjelasan details :
+    berisi qty dan trash_id
+    """
     parser = reqparse.RequestParser()
 
     parser.add_argument('status', location='json', required = True)
@@ -68,9 +77,18 @@ class OrdersResource(Resource):
     if args['status'] == 'done':
       details = args['details']
       for detail in details:
-        new = detail.update({"order_id" : int(id)})
+        trash = ListTrash.query.get(detail['trash_id'])
+        trash = marshal(trash,ListTrash.response_fields)
+        total_price = int(trash['price'] * detail['qty'])
+        order.total_qty += detail['qty']
+        point = int(detail['qty'] * trash['point'])
+        new = detail.update({"order_id" : int(id), "total_price" : total_price, "point" : point})
         new_detail = ListOrderDetails(detail)
         db.session.add(new_detail)
+        order.total_qty += detail['qty']
+        order.total_price += total_price
+        order.total_point += point
+        order.status = 'done'
         db.session.commit() 
       order.status = 'done'
       db.session.commit()
