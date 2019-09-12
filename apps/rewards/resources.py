@@ -75,4 +75,30 @@ class RewardsResource(Resource):
 
         return marshal(reward, Rewards.response_fields), 200, {'Content-Type': 'application/json'}
 
+    @jwt_required
+    @adminRequired
+    def get(self):
+        """Get all data from rewards table
+
+        Returns:
+            A list of dicts mapping keys to the corresponding value, for example:
+
+            {
+                "name": "voucher sepulsa 20rb",
+                "point_to_claim: 20,
+                "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg"
+                "stock": 100,
+                "status": True
+            }
+
+        """
+        rewards = Rewards.query
+
+        rewards_list = []
+        for reward in rewards:
+            reward = marshal(reward, Rewards.response_fields)
+            rewards_list.append(reward)
+
+        return rewards_list, 200, {'Content_Type': 'application/json'}
+
 api.add_resource(RewardsResource, '')
