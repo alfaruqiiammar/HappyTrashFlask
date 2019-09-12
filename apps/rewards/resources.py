@@ -83,15 +83,26 @@ class RewardsResource(Resource):
         Returns:
             A list of dicts mapping keys to the corresponding value, for example:
 
-            {
-                "name": "voucher sepulsa 20rb",
-                "point_to_claim: 20,
-                "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg"
-                "stock": 100,
-                "status": True
-            }
-
+            [
+                {
+                    "id": 1,
+                    "name": "voucher sepulsa 20rb",
+                    "point_to_claim": 20,
+                    "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg",
+                    "stock": 100,
+                    "status": true
+                },
+                {
+                    "id": 2,
+                    "name": "voucher sepulsa 50rb",
+                    "point_to_claim": 20,
+                    "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg",
+                    "stock": 100,
+                    "status": true
+                }
+            ]
         """
+
         rewards = Rewards.query
 
         rewards_list = []
@@ -101,4 +112,42 @@ class RewardsResource(Resource):
 
         return rewards_list, 200, {'Content_Type': 'application/json'}
 
-api.add_resource(RewardsResource, '')
+    
+    # def put(self, id):
+
+    #     parser = reqparse.RequestParser()
+
+    #     parser.add_argument('name', type=str, location='json')
+    #     parser.add_argument('point_to_claim', type=int, location='json')
+    #     parser.add_argument('photo', type=str, location='json')
+    #     parser.add_argument('stock', type=int, location='json')
+    #     parser.add_argument('status', type=bool, location='json')
+
+    #     args = parser.parse_args()
+    #     trash = ListTrash.query.get(id)
+
+    #     if trash is None:
+    #         return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+
+    #     if args['trash_category_id'] is not None:
+    #         trash.trash_category_id = args['trash_category_id']
+    #     if args['trash_name'] is not None:
+    #         trash.trash_name = args['trash_name']
+
+    #     if args['price'] is not None:
+    #         trash.price = args['price']
+
+    #     if args['photo'] is not None:
+    #         trash.photo = args['photo']
+
+    #     if args['point'] is not None:
+    #         trash.point = args['point']
+
+    #     trash.updated_at = datetime.datetime.utcnow()
+    #     db.session.commit()
+    #     return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}
+
+
+    
+
+api.add_resource(RewardsResource, '', '/<id>')
