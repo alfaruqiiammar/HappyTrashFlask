@@ -83,7 +83,6 @@ class UsersResource(Resource):
 
         password_encrypted = sha256_crypt.encrypt(args['password'])
 
-
         # Input data to users table
 
         user = Users(args['name'], args['email'], args['mobile_number'], password_encrypted, False)

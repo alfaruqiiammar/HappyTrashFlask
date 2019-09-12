@@ -22,7 +22,7 @@ class Users(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
     mobile_number = db.Column(db.String(30), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     role = db.Column(db.Boolean, nullable=False)
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
@@ -32,6 +32,15 @@ class Users(db.Model):
         'name': fields.String,
         'email': fields.String,
         'mobile_number': fields.String,
+        'role': fields.Boolean
+    }
+
+    login_response_fields = {
+        'id': fields.Integer,
+        'name': fields.String,
+        'email': fields.String,
+        'mobile_number': fields.String,
+        'password': fields.String,
         'role': fields.Boolean
     }
 
