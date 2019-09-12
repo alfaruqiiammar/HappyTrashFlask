@@ -59,4 +59,22 @@ class TestRewardManagement():
 
         assert res.status_code == 200
 
+    def testEditRewardInvalidId(self, client):
+        token = createTokenAdmin()
+        data = {
+            "name": "tes2",
+            "point_to_claim": 1,
+            "photo": "tes",
+            "stock": 1,
+            "status": False
+        }
+        res=client.put('/v1/rewards/2', 
+                        data=json.dumps(data),
+                        headers={'Authorization': 'Bearer ' + token},
+                        content_type='application/json')
+
+        res_json=json.loads(res.data)
+
+        assert res.status_code == 404
+
     
