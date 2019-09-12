@@ -28,7 +28,7 @@ class OrdersResource(Resource):
         new = detail.update({"order_id" : int(order.id), "total_price" : total_price, "point" : point})
         new_detail = ListOrderDetails(detail)
         
-        order.total_qty += detail['qty']
+        # order.total_qty += detail['qty']
         order.total_price += total_price
         order.total_point += point
         order.status = 'done'
@@ -42,9 +42,9 @@ class OrdersResource(Resource):
   def options(self, id=None):
     return {"Status" : "ok"}, 200
   
-  # @userRequired
+  @userRequired
   def post(self):
-    # claims = get_jwt_claims()
+    claims = get_jwt_claims()
     parser = reqparse.RequestParser()
 
     parser.add_argument('adress', location='json', required = True)
@@ -54,8 +54,7 @@ class OrdersResource(Resource):
     args = parser.parse_args()
 
     new_order = {
-      # "user_id" : claims['id'] ,
-      "user_id" : 1,
+      "user_id" : claims['id'] ,
       "adress" : args['adress'],
       "time" : args['time'],
       "photo" : args['photo'],
@@ -70,10 +69,10 @@ class OrdersResource(Resource):
 
     return marshal(order, ListOrders.response_fields), 200, {'Content_Type' : 'application/json'}
 
-  # @jwt_required
+  @jwt_required
   def put(self, id):
-    # user = get_jwt_claims()
-    # user_status = user['status']
+    user = get_jwt_claims()
+    user_status = user['role']
     """
     takes 2 argument from user
     status
@@ -95,22 +94,22 @@ class OrdersResource(Resource):
       return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
     
     if args['status'] == 'cancelled':
-      # if user['status']:
-      #   return {'Warning' : 'Only User can cancel'}, 403, {'Content_Type': 'application/json'}
+      if user['role']:
+        return {'Warning' : 'Only User can cancel'}, 403, {'Content_Type': 'application/json'}
       order.status = 'cancelled'
       db.session.commit()
       return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
     if args['status'] == 'rejected':
-      # if not user['status']:
-      #   return {'Warning' : 'Only admin can reject'}, 403, {'Content_Type': 'application/json'}
+      if not user['role']:
+        return {'Warning' : 'Only admin can reject'}, 403, {'Content_Type': 'application/json'}
       order.status = 'rejected'
       db.session.commit()
       return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
     
     if args['status'] == 'done':
-      # if not user['status']:
-        # return {'Warning' : 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
+      if not user['role']:
+        return {'Warning' : 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
       details = args['details']
       self.addDetails(details,order)
       order.status = 'done'
@@ -118,7 +117,7 @@ class OrdersResource(Resource):
       return {"details_added" : details }, 200, {'Content_Type': 'application/json'}
 
 
-  # @adminRequired
+  @adminRequired
   def get(self):
     
     orders = ListOrders.query

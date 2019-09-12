@@ -19,7 +19,7 @@ class TrashResource(Resource):
     def options(self):
         return {"status": "Ok"}, 200
 
-    # @adminRequired
+    @adminRequired
     def post(self):
         """ Post a new trash to trashes table
 
@@ -56,6 +56,7 @@ class TrashResource(Resource):
 
         return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}
 
+    @jwt_required
     def get(self):
 
         trashes = ListTrash.query
@@ -67,6 +68,7 @@ class TrashResource(Resource):
 
         return trashes_list, 200, {'Content_Type': 'application/json'}
 
+    @adminRequired
     def put(self, id):
 
         parser = reqparse.RequestParser()
@@ -101,6 +103,7 @@ class TrashResource(Resource):
         db.session.commit()
         return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}
 
+    @adminRequired
     def delete(self, id):
         trash = ListTrash.query.get(id)
 

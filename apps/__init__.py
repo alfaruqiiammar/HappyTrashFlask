@@ -109,7 +109,9 @@ app.register_blueprint(bp_rewards, url_prefix='/v1/rewards')
 from apps.trash_categories.resources import bp_trash_categories
 from apps.trashes.resources import bp_trashes
 from apps.orders.resources import bp_orders
+from apps.reward_histories.resources import bp_reward_histories
 app.register_blueprint(bp_trash_categories, url_prefix='/v1/trash_category')
 app.register_blueprint(bp_trashes, url_prefix = '/v1/trash')
 app.register_blueprint(bp_orders, url_prefix = '/v1/orders')
+app.register_blueprint(bp_reward_histories, url_prefix = '/v1/reward_history')
 db.create_all()

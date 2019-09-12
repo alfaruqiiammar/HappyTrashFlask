@@ -4,6 +4,8 @@ from apps import app, db
 from app import cache
 import json
 from apps.users.model import Users
+from apps.trashes.model import ListTrash
+from apps.trash_categories.model import ListTrashCategory
 from passlib.hash import sha256_crypt
 
 def call_client(request):
@@ -24,9 +26,29 @@ def resetDatabase():
 
     user = Users('user', 'user@user.com', '081122112211', user_password_encrypted, False)
     admin = Users('admin', 'admin@admin.com', '0811221122112', admin_password_encrypted, True)
+    trash_category = ListTrashCategory('dummy_category')
+    trash_one = {
+        "trash_category_id" : 1,
+        "trash_name" : "dummy_trash",
+        "price" : 1000,
+        "photo" : "dummy_photo",
+        "point" : 1
+    }
+    trash_two = {
+        "trash_category_id" : 1,
+        "trash_name" : "dummy_trash",
+        "price" : 2000,
+        "photo" : "dummy_photo",
+        "point" : 2
+    }
+    trash_instance_one = ListTrash(trash_one)
+    trash_instance_two = ListTrash(trash_two)
 
     db.session.add(user)
     db.session.add(admin)
+    db.session.add(trash_category)
+    db.session.add(trash_instance_one)
+    db.session.add(trash_instance_two)
     db.session.commit()
 
 
