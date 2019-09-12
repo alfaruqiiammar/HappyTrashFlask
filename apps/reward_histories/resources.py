@@ -54,11 +54,11 @@ class UserRewardHistoriesResource(Resource):
   def __init__(self):
     pass
 
-  def options(self, id):
+  def options(self):
     return {'Status': 'OK'}, 200
   
   @userRequired
-  def get(self,id):
+  def get(self):
     """Get all reward_histories of a specific user
     Returns :
       An array of dictionaries, for example:
@@ -80,7 +80,8 @@ class UserRewardHistoriesResource(Resource):
         }
       ]
     """
-    histories = RewardHistories.query.filter_by(user_id = id)
+    user = get_jwt_claims()
+    histories = RewardHistories.query.filter_by(user_id = user['id'])
     histories_list = []
 
     for history in histories:
@@ -120,5 +121,5 @@ class UserRewardHistoriesResource(Resource):
     return marshal(history, RewardHistories.response_fields), 200, {'Content_Type': 'application/json'}
   
 
-api.add_resource(UserRewardHistoriesResource, '', '/<id>')
-api.add_resource(AdminRewardHistoriesResource, '/')
+api.add_resource(UserRewardHistoriesResource, '/user')
+api.add_resource(AdminRewardHistoriesResource, '')
