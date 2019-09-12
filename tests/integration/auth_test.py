@@ -10,6 +10,10 @@ class TestAuth():
         res = client.options('/v1/auth')
         assert res.status_code == 200
 
+    def testAuthOption2(self, client):
+        res = client.options('/v1/auth/refresh')
+        assert res.status_code == 200
+
 ######### post
 
     def testLogin(self, client):
@@ -73,6 +77,17 @@ class TestAuth():
         
         res_json=json.loads(res.data)
         assert res.status_code == 200
+
+######### refresh
+    def testRefreshToken(self, client):
+        token = createTokenUser()
+        res = client.post('/v1/auth/refresh',
+                        headers={'Authorization': 'Bearer ' + token})
+        
+        res_json=json.loads(res.data)
+        assert res.status_code == 200
+
+
 
 
 
