@@ -94,21 +94,21 @@ class OrdersResource(Resource):
       return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
     
     if args['status'] == 'cancelled':
-      if user['status']:
+      if user['role']:
         return {'Warning' : 'Only User can cancel'}, 403, {'Content_Type': 'application/json'}
       order.status = 'cancelled'
       db.session.commit()
       return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
     if args['status'] == 'rejected':
-      if not user['status']:
+      if not user['role']:
         return {'Warning' : 'Only admin can reject'}, 403, {'Content_Type': 'application/json'}
       order.status = 'rejected'
       db.session.commit()
       return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
     
     if args['status'] == 'done':
-      if not user['status']:
+      if not user['role']:
         return {'Warning' : 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
       details = args['details']
       self.addDetails(details,order)

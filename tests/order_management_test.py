@@ -92,7 +92,7 @@ class TestOrderManagement():
       "status" : "cancelled"
     }
     
-    res = client.put('/v1/orders/{}'.format(TestOrderManagement.temp_order_id), data = json.dumps(order_status),headers = {'Authorization' : "Bearer " + token}, content_type = 'application/json')
+    res = client.put('/v1/orders/123456787', data = json.dumps(order_status),headers = {'Authorization' : "Bearer " + token}, content_type = 'application/json')
     # res = client.put('/v1/orders/12345678'.format(TestOrderManagement.temp_order_id), data = json.dumps(order_status), content_type = 'application/json')
     assert res.status_code == 404
 
