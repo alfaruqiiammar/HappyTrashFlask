@@ -1,7 +1,8 @@
 import json
-from . import app, client, cache, createTokenAdmin, createTokenUser
+from . import app, client, cache, createTokenAdmin, createTokenUser, resetDatabase
 
 class TestTrashManagement():
+  resetDatabase()
   temp_category_id = None
   temp_trash_id = None
 

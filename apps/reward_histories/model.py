@@ -31,7 +31,7 @@ class RewardHistories(db.Model):
     }
 
   def __init__(self, data):
-    self.reward_id = data.reward_id
-    self.reward_name = data.reward_name
-    self.user_id = data.user_id
+    self.reward_id = data['reward_id']
+    self.reward_name = data['reward_name']
+    self.user_id = data['user_id']
       

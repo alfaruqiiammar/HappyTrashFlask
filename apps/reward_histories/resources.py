@@ -97,24 +97,25 @@ class UserRewardHistoriesResource(Resource):
       reward_name : rewards name from id above, located in rewards table
       user_id : located in json
     """
+
+    user = get_jwt_claims()
     parser = reqparse.RequestParser()
     parser.add_argument('reward_id', location = 'json', required = True)
     parser.add_argument('reward_name', location = 'json', required = True)
-    parser.add_argument('user_id',location = 'json', required = True)
 
     args = parser.parse_args()
 
     new_history = {
       'reward_id' : args['reward_id'],
       'reward_name' : args['reward_name'],
-      'user_id' : args['user_id']
+      'user_id' : user['id']
     }
 
     history = RewardHistories(new_history)
     db.session.add(history)
     db.session.commit()
 
-    app.logger.debug('DEBUG : %s', trash)
+    app.logger.debug('DEBUG : %s', history)
 
     return marshal(history, RewardHistories.response_fields), 200, {'Content_Type': 'application/json'}
   
