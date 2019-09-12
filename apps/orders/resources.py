@@ -28,7 +28,7 @@ class OrdersResource(Resource):
         new = detail.update({"order_id" : int(order.id), "total_price" : total_price, "point" : point})
         new_detail = ListOrderDetails(detail)
         
-        order.total_qty += detail['qty']
+        # order.total_qty += detail['qty']
         order.total_price += total_price
         order.total_point += point
         order.status = 'done'
