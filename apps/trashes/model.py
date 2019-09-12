@@ -32,5 +32,3 @@ class ListTrash(db.Model):
         self.price = data['price']
         self.photo = data['photo']
         self.point = data['point']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']

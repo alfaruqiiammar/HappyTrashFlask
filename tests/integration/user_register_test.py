@@ -38,11 +38,11 @@ class TestUsersRegister():
         res=client.post('/v1/users', 
                         data=json.dumps(data),
                         content_type='application/json')
-
+ 
         res_json=json.loads(res.data)
-
+ 
         assert res.status_code == 400
-
+ 
     def testUserRegisterInvalidMobileNumber(self, client):
         data = {
             "name": "dadang",
@@ -53,11 +53,11 @@ class TestUsersRegister():
         res=client.post('/v1/users', 
                         data=json.dumps(data),
                         content_type='application/json')
-
+ 
         res_json=json.loads(res.data)
-
+# 
         assert res.status_code == 400
-
+# 
     def testUserRegisterEmailAlreadyListed(self, client):
         data = {
             "name": "dadang",
@@ -68,11 +68,11 @@ class TestUsersRegister():
         res=client.post('/v1/users', 
                         data=json.dumps(data),
                         content_type='application/json')
-
+# 
         res_json=json.loads(res.data)
-
+# 
         assert res.status_code == 400
-
+# 
     def testUserRegisterMobileNumberAlreadyListed(self, client):
         data = {
             "name": "dadang",
@@ -83,9 +83,10 @@ class TestUsersRegister():
         res=client.post('/v1/users', 
                         data=json.dumps(data),
                         content_type='application/json')
-
+# 
         res_json=json.loads(res.data)
-
+# 
         assert res.status_code == 400
-
-
+# 
+# 
+# 

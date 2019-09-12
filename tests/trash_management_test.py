@@ -9,14 +9,14 @@ class TestTrashManagement():
     category = {
       "category_name" : "dummy_name"
     }
-    res = client.post('/trash_category', data = json.dumps(category), content_type = 'application/json' )
+    res = client.post('/v1/trash_category', data = json.dumps(category), content_type = 'application/json' )
 
     res_json = json.loads(res.data)
     TestTrashManagement.temp_category_id = res_json['id']
     assert res.status_code == 200
   
   def testTrashCategoriesGet(self, client):
-    res = client.get('/trash_category', content_type = 'application/json')
+    res = client.get('/v1/trash_category', content_type = 'application/json')
     assert res.status_code == 200
   
   def testTrashCategoriesPut(self, client):
@@ -24,7 +24,7 @@ class TestTrashManagement():
       "category_name" : "newdummy"
     }
 
-    res = client.put(f'/trash_category/{TestTrashManagement.temp_category_id}', data = json.dumps(new_name), content_type = 'application/json')
+    res = client.put('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), data = json.dumps(new_name), content_type = 'application/json')
     assert res.status_code == 200
   
   def testTrashCategoriesPutInvalidName(self, client):
@@ -32,14 +32,14 @@ class TestTrashManagement():
       "category_name" : None
     }
 
-    res = client.put(f'/trash_category/{TestTrashManagement.temp_category_id}', data = json.dumps(new_name), content_type = 'application/json')
+    res = client.put('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), data = json.dumps(new_name), content_type = 'application/json')
     assert res.status_code == 400
   
   def testTrashCategoriesPutInvalidId(self, client):
     new_name = {
       "category_name" : "dummyname"
     }
-    res = client.put('/trash_category/none', data = json.dumps(new_name), content_type = 'application/json')
+    res = client.put('/v1/trash_category/none', data = json.dumps(new_name), content_type = 'application/json')
     assert res.status_code == 404
 
 #######
@@ -51,14 +51,14 @@ class TestTrashManagement():
       "price" : 100,
       "point" : 1
     }
-    res = client.post('/trash', data = json.dumps(trash), content_type = 'application/json' )
+    res = client.post('/v1/trash', data = json.dumps(trash), content_type = 'application/json' )
 
     res_json = json.loads(res.data)
     TestTrashManagement.temp_trash_id = res_json['id']
     assert res.status_code == 200
   
   def testTrashGet(self, client):
-    res = client.get('/trash', content_type = 'application/json')
+    res = client.get('/v1/trash', content_type = 'application/json')
     assert res.status_code == 200
   
   def testTrashPut(self, client):
@@ -70,7 +70,7 @@ class TestTrashManagement():
       "point" : 1
     }
 
-    res = client.put(f'/trash/{TestTrashManagement.temp_trash_id}', data = json.dumps(new_details), content_type = 'application/json')
+    res = client.put('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id), data = json.dumps(new_details), content_type = 'application/json')
     assert res.status_code == 200
   
   def testTrashPutInvalidId(self, client):
@@ -80,30 +80,30 @@ class TestTrashManagement():
       "price" : 100,
       "point" : 1
     }
-    res = client.put('/trash/none', data = json.dumps(new_details), content_type = 'application/json')
+    res = client.put('/v1/trash/none', data = json.dumps(new_details), content_type = 'application/json')
     assert res.status_code == 404
 
   def testTrashDelete(self, client):
-    res = client.delete(f'/trash/{TestTrashManagement.temp_trash_id}', content_type = 'application/json')
+    res = client.delete('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id), content_type = 'application/json')
     assert res.status_code == 200 
 
   def testTrashDeleteInvalidId(self, client):
-    res = client.delete(f'/trash/{TestTrashManagement.temp_trash_id}', content_type = 'application/json')
+    res = client.delete('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id), content_type = 'application/json')
     assert res.status_code == 404
 #######
 
   def testTrashCategoriesDelete(self, client):
-    res = client.delete(f'/trash_category/{TestTrashManagement.temp_category_id}', content_type = 'application/json')
+    res = client.delete('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), content_type = 'application/json')
     assert res.status_code == 200 
 
   def testTrashCategoriesDeleteInvalidId(self, client):
-    res = client.delete(f'/trash_category/{TestTrashManagement.temp_category_id}', content_type = 'application/json')
+    res = client.delete('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), content_type = 'application/json')
     assert res.status_code == 404   
   
   def testOptionsTrash(self, client):
-    res = client.options('/trash')
+    res = client.options('/v1/trash')
     assert res.status_code == 200
 
   def testOptionsTrashCategories(self, client):
-    res = client.options('/trash_category')
+    res = client.options('/v1/trash_category')
     assert res.status_code == 200

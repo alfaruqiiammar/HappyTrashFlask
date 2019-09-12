@@ -106,6 +106,8 @@ app.register_blueprint(bp_auth, url_prefix='/v1/auth')
 
 from apps.trash_categories.resources import bp_trash_categories
 from apps.trashes.resources import bp_trashes
-app.register_blueprint(bp_trash_categories, url_prefix='/trash_category')
-app.register_blueprint(bp_trashes, url_prefix = '/trash')
+from apps.orders.resources import bp_orders
+app.register_blueprint(bp_trash_categories, url_prefix='/v1/trash_category')
+app.register_blueprint(bp_trashes, url_prefix = '/v1/trash')
+app.register_blueprint(bp_orders, url_prefix = '/v1/orders')
 db.create_all()

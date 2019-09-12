@@ -54,26 +54,27 @@ class UsersResource(Resource):
 
         # We use isEmailAddressValid function to check whether email inputted is valid or not
 
-        if not Users.isEmailAddressValid(args['email']):
+        users = Users(args['name'], args['email'], args['mobile_number'], args['password'], False)
+        if not users.isEmailAddressValid(args['email']):
             return { 'message': 'Invalid email format!'}, 400, {'Content-Type': 'application/json'}
 
 
         # We use isMobileNumberValid function to check whether mobile number inputted is valid or not
 
-        if not Users.isMobileNumberValid(args['mobile_number']):
+        if not users.isMobileNumberValid(args['mobile_number']):
             return { 'message': 'Invalid mobile number format!'}, 400, {'Content-Type': 'application/json'}
 
 
         # Check whether email is already exist in database
 
-        check_email = Users.isEmailExist(args['email'])
+        check_email = users.isEmailExist(args['email'])
         if check_email is True:
             return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
 
 
         # Check whether mobile_number is already exist in database
 
-        check_mobile_number = Users.isMobileNumberExist(args['mobile_number'])
+        check_mobile_number = users.isMobileNumberExist(args['mobile_number'])
         if check_mobile_number is True:
             return {'message': 'Mobile number already listed!'}, 400, {'Content-Type': 'application/json'}
 
