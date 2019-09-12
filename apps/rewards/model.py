@@ -53,3 +53,19 @@ class Rewards(db.Model):
         self.photo = photo
         self.stock = stock
         self.status = status
+
+    @classmethod
+    def isRewardNameExist(cls, reward_name):
+        """Check whether reward name already listed in database"""
+        all_data = cls.query.all()
+
+
+        # Make a list of reward name listed in database
+
+        existing_reward_name = [item.reward_name for item in all_data]
+
+
+        if reward_name in existing_reward_name:
+            return True
+
+        return False
