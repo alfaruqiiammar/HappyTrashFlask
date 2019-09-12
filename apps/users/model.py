@@ -53,13 +53,13 @@ class Users(db.Model):
         self.password = password
         self.role = role
 
-    def isEmailAddressValid(email):
+    def isEmailAddressValid(self,email):
         """Validate the email address using a regex."""
         if not re.match("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
             return False
         return True
 
-    def isMobileNumberValid(mobile_number):
+    def isMobileNumberValid(self,mobile_number):
         """Validate the mobile phone using a regex."""
         if not re.match("^0[0-9]{9,}$", mobile_number):
             return False

@@ -70,8 +70,10 @@ class OrdersResource(Resource):
 
     return marshal(order, ListOrders.response_fields), 200, {'Content_Type' : 'application/json'}
 
-  # @adminRequired
+  # @jwt_required
   def put(self, id):
+    # user = get_jwt_claims()
+    # user_status = user['status']
     """
     takes 2 argument from user
     status
@@ -81,7 +83,8 @@ class OrdersResource(Resource):
     """
     parser = reqparse.RequestParser()
 
-    parser.add_argument('status', location='json', required = True)
+    choices =('waiting','rejected','cancelled','done')
+    parser.add_argument('status', location='json', required = True, choices=choices)
     parser.add_argument('details', location='json', type = list)
 
     args = parser.parse_args()
@@ -92,11 +95,22 @@ class OrdersResource(Resource):
       return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
     
     if args['status'] == 'cancelled':
+      # if user['status']:
+      #   return {'Warning' : 'Only User can cancel'}, 403, {'Content_Type': 'application/json'}
       order.status = 'cancelled'
+      db.session.commit()
+      return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
+
+    if args['status'] == 'rejected':
+      # if not user['status']:
+      #   return {'Warning' : 'Only admin can reject'}, 403, {'Content_Type': 'application/json'}
+      order.status = 'rejected'
       db.session.commit()
       return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
     
     if args['status'] == 'done':
+      # if not user['status']:
+        # return {'Warning' : 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
       details = args['details']
       self.addDetails(details,order)
       order.status = 'done'
@@ -111,7 +125,14 @@ class OrdersResource(Resource):
     order_list = []
     for order in orders:
       order = marshal(order, ListOrders.response_fields)
-      order_list.append(order)
+      details =  ListOrderDetails.query.filter_by(order_id=order['id'])
+      details_dict = []
+      for detail in details:
+        detail = marshal(detail,ListOrderDetails.response_fields)
+        details_dict.append(detail)
+
+      order_with_detail = {"Order" : order, "Details" : details_dict}  
+      order_list.append(order_with_detail)
     
     return order_list, 200, {'Content_Type': 'application/json'}
 
@@ -131,7 +152,14 @@ class UserOrdersResource(Resource):
     order_list = []
     for order in orders:
       order = marshal(order, ListOrders.response_fields)
-      order_list.append(order)
+      details =  ListOrderDetails.query.filter_by(order_id=order['id'])
+      details_dict = []
+      for detail in details:
+        detail = marshal(detail,ListOrderDetails.response_fields)
+        details_dict.append(detail)
+
+      order_with_detail = {"Order" : order, "Details" : details_dict}  
+      order_list.append(order_with_detail)
     
     return order_list, 200, {'Content_Type': 'application/json'}
 
