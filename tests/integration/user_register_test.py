@@ -1,13 +1,13 @@
 import json
 from tests import app, client, cache
-from tests import reset_database
+from tests import resetDatabase
 
 class TestUsersRegister():
 
-    reset_database()
+    resetDatabase()
 
 ######### options
-    def test_users_option(self, client):
+    def testUsersOption(self, client):
         res = client.options('/v1/users')
         assert res.status_code == 200    
 
