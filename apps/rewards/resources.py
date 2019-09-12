@@ -16,7 +16,7 @@ class RewardsResource(Resource):
         """Init function needed to indicate this is a class, but never used"""
         pass
 
-    def options(self):
+    def options(self, id):
         """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'OK'}, 200	
 
@@ -57,16 +57,9 @@ class RewardsResource(Resource):
         parser.add_argument('status', type=bool, location='json', required=True)
         args = parser.parse_args()
 
-        # We use isRewardNameExist function to check whether reward name is already exist in database
+        # Input data to rewards table
 
         reward = Rewards(args['name'], args['point_to_claim'], args['photo'], args['stock'], args['status'])
-
-        check_reward_name = reward.isRewardNameExist(args['name'])
-        if check_reward_name is True:
-            return {'message': 'Reward name already listed!'}, 400, {'Content-Type': 'application/json'}
-
-
-        # Input data to rewards table
 
         db.session.add(reward)
         db.session.commit()
@@ -113,41 +106,53 @@ class RewardsResource(Resource):
         return rewards_list, 200, {'Content_Type': 'application/json'}
 
     
-    # def put(self, id):
+    def put(self, id):
+        """Change rewards's field data by data inputted by admin
 
-    #     parser = reqparse.RequestParser()
+        Returns:
+            A dict mapping keys to the corresponding value, for example:
 
-    #     parser.add_argument('name', type=str, location='json')
-    #     parser.add_argument('point_to_claim', type=int, location='json')
-    #     parser.add_argument('photo', type=str, location='json')
-    #     parser.add_argument('stock', type=int, location='json')
-    #     parser.add_argument('status', type=bool, location='json')
+            {
+                "id": 1,
+                "name": "voucher sepulsa 20rb",
+                "point_to_claim": 20,
+                "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg",
+                "stock": 100,
+                "status": true
+            }
+        """
 
-    #     args = parser.parse_args()
-    #     trash = ListTrash.query.get(id)
+        parser = reqparse.RequestParser()
 
-    #     if trash is None:
-    #         return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+        parser.add_argument('name', type=str, location='json')
+        parser.add_argument('point_to_claim', type=int, location='json')
+        parser.add_argument('photo', type=str, location='json')
+        parser.add_argument('stock', type=int, location='json')
+        parser.add_argument('status', type=bool, location='json')
 
-    #     if args['trash_category_id'] is not None:
-    #         trash.trash_category_id = args['trash_category_id']
-    #     if args['trash_name'] is not None:
-    #         trash.trash_name = args['trash_name']
+        args = parser.parse_args()
+        reward = Rewards.query.get(id)
+        reward_contain = marshal(reward, Rewards.response_fields)
 
-    #     if args['price'] is not None:
-    #         trash.price = args['price']
+        if reward is None:
+            return {'status': 'Reward Not Found'}, 404, {'Content_Type': 'application/json'}
 
-    #     if args['photo'] is not None:
-    #         trash.photo = args['photo']
+        if args['name'] is not None:
+            reward.name = args['name']
+            
+        if args['point_to_claim'] is not None:
+            reward.point_to_claim = args['point_to_claim']
 
-    #     if args['point'] is not None:
-    #         trash.point = args['point']
+        if args['photo'] is not None:
+            reward.photo = args['photo']
 
-    #     trash.updated_at = datetime.datetime.utcnow()
-    #     db.session.commit()
-    #     return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}
+        if args['stock'] is not None:
+            reward.stock = args['stock']
 
+        if args['status'] is not None:
+            reward.status = args['status']
 
-    
+        db.session.commit()
+        return marshal(reward, Rewards.response_fields), 200, {'Content_Type': 'application/json'}
 
 api.add_resource(RewardsResource, '', '/<id>')
