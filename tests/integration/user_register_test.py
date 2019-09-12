@@ -1,10 +1,10 @@
 import json
 from tests import app, client, cache
-from tests import reset_database
+from tests import resetDatabase
 
 class TestUsersRegister():
 
-    reset_database()
+    resetDatabase()
 
 ######### options
     def testUsersOption(self, client):
