@@ -35,10 +35,13 @@ class Users(db.Model):
         'role': fields.Boolean
     }
 
-    login_response_field = {
+    login_response_fields = {
         'id': fields.Integer,
+        'name': fields.String,
         'email': fields.String,
+        'mobile_number': fields.String,
         'password': fields.String,
+        'role': fields.Boolean
     }
 
     def __init__(self, name, email, mobile_number, password, role):

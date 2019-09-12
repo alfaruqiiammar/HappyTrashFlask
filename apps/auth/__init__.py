@@ -55,7 +55,7 @@ class CreateTokenResources(Resource):
 
         # Check whether password is valid
 
-        user_data = marshal(user, Users.login_response_field)
+        user_data = marshal(user, Users.login_response_fields)
         if not sha256_crypt.verify(args['password'], user_data['password']):
             return {'status': 'UNATHORIZED', 'message': 'invalid email or password'}, 401, {'Content-Type': 'application/json'}
 
@@ -78,7 +78,9 @@ class CreateTokenResources(Resource):
             {
                 "claims": {
                     "id": 1,
-                    "email": "dadang@conello.com"
+                    "email": "dadang@conello.com",
+                    "mobile_number": "0812121212121",
+                    "role": False
                 }
             }
         """
