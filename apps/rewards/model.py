@@ -21,7 +21,7 @@ class Rewards(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     point_to_claim = db.Column(db.Integer, nullable=False)
-    photo = db.Column(db.String(100), nullable=False)
+    photo = db.Column(db.String(1000), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
     status = db.Column(db.Boolean, nullable=False)
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
@@ -62,7 +62,7 @@ class Rewards(db.Model):
 
         # Make a list of reward name listed in database
 
-        existing_reward_name = [item.reward_name for item in all_data]
+        existing_reward_name = [item.name for item in all_data]
 
 
         if reward_name in existing_reward_name:
