@@ -36,13 +36,15 @@ class CreateTokenResources(Resource):
             Unauthorized (401): A 401 error response indicates that the client tried to operate on a protected resource without providing the proper authorization. It may have provided the wrong credentials or none at all.
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('email', type=str, location='json', required=True)
-        parser.add_argument('password', type=str, location='json', required= True)
+        parser.add_argument('name', location='json')
+        parser.add_argument('email', location='json', required=True)
+        parser.add_argument('mobile_number', location='json')
+        parser.add_argument('password', location='json', required=True)
         args = parser.parse_args()
 
         # We use isEmailAddressValid function to check whether email inputted is valid or not
-
-        if not Users.isEmailAddressValid(args['email']):
+        users = Users(args['name'], args['email'], args['mobile_number'], args['password'], False)
+        if not users.isEmailAddressValid(args['email']):
             return { 'message': 'Invalid email format!'}, 400, {'Content-Type': 'application/json'}
 
         
