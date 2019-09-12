@@ -26,7 +26,7 @@ class TestAuth():
 
         assert res.status_code == 200
 
-    def testLoginInvalidEmail(self, client):
+    def testLoginInvalidEmailFormat(self, client):
         data = {
             "email": "user@user",
             "password": "user"
@@ -37,7 +37,20 @@ class TestAuth():
 
         res_json=json.loads(res.data)
 
-        assert res.status_code == 200
+        assert res.status_code == 400
+
+    def testLoginInvalidEmail(self, client):
+        data = {
+            "email": "user@user.co",
+            "password": "user"
+        }
+        res=client.post('/v1/auth', 
+                        data=json.dumps(data),
+                        content_type='application/json')
+
+        res_json=json.loads(res.data)
+
+        assert res.status_code == 401
 
     # def testUserRegisterInvalidEmail(self, client):
     #     data = {
