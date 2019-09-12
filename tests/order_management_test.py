@@ -98,10 +98,10 @@ class TestOrderManagement():
     order_status = {
       "status" : "done",
       "details" : [
-		        {"trash_id": 8,
+		        {"trash_id": 1,
 			      "qty" : 2.9
 		        },
-		        {"trash_id": 9,
+		        {"trash_id": 2,
 			      "qty" : 1.2
 	          }
 			      ]
@@ -116,10 +116,10 @@ class TestOrderManagement():
     order_status = {
       "status" : "done",
       "details" : [
-		        {"trash_id": 8,
+		        {"trash_id": 1,
 			      "qty" : 2.9
 		        },
-		        {"trash_id": 9,
+		        {"trash_id": 2,
 			      "qty" : 1.2
 	          }
 			      ]
