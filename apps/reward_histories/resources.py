@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal
 from .model import RewardHistories
-# from apps.rewards.model import Rewards
+from apps.rewards.model import Rewards
 from sqlalchemy import desc
 from apps import app, db, userRequired, adminRequired
 from flask_jwt_extended import jwt_required, get_jwt_claims
@@ -102,13 +102,16 @@ class UserRewardHistoriesResource(Resource):
     user = get_jwt_claims()
     parser = reqparse.RequestParser()
     parser.add_argument('reward_id', location = 'json', required = True)
-    parser.add_argument('reward_name', location = 'json', required = True)
+    # parser.add_argument('reward_name', location = 'json', required = True)
 
     args = parser.parse_args()
 
+    reward = Rewards.query.get(args['reward_id'])
+
     new_history = {
       'reward_id' : args['reward_id'],
-      'reward_name' : args['reward_name'],
+      # 'reward_name' : args['reward_name'],
+      'reward_name' : reward['name'],
       'user_id' : user['id']
     }
 
