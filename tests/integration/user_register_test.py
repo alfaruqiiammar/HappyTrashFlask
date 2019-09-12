@@ -7,7 +7,7 @@ class TestUsersRegister():
     reset_database()
 
 ######### options
-    def test_users_option(self, client):
+    def testUsersOption(self, client):
         res = client.options('/v1/users')
         assert res.status_code == 200    
 
