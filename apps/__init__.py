@@ -98,10 +98,12 @@ def after_request(response):
 from apps.users.resources import bp_users
 from apps.user_attributes.resources import bp_user_attributes
 from apps.auth import bp_auth
+from apps.rewards.resources import bp_rewards
 
 app.register_blueprint(bp_users, url_prefix='/v1/users')
 app.register_blueprint(bp_user_attributes, url_prefix='/v1/user_attributes')
 app.register_blueprint(bp_auth, url_prefix='/v1/auth')
+app.register_blueprint(bp_rewards, url_prefix='/v1/rewards')
 
 
 from apps.trash_categories.resources import bp_trash_categories
