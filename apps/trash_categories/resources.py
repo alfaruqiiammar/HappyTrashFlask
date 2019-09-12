@@ -19,7 +19,7 @@ class TrashCategoriesResource(Resource):
     def options(self):
         return {"status": "Ok"}, 200
 
-    # @adminRequired
+    @adminRequired
     def post(self):
         """ Post a new trash category to trash_categories table
 
@@ -45,6 +45,7 @@ class TrashCategoriesResource(Resource):
 
         return marshal(trash_category, ListTrashCategory.response_fields), 200, {'Content_Type': 'application/json'}
 
+    @jwt_required
     def get(self):
         """ Gets all trash category from trash_categories table
 
@@ -64,6 +65,7 @@ class TrashCategoriesResource(Resource):
 
         return trash_categories, 200, {'Content_Type': 'application/json'}
 
+    @adminRequired
     def put(self, id):
         """ Edits category_name from a single row in trash_category table specified by id 
 
@@ -90,6 +92,7 @@ class TrashCategoriesResource(Resource):
         db.session.commit()
         return marshal(category, ListTrashCategory.response_fields), 200, {'Content_Type': 'application/json'}
 
+    @adminRequired
     def delete(self, id):
         category = ListTrashCategory.query.get(id)
 
