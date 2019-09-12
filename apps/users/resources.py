@@ -81,6 +81,7 @@ class UsersResource(Resource):
         # Encrypt password using sha256
 
         password_encrypted = sha256_crypt.encrypt(args['password'])
+        print(password_encrypted)
 
 
         # Input data to users table
