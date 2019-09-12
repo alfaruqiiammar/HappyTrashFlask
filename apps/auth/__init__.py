@@ -43,6 +43,7 @@ class CreateTokenResources(Resource):
         args = parser.parse_args()
 
         # We use isEmailAddressValid function to check whether email inputted is valid or not
+        
         users = Users(args['name'], args['email'], args['mobile_number'], args['password'], False)
         if not users.isEmailAddressValid(args['email']):
             return { 'message': 'Invalid email format!'}, 400, {'Content-Type': 'application/json'}
