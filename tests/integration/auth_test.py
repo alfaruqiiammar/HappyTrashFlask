@@ -52,6 +52,19 @@ class TestAuth():
 
         assert res.status_code == 401
 
+    def testLoginInvalidPassword(self, client):
+        data = {
+            "email": "user@user.com",
+            "password": "userbad"
+        }
+        res=client.post('/v1/auth', 
+                        data=json.dumps(data),
+                        content_type='application/json')
+
+        res_json=json.loads(res.data)
+
+        assert res.status_code == 401
+
     # def testUserRegisterInvalidEmail(self, client):
     #     data = {
     #         "name": "dadang",
