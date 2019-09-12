@@ -31,7 +31,7 @@ def adminRequired(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if claims.status:
+        if claims['role']:
             return fn(*args, **kwargs)
         else:
             return {'status': 'Forbidden', 'message': 'admin only'}, 403
@@ -43,7 +43,7 @@ def userRequired(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims.status:
+        if not claims['role']:
             return fn(*args, **kwargs)
         else:
             return {'status': 'Forbidden', 'message': 'user only'}, 403
