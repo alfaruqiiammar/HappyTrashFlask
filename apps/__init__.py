@@ -10,7 +10,9 @@ from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt_identi
 from datetime import timedelta
 from functools import wraps
 from flask_cors import CORS
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -55,6 +57,7 @@ def userRequired(fn):
 
 try:
     env = os.environ.get('FLASK_ENV', 'development')
+    # env = 'testing'
     if env == 'testing':
         app.config.from_object(config.TestingConfig)
     else:
