@@ -28,8 +28,6 @@ def resetDatabase():
 
     user = Users('user', 'user@user.com', '081122112211', user_password_encrypted, False)
     admin = Users('admin', 'admin@admin.com', '0811221122112', admin_password_encrypted, True)
-    user_attr = UserAttributes(1,0,0,False)
-    admin_attr = UserAttributes(2,0,0,False)
     trash_category = ListTrashCategory('dummy_category')
     trash_one = {
         "trash_category_id" : 1,
@@ -52,12 +50,16 @@ def resetDatabase():
 
     db.session.add(user)
     db.session.add(admin)
-    db.session.add(user_attr)
-    db.session.add(admin_attr)
     db.session.add(trash_category)
     db.session.add(trash_instance_one)
     db.session.add(trash_instance_two)
     db.session.add(reward)
+    db.session.commit()
+
+    user_attr = UserAttributes(1,0,0,False)
+    admin_attr = UserAttributes(2,0,0,False)
+    db.session.add(user_attr)
+    db.session.add(admin_attr)
     db.session.commit()
 
 
