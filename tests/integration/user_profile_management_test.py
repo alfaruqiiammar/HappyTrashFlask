@@ -64,7 +64,11 @@ class TestUserProfile():
     res = client.options('/v1/users/all')
     assert res.status_code == 200
   
-  ##### Put
+  def testAttrributeOptions(self, client):
+    res = client.options('/v1/user_attributes')
+    assert res.status_code == 200
+  
+  ##### Put user profile
 
   def testUserPut(self, client):
     token = createTokenUser()
@@ -132,3 +136,8 @@ class TestUserProfile():
                     content_type='application/json')
     res_json=json.loads(res.data)
     assert res.status_code == 400
+
+  ####### Put user onboarding status
+
+  def testPutAttribute(self, client):
+    pass
