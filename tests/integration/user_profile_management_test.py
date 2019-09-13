@@ -95,6 +95,8 @@ class TestUserProfile():
     assert res.status_code == 200
 
   def testUserPutInvalidEmail(self, client):
+    """Missing .domain in email"""
+
     token = createTokenUser()
     data = {
         "email": "dadang@conello",
@@ -107,6 +109,8 @@ class TestUserProfile():
     assert res.status_code == 400
 
   def testUserPutInvalidMobileNumber(self, client):
+    """Missing 0 at the beginning of phone number"""
+
     token = createTokenUser()
     data = {
         "mobile_number": "812121212"
@@ -119,6 +123,10 @@ class TestUserProfile():
     assert res.status_code == 400
  
   def testUserPutEmailAlreadyListed(self, client):
+    """User try to input the same email as he/she has
+    check in put test with status 200
+    """
+
     token = createTokenUser()
     data = {
        "email": "put@conello.com"
@@ -131,8 +139,29 @@ class TestUserProfile():
     res_json=json.loads(res.data)
 
     assert res.status_code == 400
+
+  def testUserPutEmailAlreadyListed2(self, client):
+    """User try to input the same email as admin
+    check in __init__.py function createDatabase
+    """
+
+    token = createTokenUser()
+    data = {
+       "email": "admin@admin.com"
+       }
+    res=client.put('/v1/users', 
+                     data=json.dumps(data),
+                     headers = {'Authorization' : 'Bearer '+token},
+                     content_type='application/json')
+
+    res_json=json.loads(res.data)
+
+    assert res.status_code == 400
  
   def testUserPutMobileNumberAlreadyListed(self, client):
+    """User try to input the same phone number as he/she has
+    check in put test with status 200
+    """
     token = createTokenUser()
     data = {
         "mobile_number": "08812121212"

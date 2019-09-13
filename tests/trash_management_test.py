@@ -37,6 +37,8 @@ class TestTrashManagement():
     assert res.status_code == 200
 
   def testTrashCategoriesPutInvalidAdmin(self, client):
+    """Only admin can post a new trash category"""
+
     token = createTokenUser()
     new_name = {
       "category_name" : "newdummy"
@@ -46,6 +48,8 @@ class TestTrashManagement():
     assert res.status_code == 403
   
   def testTrashCategoriesPutInvalidName(self, client):
+    """Name can not be null"""
+
     token = createTokenAdmin()
     new_name = {
       "category_name" : None
@@ -97,6 +101,8 @@ class TestTrashManagement():
     assert res.status_code == 200
   
   def testTrashPutByUser(self, client):
+    """"User is not permitted to change trash credentials"""
+
     token = createTokenUser()
     new_details = {
       "trash_category_id" : 1,
@@ -110,6 +116,8 @@ class TestTrashManagement():
     assert res.status_code == 403
   
   def testTrashPutInvalidId(self, client):
+    """Can not update unavailable trash data"""
+
     token = createTokenAdmin()
     new_details = {
       "trash_name" : "test",
@@ -121,11 +129,13 @@ class TestTrashManagement():
     assert res.status_code == 404
 
   def testTrashDelete(self, client):
+    
     token = createTokenAdmin()
     res = client.delete('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id), headers = {'Authorization' : "Bearer " + token},content_type = 'application/json')
     assert res.status_code == 200 
 
   def testTrashDeleteInvalidId(self, client):
+    """Can not delete unavailable trash data"""
     token = createTokenAdmin()
     res = client.delete('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id), headers = {'Authorization' : "Bearer " + token},content_type = 'application/json')
     assert res.status_code == 404
