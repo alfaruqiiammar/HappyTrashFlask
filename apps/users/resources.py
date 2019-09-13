@@ -132,6 +132,64 @@ class UsersResource(Resource):
         result = requested.update(attr_requested)
         
         return requested, 200, {'Content-Type': 'application/json'}
+    
+    @userRequired
+    def put(self):
+        """edit user credentials"""
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', location='json')
+        parser.add_argument('email', location='json')
+        parser.add_argument('mobile_number', location='json')
+        parser.add_argument('password', location='json')
+        args = parser.parse_args()
+
+        claims = get_jwt_claims()
+        user_edited = Users.query.get(claims['id'])
+        
+        users = Users("dummy", "dummy", "dummy", "dummy", False)
+
+        # Cheks if user input a name
+
+        if args['name'] is not None:
+            user_edited.name = args['name']
+        
+        # checks email and edit it 
+        
+        if args['email'] is not None:
+
+            if not users.isEmailAddressValid(args['email']):
+                return { 'message': 'Invalid email format!'}, 400, {'Content-Type': 'application/json'}
+            
+            check_email = users.isEmailExist(args['email'])
+            if check_email is True:
+                return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
+            
+            user_edited.email = args['email']
+
+        # checks the number phone and edit it
+
+        if args['mobile_number'] is not None:
+            
+            if not users.isMobileNumberValid(args['mobile_number']):
+                return { 'message': 'Invalid mobile number format!'}, 400, {'Content-Type': 'application/json'}
+
+            check_mobile_number = users.isMobileNumberExist(args['mobile_number'])
+            if check_mobile_number is True:
+                return {'message': 'Mobile number already listed!'}, 400, {'Content-Type': 'application/json'}
+            
+            user_edited.mobile_number = args['mobile_number']
+
+        # checks if user input a new password
+
+        if args['password'] is not None:
+            password_encrypted = sha256_crypt.encrypt(args['password'])
+            user_edited.password = password_encrypted
+        
+        db.session.commit()
+
+        return marshal(user_edited, Users.response_fields), 200, {'Content-Type': 'application/json'}
+
         
 
 
