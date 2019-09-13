@@ -137,7 +137,11 @@ class TestUserProfile():
     res_json=json.loads(res.data)
     assert res.status_code == 400
 
-  ####### Put user onboarding status
-
+  ###### Put user onboarding status
+ 
   def testPutAttribute(self, client):
-    pass
+    token = createTokenUser()
+    res = client.put('/v1/user_attributes',
+                      headers = {'Authorization' : 'Bearer '+token}
+                      )
+    assert res.status_code == 200
