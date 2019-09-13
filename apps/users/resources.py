@@ -3,7 +3,7 @@ from flask_restful import Resource, Api, reqparse, marshal, inputs
 from .model import Users
 from apps.user_attributes.model import UserAttributes
 from sqlalchemy import desc
-from apps import app, db
+from apps import app, db, adminRequired, userRequired
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from passlib.hash import sha256_crypt
 
@@ -106,6 +106,109 @@ class UsersResource(Resource):
         app.logger.debug('DEBUG : %s', user)
 
         return marshal(user, Users.response_fields), 200, {'Content-Type': 'application/json'}
+    
+    @userRequired
+    def get(self, id):
+        """Get a user's detail by id. A user can not access another user's data
+        
+        Raise :
+            403 : Occured when user try to access another user's data
+            404 : Occured when the data is not found in the table
+        """
 
-api.add_resource(UsersResource, '')
+        user = get_jwt_claims()
+        user_requested = Users.query.get(id)
+        user_req_attr = UserAttributes.query.filter_by(user_id = id).first()
+        if user_requested is None:
+            return {'Status' : 'Not Found'}, 404, {'Content-Type': 'application/json'}
+        
+        requested = marshal(user_requested, Users.response_fields)
+        attr_requested = marshal(user_req_attr, UserAttributes.response_fields)
+        attr_requested.pop('user_id')
+        
+        if user['id'] != requested['id'] :
+            return {'Warning' : 'You are not allowed to access others credentials'}, 403, {'Content-Type': 'application/json'}
+        
+        result = requested.update(attr_requested)
+        
+        return requested, 200, {'Content-Type': 'application/json'}
+        
+
+
+class UsersForAdminResource(Resource):
+    
+    def __init__(self):
+        pass
+
+    def options(self, id = None):
+        return {'Status': 'OK'}, 200
+    
+    @adminRequired
+    def get(self, id):
+        """get user's data  by id
+
+        Returns : A dict contains all profile data from a specific user. Example :
+        {
+            "id" : 1,
+            "name" : "user",
+            "email" : "exp@exp.com"
+            "mobile_number" : "0898787878"
+        }
+        """
+        # find user's data in table
+
+        user = Users.query.get(id)
+        
+        if user is None:
+            return {'Status' : 'Not Found'}, 404
+        user_dict = marshal(user, Users.response_fields)
+
+        # return the data
+
+        return user_dict, 200, {'Content-Type': 'application/json'}
+
+class AllUserResource(Resource):
+    
+    def __init__(self):
+        pass
+
+    def options(self):
+        return {'Status': 'OK'}, 200
+    
+    @adminRequired
+    def get(self):
+        """get all user's data
+
+            Returns : An array of dictionary contains all data from users. Example :
+            [
+                {
+                    "id" : 1,
+                    "name" : "user",
+                    "email" : "exp@exp.com"
+                    "mobile_number" : "0898787878"
+                },
+                {
+                    "id" : 2,
+                    "name" : "user2",
+                    "email" : "exp2@exp.com"
+                    "mobile_number" : "08298787878"
+                }
+            ]
+        """
+        users = Users.query
+        result = []
+        for user in users :
+            user = marshal(user, Users.response_fields)
+            attr = UserAttributes.query.filter_by(user_id=user['id'])
+            attr = marshal(attr, UserAttributes.response_fields)
+            attr.pop('user_id')
+            data = user.update(attr)
+            result.append(user)
+        
+        return result, 200, {'Content-Type': 'application/json'}
+
+
+api.add_resource(UsersResource, '','/<id>')
+api.add_resource(UsersForAdminResource, '/admin','/admin/<id>')
+api.add_resource(AllUserResource, '/all')
 
