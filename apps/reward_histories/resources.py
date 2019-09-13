@@ -107,6 +107,7 @@ class UserRewardHistoriesResource(Resource):
     args = parser.parse_args()
 
     reward = Rewards.query.get(args['reward_id'])
+    reward = marshal(reward, Rewards.response_fields)
 
     new_history = {
       'reward_id' : args['reward_id'],

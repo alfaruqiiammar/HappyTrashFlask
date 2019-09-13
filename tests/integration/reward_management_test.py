@@ -68,7 +68,7 @@ class TestRewardManagement():
             "stock": 1,
             "status": False
         }
-        res=client.put('/v1/rewards/2', 
+        res=client.put('/v1/rewards/3', 
                         data=json.dumps(data),
                         headers={'Authorization': 'Bearer ' + token},
                         content_type='application/json')
