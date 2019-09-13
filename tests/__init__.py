@@ -4,8 +4,10 @@ from apps import app, db
 from app import cache
 import json
 from apps.users.model import Users
+from apps.user_attributes.model import UserAttributes
 from apps.trashes.model import ListTrash
 from apps.trash_categories.model import ListTrashCategory
+from apps.rewards.model import Rewards
 from passlib.hash import sha256_crypt
 
 def call_client(request):
@@ -44,11 +46,20 @@ def resetDatabase():
     trash_instance_one = ListTrash(trash_one)
     trash_instance_two = ListTrash(trash_two)
 
+    reward = Rewards("reward dummy", 20, "photo", 20, True)
+
     db.session.add(user)
     db.session.add(admin)
     db.session.add(trash_category)
     db.session.add(trash_instance_one)
     db.session.add(trash_instance_two)
+    db.session.add(reward)
+    db.session.commit()
+
+    user_attr = UserAttributes(1,0,0,False)
+    admin_attr = UserAttributes(2,0,0,False)
+    db.session.add(user_attr)
+    db.session.add(admin_attr)
     db.session.commit()
 
 

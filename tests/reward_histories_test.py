@@ -30,7 +30,7 @@ class TestRewardHistories():
 
 
   def testHistoryGetByUser(self, client):
-    """test get all data from reward history by admin"""
+    """test get all data from reward history by user"""
     token = createTokenUser()
     res = client.get('/v1/reward_history/user', headers = {'Authorization' : "Bearer " + token},content_type = 'application/json')
     assert res.status_code == 200

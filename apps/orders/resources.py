@@ -5,6 +5,7 @@ from sqlalchemy import desc
 from .model import ListOrders
 from apps.order_details.model import ListOrderDetails
 from apps.trashes.model import ListTrash
+from apps.user_attributes.model import UserAttributes
 from apps import db,app
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from apps import adminRequired, userRequired
@@ -14,7 +15,15 @@ api = Api(bp_orders)
 
 class OrdersResource(Resource):
 
-  def addDetails(self,arr,order):
+  def addDetails(self,arr,order, user_attr):
+    """function to add order details to order details table
+    also update order and user attribute table
+
+    Args:
+      arr: An array of order detail dictionary
+      order: the order which want to be updated with details
+      user_attr: user attributes which later will be updated
+    """
     for detail in arr:
 
         trash = ListTrash.query.get(detail['trash_id'])
@@ -22,15 +31,16 @@ class OrdersResource(Resource):
         
         total_price = int(trash['price'] * detail['qty'])
         order.total_qty += detail['qty']
+        user_attr.total_trash += detail['qty']
         
         point = int(detail['qty']) * trash['point']
         
         new = detail.update({"order_id" : int(order.id), "total_price" : total_price, "point" : point})
         new_detail = ListOrderDetails(detail)
         
-        # order.total_qty += detail['qty']
         order.total_price += total_price
         order.total_point += point
+        user_attr.point += point
         order.status = 'done'
         db.session.add(new_detail)
         db.session.commit()
@@ -118,8 +128,9 @@ class OrdersResource(Resource):
     if args['status'] == 'done':
       if not user['role']:
         return {'Warning' : 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
+      user_attr = UserAttributes.query.filter_by(user_id = user['id']).first()
       details = args['details']
-      self.addDetails(details,order)
+      self.addDetails(details,order,user_attr)
       order.status = 'done'
       db.session.commit()
       return {"details_added" : details }, 200, {'Content_Type': 'application/json'}

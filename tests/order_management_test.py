@@ -17,7 +17,9 @@ class TestOrderManagement():
     TestOrderManagement.temp_order_id = res_json['id']
     assert res.status_code == 200
 
-  def testOrderPostInvalidAdress(self, client):    
+  def testOrderPostInvalidAdress(self, client):
+    """Missing required field(adress)"""
+
     token = createTokenUser()
     order = {
       "photo" : "args"
@@ -28,6 +30,10 @@ class TestOrderManagement():
     assert res.status_code == 400
 
   def testOrderPostInvalidUser(self, client):
+    """Admin is not permitted to post a new order,
+    hence request will get 403 response
+    """
+
     token = createTokenAdmin()
     order = {
       "adress" : "args",
@@ -50,6 +56,8 @@ class TestOrderManagement():
     assert res.status_code == 200
 
   def testOrderPutInvalidStatus(self,client):
+    """cancelledmaybe is not a valid options for status"""
+
     token = createTokenUser()
     order_status = {
       "status" : "cancelledmaybe"
@@ -60,6 +68,8 @@ class TestOrderManagement():
     assert res.status_code == 400
   
   def testOrderPutCancelledByAdmin(self,client):
+    """Admin permitted to reject, but not permitted to cancel"""
+
     token = createTokenAdmin()
     order_status = {
       "status" : "cancelled"
@@ -76,6 +86,8 @@ class TestOrderManagement():
     assert res.status_code == 200
   
   def testPutRejectedByUser(self,client):
+    """Users are permitted to cancel, but not to reject"""
+
     token = createTokenUser()
     order_status = {
       "status" : "rejected"
@@ -101,6 +113,8 @@ class TestOrderManagement():
 
 
   def testOrderPutNotFound(self,client):
+    """There is no order with id 123456787""""
+
     token = createTokenUser()
     order_status = {
       "status" : "cancelled"
@@ -129,6 +143,8 @@ class TestOrderManagement():
     assert res.status_code == 200  
 
   def testOrderPutDoneByUser(self, client):
+    """Update status with done is only permitted for admins"""
+
     token = createTokenUser()
     order_status = {
       "status" : "done",
@@ -166,6 +182,7 @@ class TestOrderManagement():
     assert res.status_code == 200
 
   def testUserOrderGetInvalidToken(self, client):
+    
     token = createTokenAdmin()
     res = client.get('v1/orders/user', headers={'Authorization' : "Bearer " + token}, content_type='application/json')
 
