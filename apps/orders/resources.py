@@ -81,11 +81,19 @@ class OrdersResource(Resource):
 
   @jwt_required
   def put(self, id):
+    """
+    takes 2 argument from user
+    status
+    details
+    penjelasan details :
+    berisi qty dan trash_id
+    """
     user = get_jwt_claims()
     user_status = user['role']
+    
     parser = reqparse.RequestParser()
 
-    choices =('waiting','rejected','cancelled','done')
+    choices =('waiting','rejected','cancelled','done','confirmed')
     parser.add_argument('status', location='json', required = True, choices=choices)
     parser.add_argument('details', location='json', type = list)
 
@@ -100,6 +108,13 @@ class OrdersResource(Resource):
       if user['role']:
         return {'Warning' : 'Only User can cancel'}, 403, {'Content_Type': 'application/json'}
       order.status = 'cancelled'
+      db.session.commit()
+      return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
+    
+    if args['status'] == 'confirmed':
+      if not user['role']:
+        return {'Warning' : 'Only admin can confirm'}, 403, {'Content_Type': 'application/json'}
+      order.status = 'confirmed'
       db.session.commit()
       return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 

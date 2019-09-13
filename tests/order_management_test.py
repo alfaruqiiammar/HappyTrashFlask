@@ -95,6 +95,23 @@ class TestOrderManagement():
     res = client.put('/v1/orders/{}'.format(TestOrderManagement.temp_order_id), data = json.dumps(order_status),headers = {'Authorization' : "Bearer " + token}, content_type = 'application/json')
     assert res.status_code == 403
 
+  def testPutConfirmed(self,client):
+    token = createTokenAdmin()
+    order_status = {
+      "status" : "confirmed"
+    }
+    res = client.put('/v1/orders/{}'.format(TestOrderManagement.temp_order_id), data = json.dumps(order_status),headers = {'Authorization' : "Bearer " + token}, content_type = 'application/json')
+    assert res.status_code == 200
+  
+  def testPutConfirmedByUser(self,client):
+    token = createTokenUser()
+    order_status = {
+      "status" : "confirmed"
+    }
+    res = client.put('/v1/orders/{}'.format(TestOrderManagement.temp_order_id), data = json.dumps(order_status),headers = {'Authorization' : "Bearer " + token}, content_type = 'application/json')
+    assert res.status_code == 403
+
+
   def testOrderPutNotFound(self,client):
     """There is no order with id 123456787""""
 
