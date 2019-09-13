@@ -148,6 +148,7 @@ class OrdersResource(Resource):
             order = marshal(order, ListOrders.response_fields)
             details = ListOrderDetails.query.filter_by(order_id=order['id'])
             user = Users.query.get(order['user_id'])
+            user = marshal(user, Users.response_fields)
             details_dict = []
             for detail in details:
                 detail = marshal(detail, ListOrderDetails.response_fields)
