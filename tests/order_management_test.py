@@ -113,7 +113,7 @@ class TestOrderManagement():
 
 
   def testOrderPutNotFound(self,client):
-    """There is no order with id 123456787""""
+    """There is no order with id 123456787"""
 
     token = createTokenUser()
     order_status = {
