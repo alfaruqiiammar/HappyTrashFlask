@@ -2,7 +2,6 @@ sudo: required
 language: python
 python:
   - "3.6"
-  - "3.7"
 services:
 - docker
 - pip
@@ -20,6 +19,8 @@ before_script:
 - eval "$(ssh-agent -s)"
 - chmod 600 deploy_rsa
 - ssh-add deploy_rsa
+- export DB_USER="${DB_USER}"
+- export DB_PASSWORD="${DB_PASSWORD}"
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 script:
 - pytest
