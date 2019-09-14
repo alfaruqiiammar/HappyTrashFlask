@@ -8,7 +8,7 @@ class TestRewardManagement():
 
 # options
     def testRewardOption(self, client):
-        res = client.options('/v1/rewards/1')
+        res = client.options('/v1/rewards/3')
         assert res.status_code == 200
 
 # post
@@ -51,7 +51,7 @@ class TestRewardManagement():
             "stock": 1,
             "status": False
         }
-        res = client.put('/v1/rewards/1',
+        res = client.put('/v1/rewards/3',
                          data=json.dumps(data),
                          headers={'Authorization': 'Bearer ' + token},
                          content_type='application/json')
@@ -69,7 +69,7 @@ class TestRewardManagement():
             "stock": 1,
             "status": False
         }
-        res = client.put('/v1/rewards/1',
+        res = client.put('/v1/rewards/3',
                          data=json.dumps(data),
                          headers={'Authorization': 'Bearer ' + token},
                          content_type='application/json')
@@ -87,7 +87,7 @@ class TestRewardManagement():
             "stock": 1,
             "status": False
         }
-        res = client.put('/v1/rewards/3',
+        res = client.put('/v1/rewards/23',
                          data=json.dumps(data),
                          headers={'Authorization': 'Bearer ' + token},
                          content_type='application/json')
