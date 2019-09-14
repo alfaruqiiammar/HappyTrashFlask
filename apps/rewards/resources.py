@@ -9,6 +9,7 @@ from apps import adminRequired, userRequired
 bp_rewards = Blueprint('rewards', __name__)
 api = Api(bp_rewards)
 
+
 class RewardsResource(Resource):
     """Class for storing HTTP request method for rewards table"""
 
@@ -18,7 +19,7 @@ class RewardsResource(Resource):
 
     def options(self, id):
         """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
-        return {'Status': 'OK'}, 200	
+        return {'Status': 'OK'}, 200
 
     @jwt_required
     @adminRequired
@@ -44,22 +45,25 @@ class RewardsResource(Resource):
                 "stock": 100,
                 "status": True
             }
-        
+
         Raises: 
             Bad Request (400): An error that occured when some of the field is missing, or if the data is not valid, or if the data inputted is already listed on database
         """
 
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str, location='json', required=True)
-        parser.add_argument('point_to_claim', type=int, location='json', required=True)
+        parser.add_argument('point_to_claim', type=int,
+                            location='json', required=True)
         parser.add_argument('photo', type=str, location='json', required=True)
         parser.add_argument('stock', type=int, location='json', required=True)
-        parser.add_argument('status', type=bool, location='json', required=True)
+        parser.add_argument('status', type=bool,
+                            location='json', required=True)
         args = parser.parse_args()
 
         # Input data to rewards table
 
-        reward = Rewards(args['name'], args['point_to_claim'], args['photo'], args['stock'], args['status'])
+        reward = Rewards(args['name'], args['point_to_claim'],
+                         args['photo'], args['stock'], args['status'])
 
         db.session.add(reward)
         db.session.commit()
@@ -69,7 +73,7 @@ class RewardsResource(Resource):
         return marshal(reward, Rewards.response_fields), 200, {'Content-Type': 'application/json'}
 
     @jwt_required
-    @adminRequired
+    # @adminRequired
     def get(self):
         """Get all data from rewards table
 
@@ -105,7 +109,6 @@ class RewardsResource(Resource):
 
         return rewards_list, 200, {'Content_Type': 'application/json'}
 
-    
     def put(self, id):
         """Change rewards's field data by data inputted by admin
 
@@ -139,7 +142,7 @@ class RewardsResource(Resource):
 
         if args['name'] is not None:
             reward.name = args['name']
-            
+
         if args['point_to_claim'] is not None:
             reward.point_to_claim = args['point_to_claim']
 
@@ -154,5 +157,6 @@ class RewardsResource(Resource):
 
         db.session.commit()
         return marshal(reward, Rewards.response_fields), 200, {'Content_Type': 'application/json'}
+
 
 api.add_resource(RewardsResource, '', '/<id>')
