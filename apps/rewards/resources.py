@@ -73,7 +73,7 @@ class RewardsResource(Resource):
         return marshal(reward, Rewards.response_fields), 200, {'Content-Type': 'application/json'}
 
     @jwt_required
-    @adminRequired
+    # @adminRequired
     def get(self):
         """Get all data from rewards table
 
