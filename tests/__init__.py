@@ -1,5 +1,6 @@
 import pytest
 import json
+import datetime
 import logging
 from flask import Flask, request, json
 from apps import app, db
@@ -11,6 +12,7 @@ from apps.trashes.model import ListTrash
 from apps.trash_categories.model import ListTrashCategory
 from apps.rewards.model import Rewards
 from apps.reward_histories.model import RewardHistories
+from apps.orders.model import ListOrders
 from passlib.hash import sha256_crypt
 
 
@@ -55,6 +57,13 @@ def resetDatabase():
     trash_instance_two = ListTrash(trash_two)
 
     reward = Rewards("reward dummy", 20, "photo", 20, True)
+    order = ListOrders({
+        'user_id': 1,
+        'adress': "dummy",
+        'time': datetime.datetime.utcnow(),
+        'photo': 'url',
+        'status': 'waiting'
+    })
 
     db.session.add(user)
     db.session.add(admin)
@@ -62,6 +71,7 @@ def resetDatabase():
     db.session.add(trash_instance_one)
     db.session.add(trash_instance_two)
     db.session.add(reward)
+    db.session.add(order)
     db.session.commit()
 
     user_attr = UserAttributes(1, 0, 0, False)
