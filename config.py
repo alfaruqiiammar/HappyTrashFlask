@@ -3,11 +3,11 @@ import os
 
 load_dotenv()
 
-# db_user = os.environ.get('DB_USER')
-# db_password = os.environ.get('DB_PASSWORD')
+db_user = os.environ.get('DB_USER')
+db_password = os.environ.get('DB_PASSWORD')
 
-db_user = ${DB_USER}
-db_password = ${DB_PASSWORD}
+# db_user = ${DB_USER}
+# db_password = ${DB_PASSWORD}
 
 # db_user = 'HappyTrash'
 # db_password = 'HappyTerus'
