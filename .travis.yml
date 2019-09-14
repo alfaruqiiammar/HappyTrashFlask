@@ -1,14 +1,18 @@
 sudo: required
-language: generic
+language: python
+python:
+  - "3.6"
 services:
 - docker
-- npm
+- pip
 os:
 - linux
 env:
   global:
   - DOCKER_IMAGE_NAME="happy-trash-backend"
   - DOCKER_HUB_ORG="alfaruqi26"
+install:
+  - pip install -r requirements.txt
 before_script:
 - openssl aes-256-cbc -K $encrypted_38b87d0d3035_key -iv $encrypted_38b87d0d3035_iv
   -in deploy_rsa.enc -out deploy_rsa -d
@@ -17,6 +21,7 @@ before_script:
 - ssh-add deploy_rsa
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 script:
+- pytest tests/ 
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
 after_script:
