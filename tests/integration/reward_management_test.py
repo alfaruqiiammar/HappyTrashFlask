@@ -1,5 +1,5 @@
 import json
-from tests import app, client, cache, resetDatabase, createTokenAdmin
+from tests import app, client, cache, resetDatabase, createTokenAdmin, createTokenUser
 
 
 class TestRewardManagement():
@@ -44,6 +44,24 @@ class TestRewardManagement():
 
     def testEditReward(self, client):
         token = createTokenAdmin()
+        data = {
+            "name": "tes2",
+            "point_to_claim": 1,
+            "photo": "tes",
+            "stock": 1,
+            "status": False
+        }
+        res = client.put('/v1/rewards/1',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer ' + token},
+                         content_type='application/json')
+
+        res_json = json.loads(res.data)
+
+        assert res.status_code == 200
+
+    def testEditRewardUser(self, client):
+        token = createTokenUser()
         data = {
             "name": "tes2",
             "point_to_claim": 1,
