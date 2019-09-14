@@ -22,7 +22,7 @@ before_script:
 - ssh-add deploy_rsa
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 script:
-- pytest tests/ 
+- pytest
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
 after_script:
