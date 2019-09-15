@@ -17,7 +17,7 @@ api = Api(bp_orders)
 
 class OrdersResource(Resource):
 
-    def addDetails(self, arr, order, user_attr):
+    def addDetails(self, arr, order, attr):
         """function to add order details to order details table
         also update order and user attribute table
 
@@ -33,7 +33,7 @@ class OrdersResource(Resource):
 
             total_price = int(trash['price'] * detail['qty'])
             order.total_qty += detail['qty']
-            user_attr.total_trash += detail['qty']
+            attr.total_trash += detail['qty']
 
             point = int(detail['qty']) * trash['point']
 
@@ -43,7 +43,7 @@ class OrdersResource(Resource):
 
             order.total_price += total_price
             order.total_point += point
-            user_attr.point += point
+            attr.point += point
             order.status = 'done'
             db.session.add(new_detail)
             db.session.commit()
@@ -131,8 +131,9 @@ class OrdersResource(Resource):
         if args['status'] == 'done':
             if not user['role']:
                 return {'Warning': 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
+            order_dict = marshal(order, ListOrders.response_fields)
             user_attr = UserAttributes.query.filter_by(
-                user_id=user['id']).first()
+                user_id=order_dict['user_id']).first()
             details = args['details']
             self.addDetails(details, order, user_attr)
             order.status = 'done'
