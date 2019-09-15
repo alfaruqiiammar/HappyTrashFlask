@@ -112,6 +112,8 @@ class RewardsResource(Resource):
     @jwt_required
     def put(self, id):
         """Change rewards's field data by data inputted by admin
+        or
+        change reward's field by user input ('stock' must be equal to 1 ) 
 
         Returns:
             A dict mapping keys to the corresponding value, for example:
@@ -173,7 +175,7 @@ class RewardsResource(Resource):
                 return {'Warning': 'Not Enough Point'}, 500, {'Content_Type': 'application/json'}
 
         db.session.commit()
-        return marshal(reward, Rewards.response_fields), 200, {'Content_Type': 'application/json'}
+        return {'REWARD': marshal(reward, Rewards.response_fields), 'user_point': user_attr.point}, 200, {'Content_Type': 'application/json'}
 
 
 api.add_resource(RewardsResource, '', '/<id>')
