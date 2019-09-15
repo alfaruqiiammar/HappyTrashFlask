@@ -25,6 +25,7 @@ before_script:
 script:
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
+- echo -e "class Config():\npass\n\nclass DevelopmentConfig(Config):\n   SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PASSWORD@$DB_URI:3306/$DB_NAME_PRODUCTION'" > config.py
 after_script:
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 - docker build -t ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:production-${TRAVIS_BUILD_ID}
