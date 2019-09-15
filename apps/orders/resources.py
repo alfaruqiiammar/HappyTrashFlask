@@ -183,9 +183,13 @@ class UserOrdersResource(Resource):
             details_dict = []
             for detail in details:
                 detail = marshal(detail, ListOrderDetails.response_fields)
+                trash = ListTrash.query.get(detail['trash_id'])
+                trash_detail = marshal(trash, ListTrash.response_fields)
+                new = detail.update({'trash_detail': trash_detail})
                 details_dict.append(detail)
 
-            order_with_detail = {"Order": order, "Details": details_dict}
+            order_with_detail = {"Order": order,
+                                 "Details": details_dict, "User": user}
             order_list.append(order_with_detail)
 
         return order_list, 200, {'Content_Type': 'application/json'}

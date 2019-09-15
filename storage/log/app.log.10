@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [2019-09-14 14:46:31,884]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "GET", "code": "200 OK", "uri": "/v1/rewards?", "request": null, "response": [{"id": 1, "name": "tes2", "point_to_claim": 1, "photo": "tes", "stock": 1, "status": false, "date_created": "Fri, 13 Sep 2019 15:07:53 -0000", "date_modified": "Fri, 13 Sep 2019 15:08:03 -0000"}, {"id": 2, "name": "tes2", "point_to_claim": 1, "photo": "tes", "stock": 1, "status": false, "date_created": "Fri, 13 Sep 2019 15:08:03 -0000", "date_modified": "Fri, 13 Sep 2019 15:08:03 -0000"}]}
 [2019-09-14 14:47:55,303]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "OPTIONS", "code": "200 OK", "uri": "/v1/rewards?", "request": null, "response": {"Status": "OK"}}
 [2019-09-14 14:47:55,586]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "GET", "code": "200 OK", "uri": "/v1/rewards?", "request": null, "response": [{"id": 1, "name": "tes2", "point_to_claim": 1, "photo": "tes", "stock": 1, "status": false, "date_created": "Fri, 13 Sep 2019 15:07:53 -0000", "date_modified": "Fri, 13 Sep 2019 15:08:03 -0000"}, {"id": 2, "name": "tes2", "point_to_claim": 1, "photo": "tes", "stock": 1, "status": false, "date_created": "Fri, 13 Sep 2019 15:08:03 -0000", "date_modified": "Fri, 13 Sep 2019 15:08:03 -0000"}]}
@@ -25,3 +26,6 @@
 [2019-09-14 15:13:16,433]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "GET", "code": "200 OK", "uri": "/v1/reward_history?", "request": null, "response": []}
 [2019-09-14 15:22:31,493]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "OPTIONS", "code": "200 OK", "uri": "/v1/rewards?", "request": null, "response": {"Status": "OK"}}
 [2019-09-14 15:22:31,496]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "OPTIONS", "code": "200 OK", "uri": "/v1/reward_history?", "request": null, "response": {"Status": "OK"}}
+=======
+[2019-09-15 23:02:57,008]{/home/alta13/Music/HappyTrashFlask/apps/__init__.py:92} WARNING - REQUEST_LOG	{"method": "OPTIONS", "code": "200 OK", "uri": "/v1/orders/user?", "request": null, "response": {"Status": "ok"}}
+>>>>>>> 3f856be0609d0d6d5650b52ffed8d649d18f9514
