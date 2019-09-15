@@ -6,6 +6,7 @@ from apps import app, db
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from apps import adminRequired, userRequired
 from apps.user_attributes.model import UserAttributes
+from apps.reward_histories.model import RewardHistories
 
 bp_rewards = Blueprint('rewards', __name__)
 api = Api(bp_rewards)
@@ -140,12 +141,11 @@ class RewardsResource(Resource):
         reward = Rewards.query.get(id)
         reward_contain = marshal(reward, Rewards.response_fields)
 
-        user_attr = UserAttributes.query.filter_by(
-            user_id=user['id']).first()
-
         if reward is None:
             return {'status': 'Reward Not Found'}, 404, {'Content_Type': 'application/json'}
         user = get_jwt_claims()
+        user_attr = UserAttributes.query.filter_by(
+            user_id=user['id']).first()
 
         if user['role']:
 
@@ -169,6 +169,10 @@ class RewardsResource(Resource):
                 if reward.stock >= args['stock']:
                     reward.stock -= args['stock']
                     user_attr.point -= reward.point_to_claim
+                    new_hist = RewardHistories({'reward_id': reward.id,
+                                                'reward_name': reward.name,
+                                                'user_id': user['id']})
+                    db.session.add(new_hist)
                     if reward.stock <= 0:
                         reward.status = False
             else:
