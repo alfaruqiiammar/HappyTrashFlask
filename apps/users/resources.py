@@ -79,7 +79,7 @@ class UsersResource(Resource):
 
         # Encrypt password using sha256
 
-        password_encrypted = sha256_crypt.encrypt(args['password'])
+        password_encrypted = sha256_crypt.hash(args['password'])
 
         # Input data to users table
 
@@ -180,7 +180,7 @@ class UsersResource(Resource):
         # checks if user input a new password
 
         if args['password'] is not None:
-            password_encrypted = sha256_crypt.encrypt(args['password'])
+            password_encrypted = sha256_crypt.hash(args['password'])
             user_edited.password = password_encrypted
 
         db.session.commit()
