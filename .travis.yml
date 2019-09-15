@@ -26,9 +26,9 @@ before_script:
 script:
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
-- echo -e "DB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}\nFLASK_ENV=testing"" > .env
+- echo -e "FLASK_ENV=testing\nDB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}\n"" > .env
 - pytest --cov=apps tests/ || travis_terminate 1;
-- echo -e "DB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}"\nFLASK_ENV=production" > .env
+- echo -e "FLASK_ENV=production\nDB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}"" > .env
 after_script:
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 - docker build -t ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:production-${TRAVIS_BUILD_ID}
