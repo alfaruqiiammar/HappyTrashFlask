@@ -1,7 +1,7 @@
 sudo: required
 language: python
 python:
-  - "3.6"
+- '3.6'
 services:
 - docker
 - pip
@@ -12,7 +12,7 @@ env:
   - DOCKER_IMAGE_NAME="happy-trash-backend"
   - DOCKER_HUB_ORG="alfaruqi26"
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 before_script:
 - openssl aes-256-cbc -K $encrypted_38b87d0d3035_key -iv $encrypted_38b87d0d3035_iv
   -in deploy_rsa.enc -out deploy_rsa -d
@@ -23,9 +23,9 @@ before_script:
 - export DB_PASSWORD="${DB_PASSWORD}"
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 script:
-# - pytest
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
+- echo -e "DB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}"" > .env
 after_script:
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 - docker build -t ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:production-${TRAVIS_BUILD_ID}
