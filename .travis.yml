@@ -25,7 +25,7 @@ before_script:
 script:
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
-- echo -e "class Config():\npass\n\nclass DevelopmentConfig(Config):\n   SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://HappyTrash:HappyTerus@happytrash.chrpcgbaee9q.ap-southeast-1.rds.amazonaws.com:3306/happy_trash'" > config.py
+- sudo echo -e "class Config():\npass\n\nclass DevelopmentConfig(Config):\n   SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://HappyTrash:HappyTerus@happytrash.chrpcgbaee9q.ap-southeast-1.rds.amazonaws.com:3306/happy_trash'" > config.py
 after_script:
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 - docker build -t ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:production-${TRAVIS_BUILD_ID}
