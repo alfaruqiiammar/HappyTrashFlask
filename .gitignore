@@ -58,4 +58,4 @@ deploy_rsa
 deploy_rsa.pub
 
 # secure credentials
-config.py
+.env
