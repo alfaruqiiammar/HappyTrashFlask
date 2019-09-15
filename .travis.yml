@@ -1,7 +1,7 @@
 sudo: required
 language: python
 python:
-  - "3.6"
+- '3.6'
 services:
 - docker
 - pip
@@ -11,8 +11,11 @@ env:
   global:
   - DOCKER_IMAGE_NAME="happy-trash-backend"
   - DOCKER_HUB_ORG="alfaruqi26"
+  matrix:
+  - secure: SZBj1eZJkljB50a14dAfINPuPNWK617IOOTSr8BsPl0ckFYdiMKtWvHVGPbmGDmkDFS2MAkRQF4CwKdvxSSY7/brME/bR/31yUtfKXuDdMJH1bm5HYf568ff/gRqdbJvpXRezcNWDXRekHFMh3AFycfpnvTdEjd0ZR4FMiecpqBa3IenNxikGb8V7zpVTq2mHpH9VTKHf59+6+KQE4nY6F84QlAoWwh+4M/1fiD7vGrU4BxjdTIeizTW50f9bbVZYX6JFc49yNafV2WyHbEKD7KBMsLyFgUTae9G7ngEh9x5HQyLJyfGBo+FxThD/dL4A6Sy8uqq3sFT7NMMp+PsnYCZerRcaKsJqavrWI82Hu9pLjM90pgN6zxBIxf4zC+xQI6FNlQxqy1ZpoWWvwjxZc/56gt0R7+O3vZ0FSUtD8pthjyv9XcSUbjmlX58R3oXVv+5EaiPpKMOL2rvy/WsLsA/cmLHWQLAboc3RMDw1LaCbid5ksBIidtabUsq4RZs8t9DJl7L0ceANRFDicaQcbDuxuyCXTIi6uFloZ81+CoNdUZqTQkJTj0m2fEvZCFr9c5fumw/MfbpA1TTCUIP73F+wn6evAQiAmtY/wFQGxOsVpbf6k2wOFtRiTaXkHvpYqkazwazRmDZeeWA7z7OAf5lX4ZVNSnc2UaqRrV5GlQ=
+  - secure: rZnmyfZxayAJT3oZ5DUljB70n4Hqh9fWkkcNKAzfT5ffz2gM8dA8bwe6JlP4INKCH7uB2RpcVcZBwDhuuneHuTw5o2lJTE7VoIwzQnBZ3WlJweNEWmyzzpLhNiigqjP0PF3qyQsAI03+gFgBeX/Nvet8aE4c+MUFYvAPw4ZHK8EIogEMCOWrYad5SIpBG+CAlGUSew53wkxVBCuDJ9+KyoAiTSIoxv3gqIGtvPZL+hXznhRdu0GKypKwaK1+cvzp9NEs7xO9yZC5mbxRl3E3ZBig5kYr2MVKDacwwb7Z7kuPvdHaOsT3z9J6qW2BouQASGu62Xa+nO9CBF03AEBnry55Hf/IirAMtB3xb0Rdk3Hm2n3cATnmEMu1GAadDHuM9GGrSaoYzpG3SzceKIwUjpFaG/rPpn1dudYBswDm8m7SJN8g4EPVPkmo5mmkHdQ44MPs8flQIkTDERM63YtZz2RJRvGURpR5PSuYPRWoG98ThZSuKlpgPJ8p75e5c02/Nem4GBTR86bdHk0k2686dskGYIk9OfC5aBfnvIG89Xfvhfa01Ae43aWIPJzusAub6OOj94WnfWwVRG/0BBRCKU2jOKMrN1F+aCICNKJrri09swnGKhrY393UqrPQZ0iyZVeNY3BEMHgQ9uvm1LhcyafN43qX6SwB0jRcFFn6I44=
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 before_script:
 - openssl aes-256-cbc -K $encrypted_38b87d0d3035_key -iv $encrypted_38b87d0d3035_iv
   -in deploy_rsa.enc -out deploy_rsa -d
@@ -23,7 +26,6 @@ before_script:
 - export DB_PASSWORD="${DB_PASSWORD}"
 - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 script:
-# - pytest
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
 after_script:
