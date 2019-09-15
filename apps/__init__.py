@@ -55,17 +55,17 @@ def userRequired(fn):
 #############
 
 
-# try:
-#     env = os.environ.get('FLASK_ENV', 'development')
-#     # env = 'testing'
-#     if env == 'testing':
-#         app.config.from_object(config.TestingConfig)
-#     else:
-#         app.config.from_object(config.DevelopmentConfig)
+try:
+    env = os.environ.get('FLASK_ENV', 'development')
+    # env = 'testing'
+    if env == 'testing':
+        app.config.from_object(config.TestingConfig)
+    else:
+        app.config.from_object(config.DevelopmentConfig)
 
-# except Exception as e:
-#     raise e
-app.config.from_object(config.DevelopmentConfig)
+except Exception as e:
+    raise e
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
