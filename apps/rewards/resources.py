@@ -73,7 +73,6 @@ class RewardsResource(Resource):
         return marshal(reward, Rewards.response_fields), 200, {'Content-Type': 'application/json'}
 
     @jwt_required
-    @adminRequired
     def get(self):
         """Get all data from rewards table
 
@@ -109,6 +108,7 @@ class RewardsResource(Resource):
 
         return rewards_list, 200, {'Content_Type': 'application/json'}
 
+    @jwt_required
     def put(self, id):
         """Change rewards's field data by data inputted by admin
 
@@ -139,21 +139,30 @@ class RewardsResource(Resource):
 
         if reward is None:
             return {'status': 'Reward Not Found'}, 404, {'Content_Type': 'application/json'}
+        user = get_jwt_claims()
 
-        if args['name'] is not None:
-            reward.name = args['name']
+        if user['role']:
 
-        if args['point_to_claim'] is not None:
-            reward.point_to_claim = args['point_to_claim']
+            if args['name'] is not None:
+                reward.name = args['name']
 
-        if args['photo'] is not None:
-            reward.photo = args['photo']
+            if args['point_to_claim'] is not None:
+                reward.point_to_claim = args['point_to_claim']
 
-        if args['stock'] is not None:
-            reward.stock = args['stock']
+            if args['photo'] is not None:
+                reward.photo = args['photo']
 
-        if args['status'] is not None:
-            reward.status = args['status']
+            if args['stock'] is not None:
+                reward.stock = args['stock']
+
+            if args['status'] is not None:
+                reward.status = args['status']
+
+        elif args['stock'] is not None:
+            if reward.stock >= args['stock']:
+                reward.stock -= args['stock']
+                if reward.stock <= 0:
+                    reward.status = False
 
         db.session.commit()
         return marshal(reward, Rewards.response_fields), 200, {'Content_Type': 'application/json'}

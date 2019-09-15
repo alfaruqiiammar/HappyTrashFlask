@@ -57,6 +57,8 @@ def resetDatabase():
     trash_instance_two = ListTrash(trash_two)
 
     reward = Rewards("reward dummy", 20, "photo", 20, True)
+    reward1 = Rewards("reward dummy", 20, "photo", 20, True)
+    reward2 = Rewards("reward dummy", 20, "photo", 20, True)
     order = ListOrders({
         'user_id': 1,
         'adress': "dummy",
@@ -71,6 +73,8 @@ def resetDatabase():
     db.session.add(trash_instance_one)
     db.session.add(trash_instance_two)
     db.session.add(reward)
+    db.session.add(reward1)
+    db.session.add(reward2)
     db.session.add(order)
     db.session.commit()
 
