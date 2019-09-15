@@ -13,6 +13,7 @@ env:
   - DOCKER_HUB_ORG="alfaruqi26"
 install:
 - pip install -r requirements.txt
+- pip install --upgrade pytest
 before_script:
 - openssl aes-256-cbc -K $encrypted_38b87d0d3035_key -iv $encrypted_38b87d0d3035_iv
   -in deploy_rsa.enc -out deploy_rsa -d
