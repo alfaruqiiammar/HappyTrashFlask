@@ -9,8 +9,8 @@ os:
 - linux
 env:
   global:
-  - DOCKER_IMAGE_NAME="happy-trash-backend"
-  - DOCKER_HUB_ORG="alfaruqi26"
+  - DOCKER_IMAGE_NAME="${DOCKER_IMAGE_NAME}"
+  - DOCKER_HUB_ORG="${DOCKER_HUB_ORG}"
 install:
 - pip install -r requirements.txt
 - pip install --upgrade pytest
