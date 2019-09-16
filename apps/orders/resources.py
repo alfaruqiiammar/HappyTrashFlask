@@ -46,7 +46,6 @@ class OrdersResource(Resource):
             order.total_qty += detail['qty']
             order.total_price += total_price
             order.total_point += point
-            order.status = 'done'
 
             # update corresponding user's attribute
 
@@ -125,12 +124,56 @@ class OrdersResource(Resource):
 
     @jwt_required
     def put(self, id):
-        """
-        takes 2 argument from user
-        status
-        details
-        penjelasan details :
-        berisi qty dan trash_id
+        """Update orders table with new status and/or add order details to database.
+        process and response depend on user role(admin or standard user)
+
+        Args (located in JSON):
+            status: string of order's status. it could be waiting or cancelled (can be inputted by only standard user), or rejected,confirmed,or done(can be inputted only by admin)
+            details: An array of order details dictionaries that later will be added to database if the status above is done
+
+        Returns:
+            If the status is 'done', will returns a dictionary with key 'details_added' and value an array of dictionaries of order details from corresponding order. For example :
+            {
+                "details_added":[
+                {
+                    "id": 1,
+                    "order_id": 2,
+                    "trash_id": 1,
+                    "qty": 2.9,
+                    "total_price": 2900,
+                    "point": 2,
+                    "created_at": "Sun, 15 Sep 2019 20:16:55-0000"
+                },
+                {
+                    "id": 2,
+                    "order_id": 2,
+                    "trash_id": 2,
+                    "qty": 4,
+                    "total_price": 2000,
+                    "point": 4,
+                    "created_at": "Sun, 15 Sep 2019 20:16:55 -0000"
+                }
+            ]
+            }
+
+
+            Otherwise, will returns a dictionary of updated data from corresponding order. For example :
+            {
+                "id": 1,
+                "user_id": 1,
+                "adress": "Jl. Bunga No. 30, Sukun, Malang",
+                "time": Tue, 20 Jan 2019 09:30:00-0000,
+                "photo": "imurl.com/folder/image.jpg",
+                "status": "waiting",
+                "total_qty": 5.1,
+                "total_price": 5100,
+                "total_point": 5,
+                "created_at": Tue, 20 Jan 2019 09:30:00-0000
+            }
+
+        Raise:
+            Forbidden(403): An error that occured when a user put with status that is not permitted. As an example when an admin try to put with status 'cancelled', or when a user try to put with status 'confirmed'. 
+            Not Found(404): An error that occured when a user try to update unavailable data.
         """
         user = get_jwt_claims()
         user_status = user['role']
@@ -170,16 +213,22 @@ class OrdersResource(Resource):
             db.session.commit()
             return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
+        # if the status is done and inputted by admin, both order and order_details table will be updated in addDeatails function
+
         if args['status'] == 'done':
             if not user['role']:
                 return {'Warning': 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
             order_dict = marshal(order, ListOrders.response_fields)
+
             user_attr = UserAttributes.query.filter_by(
                 user_id=order_dict['user_id']).first()
+
             details = args['details']
             self.addDetails(details, order, user_attr)
+
             order.status = 'done'
             db.session.commit()
+
             return {"details_added": details}, 200, {'Content_Type': 'application/json'}
 
     @adminRequired
