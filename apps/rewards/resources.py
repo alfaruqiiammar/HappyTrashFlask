@@ -5,6 +5,8 @@ from sqlalchemy import desc
 from apps import app, db
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from apps import adminRequired, userRequired
+from apps.user_attributes.model import UserAttributes
+from apps.reward_histories.model import RewardHistories
 
 bp_rewards = Blueprint('rewards', __name__)
 api = Api(bp_rewards)
@@ -111,6 +113,8 @@ class RewardsResource(Resource):
     @jwt_required
     def put(self, id):
         """Change rewards's field data by data inputted by admin
+        or
+        change reward's field by user input ('stock' must be equal to 1 ) 
 
         Returns:
             A dict mapping keys to the corresponding value, for example:
@@ -140,6 +144,8 @@ class RewardsResource(Resource):
         if reward is None:
             return {'status': 'Reward Not Found'}, 404, {'Content_Type': 'application/json'}
         user = get_jwt_claims()
+        user_attr = UserAttributes.query.filter_by(
+            user_id=user['id']).first()
 
         if user['role']:
 
@@ -159,13 +165,21 @@ class RewardsResource(Resource):
                 reward.status = args['status']
 
         elif args['stock'] is not None:
-            if reward.stock >= args['stock']:
-                reward.stock -= args['stock']
-                if reward.stock <= 0:
-                    reward.status = False
+            if user_attr.point > reward.point_to_claim:
+                if reward.stock >= args['stock']:
+                    reward.stock -= args['stock']
+                    user_attr.point -= reward.point_to_claim
+                    new_hist = RewardHistories({'reward_id': reward.id,
+                                                'reward_name': reward.name,
+                                                'user_id': user['id']})
+                    db.session.add(new_hist)
+                    if reward.stock <= 0:
+                        reward.status = False
+            else:
+                return {'Warning': 'Not Enough Point'}, 500, {'Content_Type': 'application/json'}
 
         db.session.commit()
-        return marshal(reward, Rewards.response_fields), 200, {'Content_Type': 'application/json'}
+        return {'REWARD': marshal(reward, Rewards.response_fields), 'user_point': user_attr.point}, 200, {'Content_Type': 'application/json'}
 
 
 api.add_resource(RewardsResource, '', '/<id>')
