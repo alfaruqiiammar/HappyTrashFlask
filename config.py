@@ -17,7 +17,6 @@ db_name_testing = os.environ.get('DB_NAME_TESTING')
 # db_name_testing = 'happy_trash_testing'
 
 
-
 class Config():
     pass
 

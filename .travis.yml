@@ -26,7 +26,7 @@ before_script:
 script:
 - sudo chmod +x deploy.sh
 - sudo chmod 600 deploy_rsa
-- echo -e "FLASK_ENV=testing\nDB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}\n"" > .env
+- echo -e "FLASK_ENV=testing\nDB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}"" > .env
 - pytest --cov=apps tests/ || travis_terminate 1;
 - echo -e "FLASK_ENV=production\nDB_USER="${DB_USER}"\nDB_PASSWORD="${DB_PASSWORD}"\nDB_URI="${DB_URI}"\nDB_NAME_PRODUCTION="${DB_NAME_PRODUCTION}"\nDB_NAME_TESTING="${DB_NAME_TESTING}"" > .env
 after_script:
