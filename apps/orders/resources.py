@@ -16,6 +16,7 @@ api = Api(bp_orders)
 
 
 class OrdersResource(Resource):
+    """Class for storing HTTP request method for users table"""
 
     def addDetails(self, arr, order, attr):
         """function to add order details to order details table
@@ -32,30 +33,71 @@ class OrdersResource(Resource):
             trash = marshal(trash, ListTrash.response_fields)
 
             total_price = int(trash['price'] * detail['qty'])
-            order.total_qty += detail['qty']
-            attr.total_trash += detail['qty']
-
             point = int(detail['qty']) * trash['point']
+
+            # make a new order detail instance
 
             new = detail.update(
                 {"order_id": int(order.id), "total_price": total_price, "point": point})
             new_detail = ListOrderDetails(detail)
 
+            # updating the order's total_qty, total_price, total_point, and status
+
+            order.total_qty += detail['qty']
             order.total_price += total_price
             order.total_point += point
-            attr.point += point
             order.status = 'done'
+
+            # update corresponding user's attribute
+
+            attr.total_trash += detail['qty']
+            attr.point += point
+
+            # add order detail to database, and commit all changes and update
+
             db.session.add(new_detail)
             db.session.commit()
 
     def __init__(self):
+        """Init function needed to indicate this is a class, but never used"""
         pass
 
     def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {"Status": "ok"}, 200
 
     @userRequired
     def post(self):
+        """Post new data to orders table
+
+        Retrieve data from user input located in JSON and from user's jwt claims
+
+        Args:
+            adress: A string of order's pick up location(located in JSON)
+            time: A datetime of order's pick up time(located in JSON)
+            photo: A string of user's trash' photo's url(located in JSON)
+            user_id: An integer of user's id(retrieve from jwt claims)
+            status: set to be 'waiting'
+
+        Returns:
+            A dict mapping keys to the corresponding value, for example:
+
+            {
+                "id": 1,
+                "user_id": 1,
+                "adress": "Jl. Bunga No. 30, Sukun, Malang",
+                "time": Tue, 20 Jan 2019 09:30:00-0000,
+                "photo": "imurl.com/folder/image.jpg",
+                "status": "waiting",
+                "total_qty": 5.1,
+                "total_price": 5100,
+                "total_point": 5,
+                "created_at": Tue, 20 Jan 2019 09:30:00-0000
+            }
+
+        Raises: 
+            Forbidden (403): An error that occured when admin try to post a new order         
+        """
         claims = get_jwt_claims()
         parser = reqparse.RequestParser()
 
