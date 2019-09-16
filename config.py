@@ -20,6 +20,7 @@ db_name_testing = os.environ.get('DB_NAME_TESTING')
 class Config():
     pass
 
+
 class DevelopmentConfig(Config):
     """Class for storing information about development database
 
