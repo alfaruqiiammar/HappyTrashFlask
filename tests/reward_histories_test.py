@@ -7,7 +7,8 @@ class TestRewardHistories():
 
     resetDatabase()
     temp_history_id = None
-
+    #### post ####
+    
     def testHistoryPost(self, client):
         """Test posting a new record to reward history table"""
 
@@ -21,7 +22,9 @@ class TestRewardHistories():
         res_json = json.loads(res.data)
         TestRewardHistories.temp_history_id = res_json['id']
         assert res.status_code == 200
-
+    
+    #### get ####
+    
     def testHistoryGetByAdmin(self, client):
         """test get all data from reward history by admin"""
         token = createTokenAdmin()
@@ -35,7 +38,9 @@ class TestRewardHistories():
         res = client.get('/v1/reward_history/user', headers={
                          'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 200
-
+    
+    #### options ####
+    
     def testOptionsRewardHistories(self, client):
         """test options function at /reward_history endpoint"""
         res = client.options('/v1/reward_history')
