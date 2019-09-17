@@ -24,8 +24,8 @@ class UserAttributesResource(Resource):
     def put(self):
         """Change user's on boarding status from True to False,vice versa
 
-        Args:
-            claims: retrieved from jwt claims
+        Args (retrieved from jwt claims):
+            claims: a dict consist of user's information
 
         Returns:
             A dictionary mapping keys to corresponding value. For example:
