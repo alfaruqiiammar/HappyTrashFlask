@@ -6,13 +6,13 @@ class TestRewardManagement():
     """Class for testing all functions that are directly related to rewards table"""
     resetDatabase()
 
-# options
+#### options ####
     def testRewardOption(self, client):
         """test options function for /rewards endpoint"""
         res = client.options('/v1/rewards/3')
         assert res.status_code == 200
 
-# post
+#### post ####
 
     def testInputReward(self, client):
         """test put a record in rewards table with valid token and data"""
@@ -33,7 +33,7 @@ class TestRewardManagement():
 
         assert res.status_code == 200
 
-# get
+#### get ####
     def testGetAllRewards(self, client):
         """test get all rewards data from rewards table using valid token"""
         token = createTokenAdmin()
@@ -43,7 +43,7 @@ class TestRewardManagement():
         res_json = json.loads(res.data)
         assert res.status_code == 200
 
-# put
+#### put ####
 
     def testEditReward(self, client):
         """test put a record in rewards table using admin token"""
