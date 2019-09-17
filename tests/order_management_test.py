@@ -8,7 +8,7 @@ class TestOrderManagement():
     resetDatabase()
     temp_order_id = None
 
-    ########### Post ###########
+    #### post ####
     def testOrderPost(self, client):
         """test posting a new order to table with valid data an header"""
         token = createTokenUser()
@@ -54,7 +54,7 @@ class TestOrderManagement():
         res_json = json.loads(res.data)
         assert res.status_code == 403
 
-    ########### Put ###########
+    #### put #####
 
     def testOrderPutCancelled(self, client):
         """Test put order record with status 'cancelled' using valid token."""
@@ -194,7 +194,7 @@ class TestOrderManagement():
             order_status), headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 403
 
-    ########### Get ###########
+    #### get ####
 
     def testOrderGet(self, client):
         """test get all order data from orders table"""
@@ -224,7 +224,7 @@ class TestOrderManagement():
 
         assert res.status_code == 403
 
-    ######### options ########
+    #### options ####
 
     def testOrderOptions(self, client):
         """test options function for /orders endpoint"""
