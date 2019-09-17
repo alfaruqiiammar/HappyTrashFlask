@@ -16,7 +16,7 @@ class TrashCategoriesResource(Resource):
     def __init__(self):
         pass
 
-    def options(self):
+    def options(self, id=None):
         return {"status": "Ok"}, 200
 
     @adminRequired
