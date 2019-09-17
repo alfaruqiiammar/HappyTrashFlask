@@ -101,7 +101,7 @@ class RewardsResource(Resource):
             ]
         """
 
-        rewards = Rewards.query
+        rewards = Rewards.query.order_by(Rewards.id.desc())
 
         rewards_list = []
         for reward in rewards:
