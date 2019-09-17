@@ -7,14 +7,14 @@ class TestUserProfile():
 
     resetDatabase()
 
-    # options
+    #### options ####
 
     def testOptionsAdmin(self, client):
         """test options function at /user/admin endpoint"""
         res = client.options('/v1/users/admin')
         assert res.status_code == 200
 
-    # admin get single user
+    #### get ####
 
     def testGetOneByAdmin(self, client):
         """test get a specific user data using admin token"""
@@ -32,8 +32,6 @@ class TestUserProfile():
         res = client.get('/v1/users/admin/100',
                          headers={'Authorization': 'Bearer ' + token})
         assert res.status_code == 404
-
-    # User get a single user
 
     def testGetOneByUser(self, client):
         """test get user's data using token"""
@@ -61,8 +59,6 @@ class TestUserProfile():
             '/v1/users/100', headers={'Authorization': 'Bearer ' + token})
         assert res.status_code == 404
 
-    # admin get all user data
-
     def testGetAll(self, client):
         """get all users data from users table"""
 
@@ -80,7 +76,7 @@ class TestUserProfile():
             '/v1/users/all', headers={'Authorization': 'Bearer ' + token})
         assert res.status_code == 403
 
-    # options
+    #### options ####
 
     def testAdminOptions(self, client):
         """test options function for /users/admin endpoint"""
@@ -97,7 +93,7 @@ class TestUserProfile():
         res = client.options('/v1/user_attributes')
         assert res.status_code == 200
 
-    # Put user profile
+    #### Put ####
 
     def testUserPut(self, client):
         """test put a record in users table with valid data"""
@@ -194,8 +190,6 @@ class TestUserProfile():
                          content_type='application/json')
         res_json = json.loads(res.data)
         assert res.status_code == 400
-
-    # Put user onboarding status
 
     def testPutAttribute(self, client):
         """test put user attributes in user_attributes table"""
