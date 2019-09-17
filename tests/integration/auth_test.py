@@ -7,7 +7,7 @@ class TestAuth():
 
     resetDatabase()
 
-# options
+#### options ####
     def testAuthOption(self, client):
         """test options function for /auth endpoint"""
         res = client.options('/v1/auth')
@@ -18,7 +18,7 @@ class TestAuth():
         res = client.options('/v1/auth/refresh')
         assert res.status_code == 200
 
-# post
+#### post ####
 
     def testLogin(self, client):
         """test user login"""
@@ -85,7 +85,7 @@ class TestAuth():
         res_json = json.loads(res.data)
         assert res.status_code == 200
 
-# refresh
+#### refresh ####
     def testRefreshToken(self, client):
         """ test refreshing user's token"""
         token = createTokenUser()
