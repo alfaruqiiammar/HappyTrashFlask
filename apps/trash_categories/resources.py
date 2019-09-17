@@ -26,7 +26,7 @@ class TrashCategoriesResource(Resource):
     def post(self):
         """ Post a new trash category to trash_categories table
 
-        Args: 
+        Args (located in JSON): 
             category_name: A string of trash category name that admin has inputted 
 
         Returns:
@@ -42,8 +42,6 @@ class TrashCategoriesResource(Resource):
         parser = reqparse.RequestParser()
 
         parser.add_argument('category_name', location='json', required=True)
-        parser.add_argument('created_at', location='json')
-        parser.add_argument('updated_at', location='json')
 
         args = parser.parse_args()
 
@@ -92,8 +90,8 @@ class TrashCategoriesResource(Resource):
         """ Edits category_name from a single record in trash_category table specified by id 
 
         Args:
-            id: An integer of trash category's id
-            category_name: A string of trash category's name(located in JSON)
+            id: An integer of trash category's id (located in function's parameter)
+            category_name: A string of trash category's name (located in JSON)
 
         Returns:
             A dictionary that contains the updated data from the record edited. For example:
@@ -131,11 +129,12 @@ class TrashCategoriesResource(Resource):
     def delete(self, id):
         """Delete a single record from trash categories table
 
-        Args: 
+        Args (located in function's parameter): 
             id: An integer of trash category's id which want to be deleted
 
         Returns:
-            A dictionary of key 'status' which have value of sucess message
+            A dictionary of key 'status' which have value of sucess message. For example:
+            {"Status": "The data with id 3 is deleted"}
 
         Raise:
             Not Found(404): An error occured when the id inputted is not found in the table
