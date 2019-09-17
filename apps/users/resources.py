@@ -257,7 +257,7 @@ class UsersForAdminResource(Resource):
                 }
 
         Raise:
-            Not Found(404): An error occured when admin try to get a user's data that is unavailable in users table.
+            Not Found(404): An error occured when user with id inputted is not found in the table.
         """
         # find user's data in table
 
