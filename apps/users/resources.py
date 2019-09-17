@@ -107,7 +107,7 @@ class UsersResource(Resource):
     def get(self, id):
         """Get a user's detail by id. A user can not access another user's data
 
-        Args:
+        Args (retrieved from function's parameter):
             id: user's id whose detail want to be shown
 
         Returns:
@@ -243,7 +243,7 @@ class UsersForAdminResource(Resource):
     def get(self, id):
         """get user's data  by id
 
-        Args:
+        Args (retrieved from function's parameter):
             id: An integer of user's id whose data is going to be shown.
 
         Returns: 
