@@ -10,16 +10,33 @@ api = Api(bp_user_attributes)
 
 
 class UserAttributesResource(Resource):
-    """class for updating onboarding status in user_attributes table"""
+    """class for storing HTTP request used to update onboarding status in user_attributes table"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class"""
         pass
 
     def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'Ok'}, 200
 
     @userRequired
     def put(self):
+        """Change user's on boarding status from True to False,vice versa
+
+        Args:
+            claims: retrieved from jwt claims
+
+        Returns:
+            A dictionary mapping keys to corresponding value. For example:
+                {
+                    "id":5,
+                    "user_id":5,
+                    "point": 10,
+                    "total_trash": 100,
+                    "onboarding_status": True
+                }
+        """
         claims = get_jwt_claims()
         user_attr = UserAttributes.query.filter_by(
             user_id=claims['id']).first()

@@ -1,6 +1,7 @@
 from apps import db
 from flask_restful import fields
 
+
 class UserAttributes(db.Model):
     """Class for storing information about user_attributes table
 
@@ -15,12 +16,14 @@ class UserAttributes(db.Model):
         response_field: a dictionary that will be used to be a guide when extracting data from database's field
     """
     __tablename__ = "user_attributes"
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id'), primary_key=True)
     point = db.Column(db.Integer, nullable=False)
     total_trash = db.Column(db.Integer, nullable=False)
     onboarding_status = db.Column(db.Boolean, nullable=False)
-    date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    date_created = db.Column(db.DateTime,  default=db.func.current_timestamp())
+    date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(
+    ), onupdate=db.func.current_timestamp())
 
     response_fields = {
         'user_id': fields.Integer,
@@ -30,7 +33,7 @@ class UserAttributes(db.Model):
     }
 
     def __init__(self, user_id, point, total_trash, onboarding_status):
-        """Inits Users with data that user inputted
+        """Inits user attributes with data that user inputted
 
         The data already validated on the resources function
 
