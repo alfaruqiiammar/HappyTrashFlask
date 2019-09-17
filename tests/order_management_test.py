@@ -205,7 +205,7 @@ class TestOrderManagement():
             '/v1/orders', headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 200
 
-        def testUserOrderGet(self, client):
+    def testUserOrderGet(self, client):
         """test get all order data for corresponding user from orders table"""
 
         token = createTokenUser()

@@ -46,7 +46,7 @@ class TestRewardManagement():
 # put
 
     def testEditReward(self, client):
-        """test put a record in rewards table using admin token""""
+        """test put a record in rewards table using admin token"""
         token = createTokenAdmin()
         data = {
             "name": "tes2",
@@ -65,7 +65,7 @@ class TestRewardManagement():
         assert res.status_code == 200
 
     def testEditRewardUser(self, client):
-        """test put a record in rewards table using user token""""
+        """test put a record in rewards table using user token"""
         token = createTokenUser()
         data = {
             "stock": 1
