@@ -22,7 +22,7 @@ class OrdersResource(Resource):
         """function to add order details to order details table
         also update order and user attribute table
 
-        Args:
+        Args (located in function's parameters):
           arr: An array of order detail dictionary
           order: the order which want to be updated with details
           user_attr: user attributes which later will be updated
@@ -72,11 +72,11 @@ class OrdersResource(Resource):
         Retrieve data from user input located in JSON and from user's jwt claims
 
         Args:
-            adress: A string of order's pick up location(located in JSON)
-            time: A datetime of order's pick up time(located in JSON)
-            photo: A string of user's trash' photo's url(located in JSON)
-            user_id: An integer of user's id(retrieve from jwt claims)
-            status: set to be 'waiting'
+            adress: A string of order's pick up location (located in JSON)
+            time: A datetime of order's pick up time (located in JSON)
+            photo: A string of user's trash' photo's url (located in JSON)
+            user_id: An integer of user's id (retrieve from jwt claims)
+            status: set to be 'waiting' (manually inserted)
 
         Returns:
             A dict mapping keys to the corresponding value, for example:
@@ -125,11 +125,11 @@ class OrdersResource(Resource):
     @jwt_required
     def put(self, id):
         """Update orders table with new status and/or add order details to database.
-        process and response depend on user role(admin or standard user)
+        process and response depend on user role (admin or non-admin)
 
         Args (located in JSON):
             status: string of order's status. it could be waiting or cancelled (can be inputted by only standard user), or rejected,confirmed,or done(can be inputted only by admin)
-            details: An array of order details dictionaries that later will be added to database if the status above is done
+            details: An array of order details dictionaries that later will be added to database if the status above is 'done'
 
         Returns:
             If the status is 'done', will returns a dictionary with key 'details_added' and value an array of dictionaries of order details from corresponding order. For example :
