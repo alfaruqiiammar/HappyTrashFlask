@@ -3,6 +3,9 @@ from . import app, client, cache, createTokenAdmin, createTokenUser, resetDataba
 
 
 class TestTrashManagement():
+
+    """Class for testing all function that directly related to trash and trash category"""
+
     resetDatabase()
     temp_category_id = None
     temp_trash_id = None
