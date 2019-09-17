@@ -26,7 +26,7 @@ class TrashResource(Resource):
     def post(self):
         """ Post a new trash to trashes table
 
-        Args(located in JSON): 
+        Args (located in JSON): 
             trash_category_id: An integer of trash category's id
             trash_name: A string of trash name
             price: An integer of trash price per kilogram
@@ -121,7 +121,7 @@ class TrashResource(Resource):
     def put(self, id):
         """ Edits category_name from a single record in trash_category table specified by id 
 
-        Args(located in JSON): 
+        Args (located in JSON): 
             trash_category_id: An integer of trash category's id
             trash_name: A string of trash name
             price: An integer of trash price per kilogram
@@ -180,7 +180,7 @@ class TrashResource(Resource):
     def delete(self, id):
         """Delete a single record from trashes table
 
-        Args: 
+        Args (located in function's parameter) : 
             id: An integer of trash' id which want to be deleted
 
         Returns:
