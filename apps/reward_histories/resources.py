@@ -113,8 +113,8 @@ class UserRewardHistoriesResource(Resource):
 
         Args:
           reward_id : An integer of reward's id (located in JSON)
-          reward_name : a string rewards name from id above, located in rewards table
-          user_id : An integer of user's id(retrieved from user's jwt claims)
+          reward_name : a string rewards name from id above (retrieved from rewards table)
+          user_id : An integer of user's id (retrieved from user's jwt claims)
         """
 
         user = get_jwt_claims()
