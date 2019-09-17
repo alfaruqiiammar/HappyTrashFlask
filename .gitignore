@@ -4,6 +4,8 @@ HappyTrashFlask/storage/log/*.log.*
 HappyTrashFlask/storage/log/*.log
 ~/storage/log/*.log.*
 ~/storage/log/*.log
+app.log
+app.log.*
 .vscode
 
 # Byte-compiled / optimized / DLL files
