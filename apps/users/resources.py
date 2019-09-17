@@ -12,7 +12,7 @@ api = Api(bp_users)
 
 
 class UsersResource(Resource):
-    """Class for storing HTTP request method for users table"""
+    """Class for storing HTTP request method for users table that can be accessed by user"""
 
     def __init__(self):
         """Init function needed to indicate this is a class, but never used"""
@@ -107,9 +107,26 @@ class UsersResource(Resource):
     def get(self, id):
         """Get a user's detail by id. A user can not access another user's data
 
+        Args:
+            id: user's id whose detail want to be shown
+
+        Returns:
+            A dict mapping keys to the corresponding value, for example:
+
+            {
+                "id":1,
+                "name": "user",
+                "email": "user@mail.com",
+                "mobile_number": "08111111111",
+                "role": false,
+                "point": 10
+                "total_trash": 10
+                "onboarding_status": true
+            }
+
         Raise :
-            403 : Occured when user try to access another user's data
-            404 : Occured when the data is not found in the table
+            Forbidden(403) : Occured when user try to access another user's data
+            Not Found(404) : Occured when the data is not found in the table
         """
 
         user = get_jwt_claims()
@@ -131,7 +148,30 @@ class UsersResource(Resource):
 
     @userRequired
     def put(self):
-        """edit user credentials"""
+        """Edit data in users table
+
+        Retrieve data from user input located in JSON, validate the data, then edit the data in users tables.
+
+        Args (located in JSON):
+            name: A string of user's name
+            email: A string of user's email
+            mobile_number: A string of user's mobile_number
+            password: A string of user's password
+
+        Returns:
+            A dict mapping keys to the corresponding value, for example:
+
+            {
+                "id": 1,
+                "name": "user",
+                "email": "user@mail.com",
+                "mobile_number": "08111111111",
+                "role": false 
+            }
+
+        Raises: 
+            Bad Request (400): An error that occured when some of the field is missing, or if the data is not valid (email and mobile phone inputted is wrong formatted)        
+        """
 
         parser = reqparse.RequestParser()
         parser.add_argument('name', location='json')
@@ -189,24 +229,35 @@ class UsersResource(Resource):
 
 
 class UsersForAdminResource(Resource):
+    """Class for storing HTTP request method for users table that can be accessed by admin"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class, but never used"""
         pass
 
     def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'OK'}, 200
 
     @adminRequired
     def get(self, id):
         """get user's data  by id
 
-        Returns : A dict contains all profile data from a specific user. Example :
-        {
-            "id" : 1,
-            "name" : "user",
-            "email" : "exp@exp.com"
-            "mobile_number" : "0898787878"
-        }
+        Args:
+            id: An integer of user's id whose data is going to be shown.
+
+        Returns: 
+            A dict contains all profile data from a specific user. For example :
+                {
+                    "id" : 1,
+                    "name" : "user",
+                    "email" : "exp@exp.com",
+                    "mobile_number" : "0898787878",
+                    "role": false
+                }
+
+        Raise:
+            Not Found(404): An error occured when admin try to get a user's data that is unavailable in users table.
         """
         # find user's data in table
 
@@ -222,16 +273,19 @@ class UsersForAdminResource(Resource):
 
 
 class AllUserResource(Resource):
+    """Class for storing HTTP request method for users tabel, accessed by admin"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class, but never used"""
         pass
 
     def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'OK'}, 200
 
     @adminRequired
     def get(self):
-        """get all user's data
+        """Get all user's data from users table
 
             Returns : An array of dictionary contains all data from users. Example :
             [
@@ -239,15 +293,20 @@ class AllUserResource(Resource):
                     "id" : 1,
                     "name" : "user",
                     "email" : "exp@exp.com"
-                    "mobile_number" : "0898787878"
+                    "mobile_number" : "0898787878",
+                    "role": false
                 },
                 {
                     "id" : 2,
                     "name" : "user2",
                     "email" : "exp2@exp.com"
-                    "mobile_number" : "08298787878"
+                    "mobile_number" : "08298989898",
+                    "role": false
                 }
             ]
+
+            Raise:
+              Forbidden(403): An error occured when standard user try to access this method.  
         """
         users = Users.query
         result = []

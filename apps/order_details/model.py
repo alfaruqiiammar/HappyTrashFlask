@@ -48,9 +48,8 @@ class ListOrderDetails(db.Model):
                     total_price: an integer of total price of the trash
                     point: an integer of point that user get from corresponding transaction detail
         """
-      self.order_id = data['order_id']
-      self.trash_id = data['trash_id']
-      self.qty = data['qty']
-      self.total_price = data['total_price']
-      self.point = data['point']
-            
+        self.order_id = data['order_id']
+        self.trash_id = data['trash_id']
+        self.qty = data['qty']
+        self.total_price = data['total_price']
+        self.point = data['point']

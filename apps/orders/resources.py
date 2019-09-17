@@ -16,7 +16,7 @@ api = Api(bp_orders)
 
 
 class OrdersResource(Resource):
-    """Class for storing HTTP request method for users table"""
+    """Class for storing HTTP request method for ordes table"""
 
     def addDetails(self, arr, order, attr):
         """function to add order details to order details table
@@ -164,7 +164,7 @@ class OrdersResource(Resource):
                 "adress": "Jl. Bunga No. 30, Sukun, Malang",
                 "time": Tue, 20 Jan 2019 09:30:00-0000,
                 "photo": "imurl.com/folder/image.jpg",
-                "status": "waiting",
+                "status": "cancelled",
                 "total_qty": 5.1,
                 "total_price": 5100,
                 "total_point": 5,
@@ -192,6 +192,9 @@ class OrdersResource(Resource):
         if order is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
+        # If the status inputted is not 'done', the user role will be checked.
+        # Return a warning if the role is not suitable with the status, or commit change if the role is suitable
+
         if args['status'] == 'cancelled':
             if user['role']:
                 return {'Warning': 'Only User can cancel'}, 403, {'Content_Type': 'application/json'}
@@ -213,7 +216,7 @@ class OrdersResource(Resource):
             db.session.commit()
             return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
-        # if the status is done and inputted by admin, both order and order_details table will be updated in addDeatails function
+        # if the status is 'done' and inputted by admin, both order and order_details table will be updated in addDeatails function
 
         if args['status'] == 'done':
             if not user['role']:
@@ -233,8 +236,41 @@ class OrdersResource(Resource):
 
     @adminRequired
     def get(self):
+        """Get all the order data from orders table
 
-        orders = ListOrders.query
+        Returns:
+            An array of dictionaries consist of orders data. For example:
+            [
+                {
+                    "id": 1,
+                    "user_id": 1,
+                    "adress": "Jl. Bunga No. 30, Sukun, Malang",
+                    "time": Tue, 20 Jan 2019 09:30:00-0000,
+                    "photo": "imurl.com/folder/image.jpg",
+                    "status": "waiting",
+                    "total_qty": 5.1,
+                    "total_price": 5100,
+                    "total_point": 5,
+                    "created_at": Tue, 20 Jan 2019 09:30:00-0000
+                },
+                {
+                    "id": 2,
+                    "user_id": 2,
+                    "adress": "Jl. Bunga No. 30, Sukun, Malang",
+                    "time": Tue, 20 Jan 2019 09:30:00-0000,
+                    "photo": "imurl.com/folder/image2.jpg",
+                    "status": "waiting",
+                    "total_qty": 5.1,
+                    "total_price": 5100,
+                    "total_point": 5,
+                    "created_at": Tue, 20 Jan 2019 09:31:00-0000
+                }    
+            ]
+
+        Raise:
+            Forbidden(403): An error occured when this function accessed by user
+        """
+        orders = ListOrders.query.order_by(ListOrders.id.desc())
         order_list = []
         for order in orders:
             order = marshal(order, ListOrders.response_fields)
@@ -257,17 +293,55 @@ class OrdersResource(Resource):
 
 
 class UserOrdersResource(Resource):
+    """Class for storing HTTP request method that accessed by user for ordes table"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class, but never used"""
         pass
 
     def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {"Status": "ok"}, 200
 
     @userRequired
     def get(self):
+        """Get all order made by a specific user whose id was taken from jwt claims
+
+        Returns: An array of dictionaries consist of orders data from corresponding user. For example:
+            [
+                {
+                    "id": 2,
+                    "user_id": 1,
+                    "adress": "Jl. Bunga No. 30, Sukun, Malang",
+                    "time": Tue, 20 Jan 2019 09:30:00-0000,
+                    "photo": "imurl.com/folder/image.jpg",
+                    "status": "waiting",
+                    "total_qty": 5.1,
+                    "total_price": 5100,
+                    "total_point": 5,
+                    "created_at": Tue, 20 Jan 2019 09:30:00-0000
+                },
+                {
+                    "id": 2,
+                    "user_id": 2,
+                    "adress": "Jl. Bunga No. 30, Sukun, Malang",
+                    "time": Tue, 20 Jan 2019 09:30:00-0000,
+                    "photo": "imurl.com/folder/image2.jpg",
+                    "status": "waiting",
+                    "total_qty": 5.1,
+                    "total_price": 5100,
+                    "total_point": 5,
+                    "created_at": Tue, 20 Jan 2019 09:31:00-0000
+                }    
+            ]
+
+        Raise:
+            Forbidden(403): An error occured when this function accessed by user
+        """
+
         user = get_jwt_claims()
-        orders = ListOrders.query.filter_by(user_id=user['id'])
+        orders = ListOrders.query.filter_by(
+            user_id=user['id']).order_by(ListOrders.id.desc())
         order_list = []
         for order in orders:
             order = marshal(order, ListOrders.response_fields)

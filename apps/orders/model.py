@@ -59,9 +59,8 @@ class ListOrders(db.Model):
             photo : a url of user's trash picture,
             status : a string that indicates the status of the order. it can be waiting, cancelled, or done,
         """
-      self.user_id = data['user_id']
-      self.adress = data['adress']
-      self.time = data['time']
-      self.photo = data['photo']
-      self.status = data['status']
-            
+        self.user_id = data['user_id']
+        self.adress = data['adress']
+        self.time = data['time']
+        self.photo = data['photo']
+        self.status = data['status']
