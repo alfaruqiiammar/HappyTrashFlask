@@ -7,13 +7,13 @@ class TestUsersRegister():
 
     resetDatabase()
 
-# options
+#### options ####
     def testUsersOption(self, client):
         """Test options function in user resource file"""
         res = client.options('/v1/users')
         assert res.status_code == 200
 
-# post
+#### post ####
 
     def testUserRegister(self, client):
         """Post a new user data to table"""
