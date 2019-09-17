@@ -184,7 +184,8 @@ class TrashResource(Resource):
             id: An integer of trash' id which want to be deleted
 
         Returns:
-            A dictionary of key 'status' which have value of sucess message
+            A dictionary of key 'status' which have value of sucess message. For example:
+            {"Status": "The data with id 3 is deleted"}
 
         Raise:
             Not Found(404): An error occured when the id inputted is not found in the table
