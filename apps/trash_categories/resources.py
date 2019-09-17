@@ -12,11 +12,14 @@ api = Api(bp_trash_categories)
 
 
 class TrashCategoriesResource(Resource):
+    """Class for storing HTTP request method for trash categories table"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class"""
         pass
 
     def options(self):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {"status": "Ok"}, 200
 
     @adminRequired
@@ -24,10 +27,17 @@ class TrashCategoriesResource(Resource):
         """ Post a new trash category to trash_categories table
 
         Args: 
-            new_trash_category: A new trash category that user has input 
+            category_name: A string of trash category name that admin has inputted 
 
         Returns:
-            A dictionary contains the data that has been input to the table, and success status code
+            A dictionary contains the data that has been input to the table.
+            For example:
+            {
+                "id": 1,
+                "category_name": "plastik"
+                "created_at": Sat, 26 Apr 2019 09:00:00 -0000
+                "updated_at": Sat, 26 Apr 2019 09:00:00 -0000
+            }
         """
         parser = reqparse.RequestParser()
 
@@ -49,14 +59,26 @@ class TrashCategoriesResource(Resource):
     def get(self):
         """ Gets all trash category from trash_categories table
 
-        Args: 
-            categories: Contains the data of all categories from table
-            trash_categories : An empty list that later will be filled by data of each category in form of dictionary  
-
         Returns:
-            This function returns trash_categories above, and success status code
+            An array of dictionaries consist of trash categories data.
+            For example:
+            [
+                {
+                    "id": 1,
+                    "category_name": "plastik"
+                    "created_at": Sat, 26 Apr 2019 09:00:00 -0000
+                    "updated_at": Sat, 26 Apr 2019 09:00:00 -0000
+                },
+                {
+                    "id": 2,
+                    "category_name": "Kaca"
+                    "created_at": Sat, 26 Apr 2019 09:01:00 -0000
+                    "updated_at": Sat, 26 Apr 2019 09:02:00 -0000
+                }    
+            ]
         """
-        categories = ListTrashCategory.query
+        categories = ListTrashCategory.query.order_by(
+            ListTrashCategory.id.desc())
 
         trash_categories = []
         for category in categories:
@@ -67,11 +89,24 @@ class TrashCategoriesResource(Resource):
 
     @adminRequired
     def put(self, id):
-        """ Edits category_name from a single row in trash_category table specified by id 
+        """ Edits category_name from a single record in trash_category table specified by id 
+
+        Args:
+            id: An integer of trash category's id
+            category_name: A string of trash category's name(located in JSON)
 
         Returns:
-            A dictionary that contains the updated data from the row edited.
-            If the id is not on the table, returns not found status
+            A dictionary that contains the updated data from the record edited. For example:
+            {
+                "id": 2,
+                "category_name": "Kaca"
+                "created_at": Sat, 26 Apr 2019 09:01:00 -0000
+                "updated_at": Sat, 26 Apr 2019 22:00:00 -0000
+            }
+
+        Raise:
+            Not Found(404): An error occured when the id inputted is not found in the table
+            Bad Request(400): An error occured when the category_name inputted is null
         """
         parser = reqparse.RequestParser()
 
@@ -94,6 +129,17 @@ class TrashCategoriesResource(Resource):
 
     @adminRequired
     def delete(self, id):
+        """Delete a single record from trash categories table
+
+        Args: 
+            id: An integer of trash category's id which want to be deleted
+
+        Returns:
+            A dictionary of key 'status' which have value of sucess message
+
+        Raise:
+            Not Found(404): An error occured when the id inputted is not found in the table
+        """
         category = ListTrashCategory.query.get(id)
 
         if category is None:
