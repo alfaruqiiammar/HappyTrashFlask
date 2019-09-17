@@ -9,9 +9,10 @@ class TestTrashManagement():
     resetDatabase()
     temp_category_id = None
     temp_trash_id = None
-##############################TRASH CATEGORIES#################
+    
+    ############### TRASH CATEGORIES ###############
 
-    ##### Post #####
+    #### post ####
 
     def testTrashCategoriesPost(self, client):
         """test posting a new trash category to table with valid data an header"""
@@ -27,7 +28,7 @@ class TestTrashManagement():
         TestTrashManagement.temp_category_id = res_json['id']
         assert res.status_code == 200
 
-    ##### Get #####
+    #### get ####
     def testTrashCategoriesGetByAdmin(self, client):
         """Test getting all data from trash category table using token from an admin account"""
 
@@ -44,7 +45,7 @@ class TestTrashManagement():
                          'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 200
 
-    #### Put ####
+    #### put ####
 
     def testTrashCategoriesPut(self, client):
         """test put a record in tras category table with valid token and data"""
@@ -96,9 +97,9 @@ class TestTrashManagement():
                          'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 404
 
-    ###################################TRASH#####################
+    ############### TRASH ###############
 
-    #### Post ####
+    #### post ####
 
     def testTrashPost(self, client):
         """test posting a new trash to table with valid data and authorization header"""
@@ -118,7 +119,7 @@ class TestTrashManagement():
         TestTrashManagement.temp_trash_id = res_json['id']
         assert res.status_code == 200
 
-    #### Get ####
+    #### get ####
 
     def testTrashGet(self, client):
         """Test getting all data from trashes table using valid token"""
@@ -128,7 +129,7 @@ class TestTrashManagement():
             '/v1/trash', headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 200
 
-    #### Put ####
+    #### put ####
 
     def testTrashPut(self, client):
         """test put a record in tras tableh with valid token and data"""
@@ -194,7 +195,7 @@ class TestTrashManagement():
                             headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 404
 
-################ TRASH CATEGORIES DELETE ############
+    ############### TRASH CATEGORIES DELETE ###############
 
     def testTrashCategoriesDelete(self, client):
         """Test delete a record in trash category table with valid token and id"""
@@ -211,7 +212,9 @@ class TestTrashManagement():
         res = client.delete('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id),
                             headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 404
-
+        
+    ############### ALL OPTIONS ###############
+    
     def testOptionsTrash(self, client):
         """Test options function in resource"""
 
