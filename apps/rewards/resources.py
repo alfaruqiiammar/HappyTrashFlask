@@ -33,7 +33,7 @@ class RewardsResource(Resource):
         Args (located in JSON):
             name: a string of reward's name
             point_to_claim: an integer that indicates amount points needed to claim the rewards
-            photo: a string of reward's photo
+            photo: a string of reward's photo's url
             stock: an integer that indicates amount of stock available
             status: a boolean that indicates reward status. True for active and False for inactive
 
@@ -101,7 +101,7 @@ class RewardsResource(Resource):
             ]
         """
 
-        rewards = Rewards.query
+        rewards = Rewards.query.order_by(Rewards.id.desc())
 
         rewards_list = []
         for reward in rewards:
@@ -114,7 +114,14 @@ class RewardsResource(Resource):
     def put(self, id):
         """Change rewards's field data by data inputted by admin
         or
-        change reward's field by user input ('stock' must be equal to 1 ) 
+        change reward's field by user input ('stock' must be equal to 1 )
+        
+        Args (located in JSON):
+            name: a string of reward's name
+            point_to_claim: an integer that indicates amount points needed to claim the rewards
+            photo: a string of reward's photo's url
+            stock: an integer that indicates amount of stock available
+            status: a boolean that indicates reward status. True for active and False for inactive
 
         Returns:
             A dict mapping keys to the corresponding value, for example:

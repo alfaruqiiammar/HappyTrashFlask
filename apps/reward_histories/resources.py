@@ -15,14 +15,17 @@ class AdminRewardHistoriesResource(Resource):
     """Class for storing HTTP request method for reward_histories table, accessed by admin"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class, but never used"""
         pass
 
     def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'OK'}, 200
 
     @adminRequired
     def get(self):
         """Get all reward_histories from table
+
         Returns :
           An array of dictionaries, for example:
 
@@ -42,8 +45,10 @@ class AdminRewardHistoriesResource(Resource):
               "created_at": "2019-09-12 07:26:21"          
             }
           ]
+        Raise:
+          Forbidden(403): An error occured when a non-admin user try to use this method.
         """
-        histories = RewardHistories.query
+        histories = RewardHistories.query.order_by(RewardHistories.id.desc())
         histories_list = []
 
         for history in histories:
@@ -60,14 +65,17 @@ class UserRewardHistoriesResource(Resource):
     """Class for storing HTTP request method for reward_histories table, accessed by user"""
 
     def __init__(self):
+        """Init function needed to indicate this is a class, but never used"""
         pass
 
-    def options(self):
+    def options(self, id=None):
+        """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {'Status': 'OK'}, 200
 
     @userRequired
     def get(self):
-        """Get all reward_histories of a specific user
+        """Get all reward_histories from a specific user
+
         Returns :
           An array of dictionaries, for example:
 
@@ -89,7 +97,8 @@ class UserRewardHistoriesResource(Resource):
           ]
         """
         user = get_jwt_claims()
-        histories = RewardHistories.query.filter_by(user_id=user['id'])
+        histories = RewardHistories.query.filter_by(
+            user_id=user['id']).order_by(RewardHistories.id.desc())
         histories_list = []
 
         for history in histories:
@@ -101,16 +110,16 @@ class UserRewardHistoriesResource(Resource):
     @userRequired
     def post(self):
         """Post a new data to reward history table
+
         Args:
-          reward_id : located in json
-          reward_name : rewards name from id above, located in rewards table
-          user_id : located in json
+          reward_id : An integer of reward's id (located in JSON)
+          reward_name : a string rewards name from id above (retrieved from rewards table)
+          user_id : An integer of user's id (retrieved from user's jwt claims)
         """
 
         user = get_jwt_claims()
         parser = reqparse.RequestParser()
         parser.add_argument('reward_id', location='json', required=True)
-        # parser.add_argument('reward_name', location = 'json', required = True)
 
         args = parser.parse_args()
 
@@ -119,7 +128,6 @@ class UserRewardHistoriesResource(Resource):
 
         new_history = {
             'reward_id': args['reward_id'],
-            # 'reward_name' : args['reward_name'],
             'reward_name': reward['name'],
             'user_id': user['id']
         }

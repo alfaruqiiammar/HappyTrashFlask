@@ -23,34 +23,44 @@ class ListOrders(db.Model):
     """
     __tablename__ = "orders"
 
-    id = db.Column(db.Integer, primary_key = True)
-    user_id = db.Column(db.Integer, nullable = False)
-    adress = db.Column(db.String(225), nullable = False)
-    time = db.Column(db.DateTime, default = datetime.datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    adress = db.Column(db.String(225), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     photo = db.Column(db.String(500))
-    status = db.Column(db.String(20), nullable = False)
-    total_qty = db.Column(db.Float, default = 0)
-    total_price = db.Column(db.Integer, default = 0)
-    total_point = db.Column(db.Integer, default = 0)
-    created_at = db.Column(db.DateTime, default = datetime.datetime.utcnow)
+    status = db.Column(db.String(20), nullable=False)
+    total_qty = db.Column(db.Float, default=0)
+    total_price = db.Column(db.Integer, default=0)
+    total_point = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     response_fields = {
         'id': fields.Integer,
-        'user_id' : fields.Integer,
-        'adress' : fields.String,
-        'time' : fields.DateTime,
-        'photo' : fields.String,
-        'status' : fields.String,
-        'total_qty' : fields.Float,
-        'total_price' : fields.Integer,
-        'total_point' : fields.Integer,
-        'created_at' : fields.DateTime
+        'user_id': fields.Integer,
+        'adress': fields.String,
+        'time': fields.DateTime,
+        'photo': fields.String,
+        'status': fields.String,
+        'total_qty': fields.Float,
+        'total_price': fields.Integer,
+        'total_point': fields.Integer,
+        'created_at': fields.DateTime
     }
 
     def __init__(self, data):
-      self.user_id = data['user_id']
-      self.adress = data['adress']
-      self.time = data['time']
-      self.photo = data['photo']
-      self.status = data['status']
-            
+        """
+        Inits Order with data inputted
+
+        Args :
+            data: a dictionary contain key: value pairs described below
+            user_id : an integer of user's id,
+            adress : a string that indicates where the pick-up adress is,
+            time : a datetime that indicates when the user want their trash to be picked,
+            photo : a url of user's trash picture,
+            status : a string that indicates the status of the order. it can be waiting, cancelled, or done,
+        """
+        self.user_id = data['user_id']
+        self.adress = data['adress']
+        self.time = data['time']
+        self.photo = data['photo']
+        self.status = data['status']
