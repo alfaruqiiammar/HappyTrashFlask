@@ -18,7 +18,7 @@ class TrashCategoriesResource(Resource):
         """Init function needed to indicate this is a class"""
         pass
 
-    def options(self):
+    def options(self, id=None):
         """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return {"status": "Ok"}, 200
 
