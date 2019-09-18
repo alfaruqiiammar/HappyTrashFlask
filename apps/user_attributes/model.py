@@ -19,7 +19,7 @@ class UserAttributes(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id'), primary_key=True)
     point = db.Column(db.Integer, nullable=False)
-    total_trash = db.Column(db.Integer, nullable=False)
+    total_trash = db.Column(db.Float, nullable=False)
     onboarding_status = db.Column(db.Boolean, nullable=False)
     date_created = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(
