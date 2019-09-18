@@ -208,7 +208,7 @@ class OrdersResource(Resource):
             if not user['role']:
                 return {'Warning': 'Only admin can confirm'}, 403, {'Content_Type': 'application/json'}
             order.status = 'confirmed'
-            order.admin_id = int(user['id'])
+            order.admin_id = user['id']
             db.session.commit()
             return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
@@ -216,7 +216,7 @@ class OrdersResource(Resource):
             if not user['role']:
                 return {'Warning': 'Only admin can reject'}, 403, {'Content_Type': 'application/json'}
             order.status = 'rejected'
-            order.admin_id = int(user['id'])
+            order.admin_id = user['id']
             db.session.commit()
             return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
@@ -234,7 +234,7 @@ class OrdersResource(Resource):
             self.addDetails(details, order, user_attr)
 
             order.status = 'done'
-            order.admin_id = int(user['id'])
+            order.admin_id = user['id']
             db.session.commit()
 
             return {"details_added": details}, 200, {'Content_Type': 'application/json'}
