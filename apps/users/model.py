@@ -2,6 +2,7 @@ from apps import db
 from flask_restful import fields
 import re
 
+
 class Users(db.Model):
     """Class for storing information about users table
 
@@ -24,8 +25,9 @@ class Users(db.Model):
     mobile_number = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     role = db.Column(db.Boolean, nullable=False)
-    date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    date_created = db.Column(db.DateTime,  default=db.func.current_timestamp())
+    date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(
+    ), onupdate=db.func.current_timestamp())
 
     response_fields = {
         'id': fields.Integer,
@@ -62,28 +64,26 @@ class Users(db.Model):
         self.password = password
         self.role = role
 
-    def isEmailAddressValid(self,email):
+    def isEmailAddressValid(self, email):
         """Validate the email address using a regex."""
         if not re.match("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
             return False
         return True
 
-    def isMobileNumberValid(self,mobile_number):
+    def isMobileNumberValid(self, mobile_number):
         """Validate the mobile phone using a regex."""
         if not re.match("^0[0-9]{9,}$", mobile_number):
             return False
-        return True	
+        return True
 
     @classmethod
     def isEmailExist(cls, email):
         """Check whether email already listed in database"""
         all_data = cls.query.all()
 
-
         # Make a list of email listed in database
 
         existing_email = [item.email for item in all_data]
-
 
         if email in existing_email:
             return True
@@ -95,11 +95,9 @@ class Users(db.Model):
         """Check whether mobile number already listed in database"""
         all_data = cls.query.all()
 
-
         # Make a list of email listed in database
 
         existing_mobile_number = [item.mobile_number for item in all_data]
-        
 
         if mobile_number in existing_mobile_number:
             return True
