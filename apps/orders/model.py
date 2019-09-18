@@ -39,7 +39,7 @@ class ListOrders(db.Model):
     response_fields = {
         'id': fields.Integer,
         'user_id': fields.Integer,
-        'admin_id': fields.Integer
+        'admin_id': fields.Integer,
         'adress': fields.String,
         'time': fields.DateTime,
         'photo': fields.String,
@@ -63,7 +63,6 @@ class ListOrders(db.Model):
             status : a string that indicates the status of the order. it can be waiting, cancelled, or done,
         """
         self.user_id = data['user_id']
-        self.admin_id = data['admin_id']
         self.adress = data['adress']
         self.time = data['time']
         self.photo = data['photo']
