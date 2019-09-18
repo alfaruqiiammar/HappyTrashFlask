@@ -84,6 +84,7 @@ class OrdersResource(Resource):
             {
                 "id": 1,
                 "user_id": 1,
+                "admin_id": null,
                 "adress": "Jl. Bunga No. 30, Sukun, Malang",
                 "time": Tue, 20 Jan 2019 09:30:00-0000,
                 "photo": "imurl.com/folder/image.jpg",
@@ -161,6 +162,7 @@ class OrdersResource(Resource):
             {
                 "id": 1,
                 "user_id": 1,
+                "admin_id": 2,
                 "adress": "Jl. Bunga No. 30, Sukun, Malang",
                 "time": Tue, 20 Jan 2019 09:30:00-0000,
                 "photo": "imurl.com/folder/image.jpg",
@@ -206,6 +208,7 @@ class OrdersResource(Resource):
             if not user['role']:
                 return {'Warning': 'Only admin can confirm'}, 403, {'Content_Type': 'application/json'}
             order.status = 'confirmed'
+            order.admin_id = int(user['id'])
             db.session.commit()
             return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
@@ -213,6 +216,7 @@ class OrdersResource(Resource):
             if not user['role']:
                 return {'Warning': 'Only admin can reject'}, 403, {'Content_Type': 'application/json'}
             order.status = 'rejected'
+            order.admin_id = int(user['id'])
             db.session.commit()
             return marshal(order, ListOrders.response_fields), 200, {'Content_Type': 'application/json'}
 
@@ -220,7 +224,7 @@ class OrdersResource(Resource):
 
         if args['status'] == 'done':
             if not user['role']:
-                return {'Warning': 'Only Admin can cancel'}, 403, {'Content_Type': 'application/json'}
+                return {'Warning': 'Only Admin can change status to done'}, 403, {'Content_Type': 'application/json'}
             order_dict = marshal(order, ListOrders.response_fields)
 
             user_attr = UserAttributes.query.filter_by(
@@ -230,6 +234,7 @@ class OrdersResource(Resource):
             self.addDetails(details, order, user_attr)
 
             order.status = 'done'
+            order.admin_id = int(user['id'])
             db.session.commit()
 
             return {"details_added": details}, 200, {'Content_Type': 'application/json'}
@@ -244,6 +249,7 @@ class OrdersResource(Resource):
                 {
                     "id": 1,
                     "user_id": 1,
+                    "admin_id": 2,
                     "adress": "Jl. Bunga No. 30, Sukun, Malang",
                     "time": Tue, 20 Jan 2019 09:30:00-0000,
                     "photo": "imurl.com/folder/image.jpg",
@@ -256,6 +262,7 @@ class OrdersResource(Resource):
                 {
                     "id": 2,
                     "user_id": 2,
+                    "admin_id": 2,
                     "adress": "Jl. Bunga No. 30, Sukun, Malang",
                     "time": Tue, 20 Jan 2019 09:30:00-0000,
                     "photo": "imurl.com/folder/image2.jpg",
@@ -312,6 +319,7 @@ class UserOrdersResource(Resource):
                 {
                     "id": 2,
                     "user_id": 1,
+                    "admin_id": 2,
                     "adress": "Jl. Bunga No. 30, Sukun, Malang",
                     "time": Tue, 20 Jan 2019 09:30:00-0000,
                     "photo": "imurl.com/folder/image.jpg",
@@ -324,6 +332,7 @@ class UserOrdersResource(Resource):
                 {
                     "id": 2,
                     "user_id": 2,
+                    "admin_id": 2,
                     "adress": "Jl. Bunga No. 30, Sukun, Malang",
                     "time": Tue, 20 Jan 2019 09:30:00-0000,
                     "photo": "imurl.com/folder/image2.jpg",

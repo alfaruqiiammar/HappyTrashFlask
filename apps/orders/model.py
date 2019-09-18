@@ -10,6 +10,7 @@ class ListOrders(db.Model):
         __tablename__: a string of table name
         id: an integer of order's id
         user_id : an integer of user's id,
+        admin_id : an integer of admin's id
         adress : a string that indicates where the pick-up adress is,
         time : a datetime that indicates when the user want their trash to be picked,
         photo : a url of user's trash picture,
@@ -25,6 +26,7 @@ class ListOrders(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
+    admin_id = db.Column(db.Integer, nullable=True)
     adress = db.Column(db.String(225), nullable=False)
     time = db.Column(db.DateTime, default=datetime.datetime.now)
     photo = db.Column(db.String(500))
@@ -37,6 +39,7 @@ class ListOrders(db.Model):
     response_fields = {
         'id': fields.Integer,
         'user_id': fields.Integer,
+        'admin_id': fields.Integer
         'adress': fields.String,
         'time': fields.DateTime,
         'photo': fields.String,
@@ -60,6 +63,7 @@ class ListOrders(db.Model):
             status : a string that indicates the status of the order. it can be waiting, cancelled, or done,
         """
         self.user_id = data['user_id']
+        self.admin_id = data['admin_id']
         self.adress = data['adress']
         self.time = data['time']
         self.photo = data['photo']
