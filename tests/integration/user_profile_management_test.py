@@ -1,188 +1,207 @@
 import json
 from tests import app, client, cache, resetDatabase, createTokenAdmin, createTokenUser
 
+
 class TestUserProfile():
+    """Class for testing all functions that is directly related to users and user attributes"""
 
-  resetDatabase()
+    resetDatabase()
 
-  ######options
+    #### options ####
 
-  def testOptionsAdmin(self, client):
-    res = client.options('/v1/users/admin')
-    assert res.status_code == 200
+    def testOptionsAdmin(self, client):
+        """test options function at /user/admin endpoint"""
+        res = client.options('/v1/users/admin')
+        assert res.status_code == 200
 
-  ###### admin get single user
+    #### get ####
 
-  def testGetOneByAdmin(self,client):
+    def testGetOneByAdmin(self, client):
+        """test get a specific user data using admin token"""
 
-    token = createTokenAdmin()
-    res = client.get('/v1/users/admin/2', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 200
-  
-  def testGetOneByAdminNotFound(self,client):
-    """User with id 100 has not been created, hence will get a 404 respond"""
+        token = createTokenAdmin()
+        res = client.get('/v1/users/admin/2',
+                         headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 200
 
-    token = createTokenAdmin()
-    res = client.get('/v1/users/admin/100', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 404
+    def testGetOneByAdminNotFound(self, client):
+        """test get a specific user data which is not exist in the table using admin token,
+        will raise a 404(Not Found) error"""
 
-  ####### User get a single user
+        token = createTokenAdmin()
+        res = client.get('/v1/users/admin/100',
+                         headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 404
 
-  def testGetOneByUser(self,client):
-    token = createTokenUser()
-    res = client.get('/v1/users/1', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 200
+    def testGetOneByUser(self, client):
+        """test get user's data using token"""
+        token = createTokenUser()
+        res = client.get(
+            '/v1/users/1', headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 200
 
-  def testGetOneByUserInvalid(self,client):
-    """User in createTokenUser is user with id 1, hence will not be able to access user 2 profile"""
+    def testGetOneByUserInvalid(self, client):
+        """Test get a specific user data, using another user's token.
+        User in createTokenUser is user with id 1, hence will not be able to access user 2 profile,
+        and raise a 403(forbidden) error"""
 
-    token = createTokenUser()
-    res = client.get('/v1/users/2', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 403
+        token = createTokenUser()
+        res = client.get(
+            '/v1/users/2', headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 403
 
-  def testGetOneUserNotFound(self,client):
-    """User with id 100 has not been created, hence will get a 404 respond"""
+    def testGetOneUserNotFound(self, client):
+        """Test get a specific user data using another user's token.
+        User with id 100 has not been created, hence will get a 404(Not Found) error"""
 
-    token = createTokenUser()
-    res = client.get('/v1/users/100', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 404
-  
-  ##### admin get all user data
+        token = createTokenUser()
+        res = client.get(
+            '/v1/users/100', headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 404
 
-  def testGetAll(self, client):
-    token = createTokenAdmin()
-    res = client.get('/v1/users/all', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 200
+    def testGetAll(self, client):
+        """get all users data from users table"""
 
-  def testGetAllByUser(self, client):
-    """Only admin can see data from all users, hence request will gwt 403 respond"""
+        token = createTokenAdmin()
+        res = client.get(
+            '/v1/users/all', headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 200
 
-    token = createTokenUser()
-    res = client.get('/v1/users/all', headers = {'Authorization' : 'Bearer ' + token})
-    assert res.status_code == 403
+    def testGetAllByUser(self, client):
+        """Test get all users data from users table using user token
+        Only admin can see data from all users, hence request will get 403 respond"""
 
-  ###### options
+        token = createTokenUser()
+        res = client.get(
+            '/v1/users/all', headers={'Authorization': 'Bearer ' + token})
+        assert res.status_code == 403
 
-  def testAdminOptions(self,client):
-    res = client.options('/v1/users/admin')
-    assert res.status_code == 200
+    #### options ####
 
-  def testAdminAllOptions(self,client):
-    res = client.options('/v1/users/all')
-    assert res.status_code == 200
-  
-  def testAttrributeOptions(self, client):
-    res = client.options('/v1/user_attributes')
-    assert res.status_code == 200
-  
-  ##### Put user profile
+    def testAdminOptions(self, client):
+        """test options function for /users/admin endpoint"""
+        res = client.options('/v1/users/admin')
+        assert res.status_code == 200
 
-  def testUserPut(self, client):
-    token = createTokenUser()
-    data = {
-      "name": "dadang",
-      "email": "put@conello.com",
-      "mobile_number": "08812121212",
-      "password": "dadangajah"
-      }
-    res=client.put('/v1/users', 
-                    data=json.dumps(data),
-                    headers = {'Authorization' : 'Bearer '+token},
-                    content_type='application/json')
+    def testAdminAllOptions(self, client):
+        """test options function for /users/all endpoint"""
+        res = client.options('/v1/users/all')
+        assert res.status_code == 200
 
-    res_json=json.loads(res.data)
+    def testAttrributeOptions(self, client):
+        """test options function for /user_attributes endpoint"""
+        res = client.options('/v1/user_attributes')
+        assert res.status_code == 200
 
-    assert res.status_code == 200
+    #### Put ####
 
-  def testUserPutInvalidEmail(self, client):
-    """Missing .domain in email"""
+    def testUserPut(self, client):
+        """test put a record in users table with valid data"""
+        token = createTokenUser()
+        data = {
+            "name": "dadang",
+            "email": "put@conello.com",
+            "mobile_number": "08812121212",
+            "password": "dadangajah"
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
 
-    token = createTokenUser()
-    data = {
-        "email": "dadang@conello",
-    }
-    res=client.put('/v1/users', 
-                    data=json.dumps(data),
-                    headers = {'Authorization' : 'Bearer '+token},
-                    content_type='application/json')
-    res_json=json.loads(res.data)
-    assert res.status_code == 400
+        res_json = json.loads(res.data)
 
-  def testUserPutInvalidMobileNumber(self, client):
-    """Missing 0 at the beginning of phone number"""
+        assert res.status_code == 200
 
-    token = createTokenUser()
-    data = {
-        "mobile_number": "812121212"
-    }
-    res=client.put('/v1/users', 
-                    data=json.dumps(data),
-                    headers = {'Authorization' : 'Bearer '+token},
-                    content_type='application/json')
-    res_json=json.loads(res.data)
-    assert res.status_code == 400
- 
-  def testUserPutEmailAlreadyListed(self, client):
-    """User try to input the same email as he/she has
-    check in put test with status 200
-    """
+    def testUserPutInvalidEmail(self, client):
+        """test put user data to table with invalid email format,
+        hence will raise 400(bad request) error"""
 
-    token = createTokenUser()
-    data = {
-       "email": "put@conello.com"
-       }
-    res=client.put('/v1/users', 
-                     data=json.dumps(data),
-                     headers = {'Authorization' : 'Bearer '+token},
-                     content_type='application/json')
+        token = createTokenUser()
+        data = {
+            "email": "dadang@conello",
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
+        res_json = json.loads(res.data)
+        assert res.status_code == 400
 
-    res_json=json.loads(res.data)
+    def testUserPutInvalidMobileNumber(self, client):
+        """test put user data to table with invalid mobile number format,
+        hence will raise 400(bad request) error"""
 
-    assert res.status_code == 400
+        token = createTokenUser()
+        data = {
+            "mobile_number": "812121212"
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
+        res_json = json.loads(res.data)
+        assert res.status_code == 400
 
-  def testUserPutEmailAlreadyListed2(self, client):
-    """User try to input the same email as admin
-    check in __init__.py function createDatabase
-    """
+    def testUserPutEmailAlreadyListed(self, client):
+        """test put user data to table with email that is already exist in database,
+        hence will raise 400(bad request) error"""
 
-    token = createTokenUser()
-    data = {
-       "email": "admin@admin.com"
-       }
-    res=client.put('/v1/users', 
-                     data=json.dumps(data),
-                     headers = {'Authorization' : 'Bearer '+token},
-                     content_type='application/json')
+        token = createTokenUser()
+        data = {
+            "email": "put@conello.com"
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
 
-    res_json=json.loads(res.data)
+        res_json = json.loads(res.data)
 
-    assert res.status_code == 400
- 
-  def testUserPutMobileNumberAlreadyListed(self, client):
-    """User try to input the same phone number as he/she has
-    check in put test with status 200
-    """
-    token = createTokenUser()
-    data = {
-        "mobile_number": "08812121212"
-    }
-    res=client.put('/v1/users', 
-                    data=json.dumps(data),
-                    headers = {'Authorization' : 'Bearer '+token},
-                    content_type='application/json')
-    res_json=json.loads(res.data)
-    assert res.status_code == 400
+        assert res.status_code == 400
 
-  ###### Put user onboarding status
- 
-  def testPutAttribute(self, client):
-    token = createTokenUser()
-    res = client.put('/v1/user_attributes',
-                      headers = {'Authorization' : 'Bearer '+token}
-                      )
-    assert res.status_code == 200
-  
-  def testPutAttributeMissingHeader(self, client):
-    token = createTokenUser()
-    res = client.put('/v1/user_attributes')
-    assert res.status_code == 401
+    def testUserPutEmailAlreadyListed2(self, client):
+        """test put user data to table with mobile number that is already exist in database,
+        hence will raise 400(bad request) error"""
+
+        token = createTokenUser()
+        data = {
+            "email": "admin@admin.com"
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
+
+        res_json = json.loads(res.data)
+
+        assert res.status_code == 400
+
+    def testUserPutMobileNumberAlreadyListed(self, client):
+        """put user data to table with mobile number that is already exist in database,
+        hence will raise 400(bad request) error"""
+        token = createTokenUser()
+        data = {
+            "mobile_number": "08812121212"
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
+        res_json = json.loads(res.data)
+        assert res.status_code == 400
+
+    def testPutAttribute(self, client):
+        """test put user attributes in user_attributes table"""
+        token = createTokenUser()
+        res = client.put('/v1/user_attributes',
+                         headers={'Authorization': 'Bearer '+token}
+                         )
+        assert res.status_code == 200
+
+    def testPutAttributeMissingHeader(self, client):
+        """test put user attributes in user_attributes table without any token,
+        hence will get 401(unauthorized) error"""
+
+        res = client.put('/v1/user_attributes')
+        assert res.status_code == 401

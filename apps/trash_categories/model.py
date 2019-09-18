@@ -4,6 +4,16 @@ import datetime
 
 
 class ListTrashCategory(db.Model):
+    """Class for storing information about trash categories
+
+    Attributes:
+        __tablename__: a string of table name
+        id: an integer of category's id
+        category_name: a string of category's name
+        date_created: a datetime that indicates when the record created
+        date_updated: a datetime that indicates when the record last updated
+        response_field: a dictionary that will be used to be a guide when extracting data from database's field
+    """
     __tablename__ = "trash_categories"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,5 +29,9 @@ class ListTrashCategory(db.Model):
     }
 
     def __init__(self, category_name):
-        self.category_name = category_name
+        """Inits a category with the name inputted
 
+        Args:
+            category_name: a string of category's name
+        """
+        self.category_name = category_name
