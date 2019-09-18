@@ -26,17 +26,19 @@ class TrashResource(Resource):
     def post(self):
         """ Post a new trash to trashes table
 
-        Args (located in JSON): 
-            trash_category_id: An integer of trash category's id
-            trash_name: A string of trash name
-            price: An integer of trash price per kilogram
-            photo:  A string of trash' photo's url
-            point: an integer which indicates the amount of point a user will get per kilogram of corresponding trash  
+        Args:
+            admin_id: an integer of admin's id (retrieved from jwt claims)
+            trash_category_id: An integer of trash category's id (located in JSON)
+            trash_name: A string of trash name (located in JSON)
+            price: An integer of trash price per kilogram (located in JSON)
+            photo:  A string of trash' photo's url (located in JSON)
+            point: an integer which indicates the amount of point a user will get per kilogram of corresponding trash (located in JSON)
 
         Returns:
             A dictionary contains the data that has been input to the table. For example:
             {
-                "id":1
+                "id":1,
+                "admin_id": 2,
                 "trash_category_id": 2,
                 "trash_name": "plastik PE",
                 "price": 1000,
@@ -60,7 +62,10 @@ class TrashResource(Resource):
 
         args = parser.parse_args()
 
+        admin = get_jwt_claims()
+
         new_trash = {
+            'admin_id': admin['id'],
             'trash_category_id': args['trash_category_id'],
             'trash_name': args['trash_name'],
             'price': args['price'],
@@ -84,7 +89,8 @@ class TrashResource(Resource):
             An array of dictionaries consist of trash data. For example:
             [
                 {
-                    "id":2
+                    "id":2,
+                    "admin_id" : 2,
                     "trash_category_id": 2,
                     "trash_name": "plastik PE",
                     "price": 1000,
@@ -94,7 +100,8 @@ class TrashResource(Resource):
                     "updated_at": Sat, 26 Apr 2019 09:00:00 -000 
                 },
                 {
-                    "id":1
+                    "id":1,
+                    "admin_id" : 2,
                     "trash_category_id": 3,
                     "trash_name": "Gelas kaca",
                     "price": 1000,
@@ -121,17 +128,19 @@ class TrashResource(Resource):
     def put(self, id):
         """ Edits category_name from a single record in trash_category table specified by id 
 
-        Args (located in JSON): 
-            trash_category_id: An integer of trash category's id
-            trash_name: A string of trash name
-            price: An integer of trash price per kilogram
-            photo:  A string of trash' photo's url
-            point: an integer which indicates the amount of point a user will get per kilogram of corresponding trash  
+        Args: 
+            admin_id: An integer of admin's id (retrieved from jwt claims)
+            trash_category_id: An integer of trash category's id (located in JSON)
+            trash_name: A string of trash name (located in JSON)
+            price: An integer of trash price per kilogram (located in JSON)
+            photo:  A string of trash' photo's url (located in JSON)
+            point: an integer which indicates the amount of point a user will get per kilogram of corresponding trash (located in JSON)
 
         Returns:
             A dictionary that contains the updated data from the record edited. For example:
             {
-                "id":1
+                "id":1,
+                "admin_id": 2,
                 "trash_category_id": 2,
                 "trash_name": "plastik PE",
                 "price": 1000,
@@ -155,6 +164,8 @@ class TrashResource(Resource):
         args = parser.parse_args()
         trash = ListTrash.query.get(id)
 
+        admin = get_jwt_claims()
+
         if trash is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
@@ -171,6 +182,8 @@ class TrashResource(Resource):
 
         if args['point'] is not None:
             trash.point = args['point']
+
+        trash.admin_id = admin['id']
 
         db.session.commit()
         return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}

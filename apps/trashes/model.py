@@ -9,6 +9,7 @@ class ListTrash(db.Model):
     Attributes:
         __tablename__: a string of table name
         id: an integer of trash' id
+        admin_id: an integer of admin's id
         trash_category_id: an integer of trash category's id
         trash_name: a string of trash' name
         price: an integer of trash price per kilogram
@@ -21,6 +22,7 @@ class ListTrash(db.Model):
     __tablename__ = "trashes"
 
     id = db.Column(db.Integer, primary_key=True)
+    admin_id = db.Column(db.Integer, nullable=False)
     trash_category_id = db.Column(db.Integer, nullable=False)
     trash_name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Integer, nullable=False)
@@ -32,6 +34,7 @@ class ListTrash(db.Model):
 
     response_fields = {
         'id': fields.Integer,
+        'admin_id': fields.Integer,
         'trash_category_id': fields.Integer,
         'trash_name': fields.String,
         'price': fields.Integer,
@@ -54,6 +57,7 @@ class ListTrash(db.Model):
                         "point": 5
                     }
         """
+        self.admin_id = data['admin_id']
         self.trash_category_id = data['trash_category_id']
         self.trash_name = data['trash_name']
         self.price = data['price']
