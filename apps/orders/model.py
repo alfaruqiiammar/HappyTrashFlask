@@ -26,13 +26,13 @@ class ListOrders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     adress = db.Column(db.String(225), nullable=False)
-    time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    time = db.Column(db.DateTime, default=datetime.datetime.now)
     photo = db.Column(db.String(500))
     status = db.Column(db.String(20), nullable=False)
     total_qty = db.Column(db.Float, default=0)
     total_price = db.Column(db.Integer, default=0)
     total_point = db.Column(db.Integer, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
 
     response_fields = {
         'id': fields.Integer,

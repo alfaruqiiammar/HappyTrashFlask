@@ -120,7 +120,6 @@ class TrashCategoriesResource(Resource):
             return {"Warning": "Name can not be null"}, 400, {'Content_Type': 'application/json'}
 
         category.category_name = args['category_name']
-        category.updated_at = datetime.datetime.utcnow()
 
         db.session.commit()
         return marshal(category, ListTrashCategory.response_fields), 200, {'Content_Type': 'application/json'}

@@ -26,13 +26,9 @@ class ListTrash(db.Model):
     price = db.Column(db.Integer, nullable=False)
     photo = db.Column(db.String(500))
     point = db.Column(db.Integer, nullable=False)
-<<<<<<< HEAD
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.datetime.now)
-=======
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
->>>>>>> 71f0196c53b4f7907596166d6a3a2f9943fe1d0c
+    updated_at = db.Column(
+        db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
     response_fields = {
         'id': fields.Integer,

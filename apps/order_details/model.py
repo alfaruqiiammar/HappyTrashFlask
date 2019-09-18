@@ -25,7 +25,7 @@ class ListOrderDetails(db.Model):
     qty = db.Column(db.Float, nullable=False)
     total_price = db.Column(db.Integer, nullable=False)
     point = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
 
     response_fields = {
         'id': fields.Integer,

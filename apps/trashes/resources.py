@@ -172,7 +172,6 @@ class TrashResource(Resource):
         if args['point'] is not None:
             trash.point = args['point']
 
-        trash.updated_at = datetime.datetime.utcnow()
         db.session.commit()
         return marshal(trash, ListTrash.response_fields), 200, {'Content_Type': 'application/json'}
 

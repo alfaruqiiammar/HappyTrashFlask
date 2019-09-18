@@ -20,7 +20,7 @@ class RewardHistories(db.Model):
     reward_id = db.Column(db.Integer, nullable=False)
     reward_name = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
 
     response_fields = {
         'id': fields.Integer,
