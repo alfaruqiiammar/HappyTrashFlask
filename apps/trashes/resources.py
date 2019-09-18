@@ -203,11 +203,13 @@ class TrashResource(Resource):
             Not Found(404): An error occured when the id inputted is not found in the table
         """
         trash = ListTrash.query.get(id)
+        admin = get_jwt_claims()
 
         if trash is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
-        db.session.delete(trash)
+        trash.status = False
+        trash.admin_id = admin['id']
         db.session.commit()
         return {"Status": "The data with id {} is deleted".format(id)}, 200, {'Content_Type': 'application/json'}
 

@@ -9,7 +9,7 @@ class TestTrashManagement():
     resetDatabase()
     temp_category_id = None
     temp_trash_id = None
-    
+
     ############### TRASH CATEGORIES ###############
 
     #### post ####
@@ -180,7 +180,7 @@ class TestTrashManagement():
         assert res.status_code == 404
 
     def testTrashDelete(self, client):
-        """Test delete a record in trashes table with valid token"""
+        """Test soft delete a record in trashes table with valid token"""
 
         token = createTokenAdmin()
         res = client.delete('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id),
@@ -188,17 +188,17 @@ class TestTrashManagement():
         assert res.status_code == 200
 
     def testTrashDeleteInvalidId(self, client):
-        """Test delete a record in trashes table
-        trash with id in this test has been deleted in previous test, hence will get a 404(Not Found) error"""
+        """Test soft delete a record in trashes table
+        trash with id 123 is not exist in the table, hence will get a 404(Not Found) error"""
         token = createTokenAdmin()
-        res = client.delete('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id),
+        res = client.delete('/v1/trash/123',
                             headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 404
 
     ############### TRASH CATEGORIES DELETE ###############
 
     def testTrashCategoriesDelete(self, client):
-        """Test delete a record in trash category table with valid token and id"""
+        """Test soft delete a record in trash category table with valid token and id"""
 
         token = createTokenAdmin()
         res = client.delete('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id),
@@ -206,15 +206,15 @@ class TestTrashManagement():
         assert res.status_code == 200
 
     def testTrashCategoriesDeleteInvalidId(self, client):
-        """Test delete a record in trash categories table
-        trash with id in this test has been deleted in previous test, hence will get a 404(Not Found) error"""
+        """Test soft delete a record in trash categories table
+        trash with id 123 is not in the table, hence will get a 404(Not Found) error"""
         token = createTokenAdmin()
-        res = client.delete('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id),
+        res = client.delete('/v1/trash_category/123',
                             headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 404
-        
+
     ############### ALL OPTIONS ###############
-    
+
     def testOptionsTrash(self, client):
         """Test options function in resource"""
 

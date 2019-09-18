@@ -36,7 +36,8 @@ class TrashCategoriesResource(Resource):
             {
                 "id": 1,
                 "admin_id": 2,
-                "category_name": "plastik"
+                "category_name": "plastik",
+                "status": true,
                 "created_at": Sat, 26 Apr 2019 09:00:00 -0000
                 "updated_at": Sat, 26 Apr 2019 09:00:00 -0000
             }
@@ -66,14 +67,16 @@ class TrashCategoriesResource(Resource):
                 {
                     "id": 1,
                     "admin_id": 2,
-                    "category_name": "plastik"
+                    "category_name": "plastik",
+                    "status": true,
                     "created_at": Sat, 26 Apr 2019 09:00:00 -0000
                     "updated_at": Sat, 26 Apr 2019 09:00:00 -0000
                 },
                 {
                     "id": 2,
                     "admin_id": 2,
-                    "category_name": "Kaca"
+                    "category_name": "Kaca",
+                    "status": true,
                     "created_at": Sat, 26 Apr 2019 09:01:00 -0000
                     "updated_at": Sat, 26 Apr 2019 09:02:00 -0000
                 }    
@@ -103,7 +106,8 @@ class TrashCategoriesResource(Resource):
             {
                 "id": 2,
                 "admin_id": 2,
-                "category_name": "Kaca"
+                "category_name": "Kaca",
+                "status": true,
                 "created_at": Sat, 26 Apr 2019 09:01:00 -0000
                 "updated_at": Sat, 26 Apr 2019 22:00:00 -0000
             }
@@ -133,7 +137,7 @@ class TrashCategoriesResource(Resource):
 
     @adminRequired
     def delete(self, id):
-        """Delete a single record from trash categories table
+        """Soft delete a single record from trash categories table (change it's status to be false)
 
         Args (located in function's parameter): 
             id: An integer of trash category's id which want to be deleted
@@ -146,11 +150,12 @@ class TrashCategoriesResource(Resource):
             Not Found(404): An error occured when the id inputted is not found in the table
         """
         category = ListTrashCategory.query.get(id)
-
+        admin = get_jwt_claims()
         if category is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
-        db.session.delete(category)
+        category.status = False
+        category.admin_id = admin['id']
         db.session.commit()
         return {"Status": "The data with id {} is deleted".format(id)}, 200, {'Content_Type': 'application/json'}
 

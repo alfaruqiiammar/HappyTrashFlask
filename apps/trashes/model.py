@@ -15,6 +15,7 @@ class ListTrash(db.Model):
         price: an integer of trash price per kilogram
         photo: a string of trash' photo's url
         point: an integer which indicates the amount of point a user will get per kilogram of corresponding trash
+        status: a boolean that indicates category status. True for active and False for inactive
         date_created: a datetime that indicates when the record created
         date_updated: a datetime that indicates when the record last updated
         response_field: a dictionary that will be used to be a guide when extracting data from database's field
@@ -28,6 +29,7 @@ class ListTrash(db.Model):
     price = db.Column(db.Integer, nullable=False)
     photo = db.Column(db.String(500))
     point = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     updated_at = db.Column(
         db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
@@ -40,6 +42,7 @@ class ListTrash(db.Model):
         'price': fields.Integer,
         'photo': fields.String,
         'point': fields.Integer,
+        'status': fields.Boolean,
         'created_at': fields.DateTime,
         'updated_at': fields.DateTime
     }
