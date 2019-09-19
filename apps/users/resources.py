@@ -197,8 +197,11 @@ class UsersResource(Resource):
             if not users.isEmailAddressValid(args['email']):
                 return {'message': 'Invalid email format!'}, 400, {'Content-Type': 'application/json'}
 
-            check_email = users.isEmailExist(args['email'])
-            if check_email is True:
+            if user_edited.email = args['name']:
+                pass
+            else:
+                check_email = users.isEmailExist(args['email'])
+                if check_email is True:
                 return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
 
             user_edited.email = args['email']
