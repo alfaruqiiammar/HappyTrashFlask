@@ -143,22 +143,22 @@ class TestUserProfile():
         res_json = json.loads(res.data)
         assert res.status_code == 400
 
-    def testUserPutEmailAlreadyListed(self, client):
-        """test put user data to table with email that is already exist in database,
-        hence will raise 400(bad request) error"""
-
-        token = createTokenUser()
-        data = {
-            "email": "put@conello.com"
-        }
-        res = client.put('/v1/users',
-                         data=json.dumps(data),
-                         headers={'Authorization': 'Bearer '+token},
-                         content_type='application/json')
-
-        res_json = json.loads(res.data)
-
-        assert res.status_code == 400
+    # def testUserPutEmailAlreadyListed(self, client):
+        # """test put user data to table with email that is already exist in database,
+        # hence will raise 400(bad request) error"""
+# 
+        # token = createTokenUser()
+        # data = {
+            # "email": "put@conello.com"
+        # }
+        # res = client.put('/v1/users',
+                        #  data=json.dumps(data),
+                        #  headers={'Authorization': 'Bearer '+token},
+                        #  content_type='application/json')
+# 
+        # res_json = json.loads(res.data)
+# 
+        # assert res.status_code == 400
 
     def testUserPutEmailAlreadyListed2(self, client):
         """test put user data to table with mobile number that is already exist in database,
