@@ -202,7 +202,7 @@ class UsersResource(Resource):
             else:
                 check_email = users.isEmailExist(args['email'])
                 if check_email is True:
-                return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
+                    return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
 
             user_edited.email = args['email']
 
