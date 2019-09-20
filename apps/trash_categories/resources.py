@@ -26,15 +26,18 @@ class TrashCategoriesResource(Resource):
     def post(self):
         """ Post a new trash category to trash_categories table
 
-        Args (located in JSON): 
-            category_name: A string of trash category name that admin has inputted 
+        Args: 
+            admin_id: an integer of admin's id (retrieved from jwt claims)
+            category_name: A string of trash category name that admin has inputted (located in JSON)
 
         Returns:
             A dictionary contains the data that has been input to the table.
             For example:
             {
                 "id": 1,
-                "category_name": "plastik"
+                "admin_id": 2,
+                "category_name": "plastik",
+                "status": true,
                 "created_at": Sat, 26 Apr 2019 09:00:00 -0000
                 "updated_at": Sat, 26 Apr 2019 09:00:00 -0000
             }
@@ -44,8 +47,8 @@ class TrashCategoriesResource(Resource):
         parser.add_argument('category_name', location='json', required=True)
 
         args = parser.parse_args()
-
-        trash_category = ListTrashCategory(args['category_name'])
+        admin = get_jwt_claims()
+        trash_category = ListTrashCategory(admin['id'], args['category_name'])
         db.session.add(trash_category)
         db.session.commit()
 
@@ -63,13 +66,17 @@ class TrashCategoriesResource(Resource):
             [
                 {
                     "id": 1,
-                    "category_name": "plastik"
+                    "admin_id": 2,
+                    "category_name": "plastik",
+                    "status": true,
                     "created_at": Sat, 26 Apr 2019 09:00:00 -0000
                     "updated_at": Sat, 26 Apr 2019 09:00:00 -0000
                 },
                 {
                     "id": 2,
-                    "category_name": "Kaca"
+                    "admin_id": 2,
+                    "category_name": "Kaca",
+                    "status": true,
                     "created_at": Sat, 26 Apr 2019 09:01:00 -0000
                     "updated_at": Sat, 26 Apr 2019 09:02:00 -0000
                 }    
@@ -91,13 +98,17 @@ class TrashCategoriesResource(Resource):
 
         Args:
             id: An integer of trash category's id (located in function's parameter)
+            admin_id: An integer of admin's id (retrieved from jwt claims)
             category_name: A string of trash category's name (located in JSON)
+            status : A boolean of trash_category status (located in JSON)
 
         Returns:
             A dictionary that contains the updated data from the record edited. For example:
             {
                 "id": 2,
-                "category_name": "Kaca"
+                "admin_id": 2,
+                "category_name": "Kaca",
+                "status": true,
                 "created_at": Sat, 26 Apr 2019 09:01:00 -0000
                 "updated_at": Sat, 26 Apr 2019 22:00:00 -0000
             }
@@ -108,26 +119,30 @@ class TrashCategoriesResource(Resource):
         """
         parser = reqparse.RequestParser()
 
-        parser.add_argument('category_name', location='json', required=True)
+        parser.add_argument('category_name', location='json')
+        parser.add_argument(
+            'status', location='json', type=inputs.boolean)
 
         args = parser.parse_args()
         category = ListTrashCategory.query.get(id)
-
+        admin = get_jwt_claims()
         if category is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
-        if not args['category_name']:
-            return {"Warning": "Name can not be null"}, 400, {'Content_Type': 'application/json'}
+        if args['category_name'] is not None:
+            category.category_name = args['category_name']
 
-        category.category_name = args['category_name']
-        category.updated_at = datetime.datetime.utcnow()
+        if args['status'] is not None:
+            category.status = args['status']
+
+        category.admin_id = admin['id']
 
         db.session.commit()
         return marshal(category, ListTrashCategory.response_fields), 200, {'Content_Type': 'application/json'}
 
     @adminRequired
     def delete(self, id):
-        """Delete a single record from trash categories table
+        """Soft delete a single record from trash categories table (change it's status to be false)
 
         Args (located in function's parameter): 
             id: An integer of trash category's id which want to be deleted
@@ -140,7 +155,7 @@ class TrashCategoriesResource(Resource):
             Not Found(404): An error occured when the id inputted is not found in the table
         """
         category = ListTrashCategory.query.get(id)
-
+        admin = get_jwt_claims()
         if category is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 

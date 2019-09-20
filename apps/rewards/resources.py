@@ -30,17 +30,19 @@ class RewardsResource(Resource):
 
         Retrieve data from admin input located in JSON, validate the data, then post the data to rewards tables.
 
-        Args (located in JSON):
-            name: a string of reward's name
-            point_to_claim: an integer that indicates amount points needed to claim the rewards
-            photo: a string of reward's photo's url
-            stock: an integer that indicates amount of stock available
-            status: a boolean that indicates reward status. True for active and False for inactive
+        Args :
+            admin_id: an integer of admin's id (retrieved from jwt claims)
+            name: a string of reward's name (located in JSON)
+            point_to_claim: an integer that indicates amount points needed to claim the rewards (located in JSON)
+            photo: a string of reward's photo's url (located in JSON)
+            stock: an integer that indicates amount of stock available (located in JSON)
+            status: a boolean that indicates reward status. True for active and False for inactive (located in JSON)
 
         Returns:
             A dict mapping keys to the corresponding value, for example:
 
             {
+                "admin_id": 2,
                 "name": "voucher sepulsa 20rb",
                 "point_to_claim: 20,
                 "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg"
@@ -51,7 +53,7 @@ class RewardsResource(Resource):
         Raises: 
             Bad Request (400): An error that occured when some of the field is missing, or if the data is not valid, or if the data inputted is already listed on database
         """
-
+        admin = get_jwt_claims()
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str, location='json', required=True)
         parser.add_argument('point_to_claim', type=int,
@@ -64,7 +66,7 @@ class RewardsResource(Resource):
 
         # Input data to rewards table
 
-        reward = Rewards(args['name'], args['point_to_claim'],
+        reward = Rewards(admin['id'], args['name'], args['point_to_claim'],
                          args['photo'], args['stock'], args['status'])
 
         db.session.add(reward)
@@ -84,6 +86,7 @@ class RewardsResource(Resource):
             [
                 {
                     "id": 1,
+                    "admin_id": 2,
                     "name": "voucher sepulsa 20rb",
                     "point_to_claim": 20,
                     "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg",
@@ -92,6 +95,7 @@ class RewardsResource(Resource):
                 },
                 {
                     "id": 2,
+                    "admin_id": 2,
                     "name": "voucher sepulsa 50rb",
                     "point_to_claim": 20,
                     "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg",
@@ -115,19 +119,21 @@ class RewardsResource(Resource):
         """Change rewards's field data by data inputted by admin
         or
         change reward's field by user input ('stock' must be equal to 1 )
-        
-        Args (located in JSON):
-            name: a string of reward's name
-            point_to_claim: an integer that indicates amount points needed to claim the rewards
-            photo: a string of reward's photo's url
-            stock: an integer that indicates amount of stock available
-            status: a boolean that indicates reward status. True for active and False for inactive
+
+        Args:
+            admin_id: an integer of admin's id (retrieved from jwt claims)
+            name: a string of reward's name (located in JSON)
+            point_to_claim: an integer that indicates amount points needed to claim the rewards (located in JSON)
+            photo: a string of reward's photo's url (located in JSON)
+            stock: an integer that indicates amount of stock available (located in JSON)
+            status: a boolean that indicates reward status. True for active and False for inactive (located in JSON)
 
         Returns:
             A dict mapping keys to the corresponding value, for example:
 
             {
                 "id": 1,
+                "admin_id": 2,
                 "name": "voucher sepulsa 20rb",
                 "point_to_claim": 20,
                 "photo": "http://images.squarespace-cdn.com/content/v1/551dcbdae4b0827b21732cc8/1513122056011-K43Y8ZQB0DADG60YR0L6/ke17ZwdGBToddI8pDm48kJz9WYGIhFMDCoO5TzZfZDZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQ8mheSOtvJ3ZKSxxLOkTv9WG-IdheQ6w_cTdjvdSdKGMItJCPe_onvT9kHS8V4I0Q/voucher.jpg",
@@ -170,6 +176,8 @@ class RewardsResource(Resource):
 
             if args['status'] is not None:
                 reward.status = args['status']
+
+            reward.admin_id = user['id']
 
         elif args['stock'] is not None:
             if user_attr.point > reward.point_to_claim:

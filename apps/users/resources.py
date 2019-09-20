@@ -197,9 +197,12 @@ class UsersResource(Resource):
             if not users.isEmailAddressValid(args['email']):
                 return {'message': 'Invalid email format!'}, 400, {'Content-Type': 'application/json'}
 
-            check_email = users.isEmailExist(args['email'])
-            if check_email is True:
-                return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
+            if user_edited.email == args['email']:
+                pass
+            else:
+                check_email = users.isEmailExist(args['email'])
+                if check_email is True:
+                    return {'message': 'Email already listed!'}, 400, {'Content-Type': 'application/json'}
 
             user_edited.email = args['email']
 
@@ -210,10 +213,13 @@ class UsersResource(Resource):
             if not users.isMobileNumberValid(args['mobile_number']):
                 return {'message': 'Invalid mobile number format!'}, 400, {'Content-Type': 'application/json'}
 
-            check_mobile_number = users.isMobileNumberExist(
-                args['mobile_number'])
-            if check_mobile_number is True:
-                return {'message': 'Mobile number already listed!'}, 400, {'Content-Type': 'application/json'}
+            if user_edited.mobile_number == args['mobile_number']:
+                pass
+            else:
+                check_mobile_number = users.isMobileNumberExist(
+                    args['mobile_number'])
+                if check_mobile_number is True:
+                    return {'message': 'Mobile number already listed!'}, 400, {'Content-Type': 'application/json'}
 
             user_edited.mobile_number = args['mobile_number']
 

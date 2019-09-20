@@ -38,9 +38,10 @@ def resetDatabase():
                  user_password_encrypted, False)
     admin = Users('admin', 'admin@admin.com', '0811221122112',
                   admin_password_encrypted, True)
-    trash_category = ListTrashCategory('dummy_category')
+    trash_category = ListTrashCategory(2, 'dummy_category')
     trash_one = {
         "trash_category_id": 1,
+        "admin_id": 2,
         "trash_name": "dummy_trash",
         "price": 1000,
         "photo": "dummy_photo",
@@ -48,6 +49,7 @@ def resetDatabase():
     }
     trash_two = {
         "trash_category_id": 1,
+        "admin_id": 2,
         "trash_name": "dummy_trash",
         "price": 2000,
         "photo": "dummy_photo",
@@ -56,9 +58,9 @@ def resetDatabase():
     trash_instance_one = ListTrash(trash_one)
     trash_instance_two = ListTrash(trash_two)
 
-    reward = Rewards("reward dummy", 20, "photo", 20, True)
-    reward1 = Rewards("reward dummy", 20, "photo", 20, True)
-    reward2 = Rewards("reward dummy", 20, "photo", 20, True)
+    reward = Rewards(2, "reward dummy", 20, "photo", 20, True)
+    reward1 = Rewards(2, "reward dummy", 20, "photo", 20, True)
+    reward2 = Rewards(2, "reward dummy", 20, "photo", 20, True)
     order = ListOrders({
         'user_id': 1,
         'adress': "dummy",
