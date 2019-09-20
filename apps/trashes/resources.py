@@ -135,6 +135,7 @@ class TrashResource(Resource):
             price: An integer of trash price per kilogram (located in JSON)
             photo:  A string of trash' photo's url (located in JSON)
             point: an integer which indicates the amount of point a user will get per kilogram of corresponding trash (located in JSON)
+            status: a boolean which indicates status of the trash, True for active, or false for inactive
 
         Returns:
             A dictionary that contains the updated data from the record edited. For example:
@@ -146,6 +147,7 @@ class TrashResource(Resource):
                 "price": 1000,
                 "photo": "imurl/folder/image.png",
                 "point": 5,
+                "status": False
                 "created_at": Sat, 26 Apr 2019 09:00:00 -000
                 "updated_at": Sat, 26 Apr 2019 09:50:00 -000 
             }
@@ -160,6 +162,7 @@ class TrashResource(Resource):
         parser.add_argument('price', location='json', type=int)
         parser.add_argument('photo', location='json')
         parser.add_argument('point', location='json', type=int)
+        parser.add_argument('status', location='json', type=inputs.boolean)
 
         args = parser.parse_args()
         trash = ListTrash.query.get(id)
@@ -182,6 +185,9 @@ class TrashResource(Resource):
 
         if args['point'] is not None:
             trash.point = args['point']
+
+        if args['status'] is not None:
+            trash.status = args['status']
 
         trash.admin_id = admin['id']
 
@@ -208,8 +214,7 @@ class TrashResource(Resource):
         if trash is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
-        trash.status = False
-        trash.admin_id = admin['id']
+        db.session.delete(trash)
         db.session.commit()
         return {"Status": "The data with id {} is deleted".format(id)}, 200, {'Content_Type': 'application/json'}
 
