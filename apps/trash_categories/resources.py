@@ -120,6 +120,8 @@ class TrashCategoriesResource(Resource):
         parser = reqparse.RequestParser()
 
         parser.add_argument('category_name', location='json')
+        parser.add_argument(
+            'status', location='json', type=inputs.boolean)
 
         args = parser.parse_args()
         category = ListTrashCategory.query.get(id)

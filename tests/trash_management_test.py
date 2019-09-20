@@ -52,7 +52,8 @@ class TestTrashManagement():
 
         token = createTokenAdmin()
         new_name = {
-            "category_name": "newdummy"
+            "category_name": "newdummy",
+            "status": False
         }
 
         res = client.put('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), data=json.dumps(
@@ -72,19 +73,6 @@ class TestTrashManagement():
         res = client.put('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), data=json.dumps(
             new_name), headers={'Authorization': "Bearer " + token}, content_type='application/json')
         assert res.status_code == 403
-
-    def testTrashCategoriesPutInvalidName(self, client):
-        """test put a record in trash category table with invalid data.
-        category_name is null, hence will raise a 400(bad request) error"""
-
-        token = createTokenAdmin()
-        new_name = {
-            "category_name": None
-        }
-
-        res = client.put('/v1/trash_category/{}'.format(TestTrashManagement.temp_category_id), data=json.dumps(
-            new_name), headers={'Authorization': "Bearer " + token}, content_type='application/json')
-        assert res.status_code == 400
 
     def testTrashCategoriesPutInvalidId(self, client):
         """test put a record in trash category table with invalid id.
@@ -139,7 +127,8 @@ class TestTrashManagement():
             "trash_name": "test",
             "photo": "test",
             "price": 100,
-            "point": 1
+            "point": 1,
+            "status": False
         }
 
         res = client.put('/v1/trash/{}'.format(TestTrashManagement.temp_trash_id), data=json.dumps(
