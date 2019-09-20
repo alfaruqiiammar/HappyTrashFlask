@@ -1,7 +1,6 @@
 import json
 from tests import app, client, cache, resetDatabase
 from apps.users.model import Users
-from mock import patch
 
 
 class TestUserFunctions():
@@ -33,8 +32,3 @@ class TestUserFunctions():
 
         assert Users.isMobileNumberExist("0812345678") == False
         assert Users.isMobileNumberExist("0811221122112") == True
-
-# class TestGoogleApi():
-  # """class for testing google maps api using mock up"""
-#
-  # def testGoogleMapApi()
