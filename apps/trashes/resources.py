@@ -126,7 +126,7 @@ class TrashResource(Resource):
 
     @adminRequired
     def put(self, id):
-        """ Edits category_name from a single record in trash_category table specified by id 
+        """ Edits a single record in trashes table specified by id 
 
         Args: 
             admin_id: An integer of admin's id (retrieved from jwt claims)
