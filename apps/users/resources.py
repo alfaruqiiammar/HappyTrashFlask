@@ -213,10 +213,13 @@ class UsersResource(Resource):
             if not users.isMobileNumberValid(args['mobile_number']):
                 return {'message': 'Invalid mobile number format!'}, 400, {'Content-Type': 'application/json'}
 
-            check_mobile_number = users.isMobileNumberExist(
-                args['mobile_number'])
-            if check_mobile_number is True:
-                return {'message': 'Mobile number already listed!'}, 400, {'Content-Type': 'application/json'}
+            if user_edited.mobile_number == args['mobile_number']:
+                pass
+            else:
+                check_mobile_number = users.isMobileNumberExist(
+                    args['mobile_number'])
+                if check_mobile_number is True:
+                    return {'message': 'Mobile number already listed!'}, 400, {'Content-Type': 'application/json'}
 
             user_edited.mobile_number = args['mobile_number']
 

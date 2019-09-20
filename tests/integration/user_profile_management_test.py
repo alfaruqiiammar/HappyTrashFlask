@@ -176,12 +176,24 @@ class TestUserProfile():
 
         assert res.status_code == 400
 
-    def testUserPutMobileNumberAlreadyListed(self, client):
-        """put user data to table with mobile number that is already exist in database,
-        hence will raise 400(bad request) error"""
+    def testUserPutMobileNumberOwner(self, client):
+        """put user data to table with mobile number that is as same as old number"""
         token = createTokenUser()
         data = {
             "mobile_number": "08812121212"
+        }
+        res = client.put('/v1/users',
+                         data=json.dumps(data),
+                         headers={'Authorization': 'Bearer '+token},
+                         content_type='application/json')
+        res_json = json.loads(res.data)
+        assert res.status_code == 200
+
+    def testUserPutMobileNumberAlreadyListed(self, client):
+        """put user data to table with mobile number that is already in the table, hence will get 400 error code"""
+        token = createTokenUser()
+        data = {
+            "mobile_number": "0811221122112"
         }
         res = client.put('/v1/users',
                          data=json.dumps(data),
