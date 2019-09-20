@@ -100,6 +100,7 @@ class TrashCategoriesResource(Resource):
             id: An integer of trash category's id (located in function's parameter)
             admin_id: An integer of admin's id (retrieved from jwt claims)
             category_name: A string of trash category's name (located in JSON)
+            status : A boolean of trash_category status (located in JSON)
 
         Returns:
             A dictionary that contains the updated data from the record edited. For example:
@@ -118,7 +119,7 @@ class TrashCategoriesResource(Resource):
         """
         parser = reqparse.RequestParser()
 
-        parser.add_argument('category_name', location='json', required=True)
+        parser.add_argument('category_name', location='json')
 
         args = parser.parse_args()
         category = ListTrashCategory.query.get(id)
@@ -126,10 +127,12 @@ class TrashCategoriesResource(Resource):
         if category is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
-        if not args['category_name']:
-            return {"Warning": "Name can not be null"}, 400, {'Content_Type': 'application/json'}
+        if args['category_name'] is not None:
+            category.category_name = args['category_name']
 
-        category.category_name = args['category_name']
+        if args['status'] is not None:
+            category.status = args['status']
+
         category.admin_id = admin['id']
 
         db.session.commit()
@@ -154,8 +157,7 @@ class TrashCategoriesResource(Resource):
         if category is None:
             return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
 
-        category.status = False
-        category.admin_id = admin['id']
+        db.session.delete(category)
         db.session.commit()
         return {"Status": "The data with id {} is deleted".format(id)}, 200, {'Content_Type': 'application/json'}
 
