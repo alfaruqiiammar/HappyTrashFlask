@@ -10,6 +10,7 @@ class ListOrders(db.Model):
         __tablename__: a string of table name
         id: an integer of order's id
         user_id : an integer of user's id,
+        admin_id : an integer of admin's id
         adress : a string that indicates where the pick-up adress is,
         time : a datetime that indicates when the user want their trash to be picked,
         photo : a url of user's trash picture,
@@ -25,18 +26,20 @@ class ListOrders(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
+    admin_id = db.Column(db.Integer, nullable=True)
     adress = db.Column(db.String(225), nullable=False)
-    time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    time = db.Column(db.DateTime, default=db.func.current_timestamp())
     photo = db.Column(db.String(500))
     status = db.Column(db.String(20), nullable=False)
     total_qty = db.Column(db.Float, default=0)
     total_price = db.Column(db.Integer, default=0)
     total_point = db.Column(db.Integer, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
 
     response_fields = {
         'id': fields.Integer,
         'user_id': fields.Integer,
+        'admin_id': fields.Integer,
         'adress': fields.String,
         'time': fields.DateTime,
         'photo': fields.String,
