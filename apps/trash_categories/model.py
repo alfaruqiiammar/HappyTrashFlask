@@ -22,9 +22,9 @@ class ListTrashCategory(db.Model):
     admin_id = db.Column(db.Integer, nullable=False)
     category_name = db.Column(db.String(100), nullable=False)
     status = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(
-        db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+        db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     response_fields = {
         'id': fields.Integer,
