@@ -6,14 +6,18 @@ from tests import client
 
 
 class TestGoogleApi():
-    """class for testing google maps api using mock up"""
+    """class for testing google maps api"""
 
     def testGoogleMapOptions(self, client):
+        """test options function in GoogleMapResources"""
+
         res = client.options('/v1/google_maps')
         assert res.status_code == 200
 
     @patch.object(GoogleMapsResources, 'get')
     def testGoogleMapApi(self, mock_get, client):
+        """tests get function in GoogleMapsResource using mock up"""
+
         temp = {"adress": "Jl. Tidar No. 23, Sukun, Malang"}
         mock_get.return_value = temp
         data = {

@@ -1,5 +1,5 @@
 import json
-from . import app, client, cache, resetDatabase, createTokenAdmin, createTokenUser
+from tests import app, client, cache, resetDatabase, createTokenAdmin, createTokenUser
 
 
 class TestOrderManagement():

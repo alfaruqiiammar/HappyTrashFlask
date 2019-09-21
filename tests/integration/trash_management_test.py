@@ -1,5 +1,5 @@
 import json
-from . import app, client, cache, createTokenAdmin, createTokenUser, resetDatabase
+from tests import app, client, cache, createTokenAdmin, createTokenUser, resetDatabase
 
 
 class TestTrashManagement():
