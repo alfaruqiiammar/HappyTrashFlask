@@ -22,13 +22,17 @@ class TestUserFunctions():
         assert Users.isMobileNumberValid(self, "064") == False
 
     def testIsEmailExist(self):
-        """Test wether isEmailExist function working correctly"""
+        """Test wether isEmailExist function working correctly.
+        admin@admin.com was made in reset database function, hence will return True.
+        foo@bar.com has not been made, hence will return False"""
 
         assert Users.isEmailExist("admin@admin.com") == True
         assert Users.isEmailExist("foo@bar.com") == False
 
     def testIsNumberExist(self):
-        """Test wether isMobileNumberExist function working correctly"""
+        """Test wether isMobileNumberExist function working correctly.
+        0811221122112 was made in reset database function, hence will return True.
+        0812345678 has not been made, hence will return False"""
 
         assert Users.isMobileNumberExist("0812345678") == False
         assert Users.isMobileNumberExist("0811221122112") == True
