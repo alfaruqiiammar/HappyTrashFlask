@@ -14,14 +14,12 @@ class TestGoogleApi():
 
     @patch.object(GoogleMapsResources, 'get')
     def testGoogleMapApi(self, mock_get, client):
-        temp = {'adress': 'Jl. Tidar No. 23, Sukun, Malang'}
+        temp = {"adress": "Jl. Tidar No. 23, Sukun, Malang"}
         mock_get.return_value = temp
-#         data = {
-#             'lat': '1.23456',
-#             'lng': '-2.0998327'
-#         }
-# #
-#         res = client.get('/v1/google_maps', query_string=data,
-#                          content_type='application/json')
-#         assert res.data == 'b'+str(temp)+'\n'
-        assert GoogleMapsResources.get() == temp
+        data = {
+            'lat': '1.23456',
+            'lng': '-2.0998327'
+        }
+        res = client.get('/v1/google_maps', query_string=data,
+                         content_type='application/json')
+        assert json.loads(res.data) == temp
