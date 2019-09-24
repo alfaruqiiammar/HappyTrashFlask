@@ -1,0 +1,262 @@
+ 5179  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+ 5181  sudo add-apt-repository \\n   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \\n   $(lsb_release -cs) \\n   stable"
+ 5183  sudo apt-get install docker-ce docker-ce-cli containerd.io
+ 5184  docker run -d -p 80:80 nginx
+ 5185  sudo docker run -d -p 80:80 nginx
+ 5186  docker help
+ 5187  docker run --help
+ 5188  docker ps
+ 5189  sudo docker ps
+ 5190  sudo docker inspect <friendly-name|12b08e9a1d19>
+ 5191  sudo docker ps
+ 5195  sudo docker ps
+ 5196  sudo docker inspect 12b08e9a1d19
+ 5197  sudo docker logs sad_wilson
+ 5198  docker stop sad_wilson
+ 5199  sudo docker stop sad_wilson
+ 5200  sudo docker rm sad_wilson
+ 5201  docker ps
+ 5202  sudo docker ps
+ 5203  docker login
+ 5204  sudo docker login
+ 5205  mkdir docker
+ 5206  cd docker
+ 5213  docker build -t e-commerce-backend:latest
+ 5214  sudo docker build -t e-commerce-backend:latest
+ 5217  sudo docker build -t fikriamri/e-commerce-backend:v.1
+ 5219  docker build --help
+ 5220  sudo docker build --help
+ 5221  sudo docker build -t fikriamri/e-commerce-backend:v.1
+ 5225  sudo docker build -t fikriamri/e-commerce-backend:v.1
+ 5226  sudo docker build -t fikriamri/e-commerce-backend:v.1 .
+ 5229  cd docker
+ 5234  sudo docker build -t fikriamri/e-commerce-backend:v.1 .
+ 5235  docker ps
+ 5236  sudo docker ps
+ 5237  sudo docker images
+ 5238  docker run -d -p 5020:5020 --name backend fikriamri/e-commerce-backend:v.1
+ 5239  sudo docker run -d -p 5020:5020 --name backend fikriamri/e-commerce-backend:v.1
+ 5240  sudo docker ps
+ 5241  docker login 
+ 5242  sudo docker login 
+ 5243  sudo docker push fikriamri/e-commerce-backend
+ 5248  sudo docker ps
+ 5256  sudo docker ps
+ 5257  sudo docker stop 5d1667c2b217
+ 5258  sudo docker ps
+ 5259  cd docker
+ 5273  sudo docker build -t fikriamri/e-commerce-frontend:v.1 .
+ 5274  #sudo docker run -d -p 3000:3000 --name front fikriamri/e-commerce-backend:v.1
+ 5275  sudo docker run -d -p 3000:3000 --name frontend fikriamri/e-commerce-front:v.1
+ 5276  sudo docker images
+ 5277  sudo docker run -d -p 3000:3000 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5278  sudo docker ps
+ 5279  sudo docker logs 1d0d201404cd
+ 5280  sudo docker inspect 1d0d201404cd
+ 5281  sudo docker exec -it 1d0d201404cd
+ 5282  sudo docker exec -it 1d0d201404cd bash
+ 5283  sudo docker stop 1d0d201404cd
+ 5284  sudo docker rm 1d0d201404cd
+ 5286  sudo docker images
+ 5287  sudo docker rmi b7a8354ec212
+ 5289  sudo docker build -t fikriamri/e-commerce-frontend:v.1 .
+ 5290  sudo docker run -d -p 3000:3000 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5291  sudo docker stop a154af3baad5171adef3ae046103282e144396384c5150b441bdf044aa81f9c4
+ 5292  sudo docker rm a154af3baad5171adef3ae046103282e144396384c5150b441bdf044aa81f9c4
+ 5293  sudo docker ps
+ 5294  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5296  sudo docker ps
+ 5297  #sudo docker stop /home/alta7/docker/front_end/e_commerce_react/build\n/home/alta7/docker/front_end/e_commerce_react/node_modules\n/home/alta7/docker/front_end/e_commerce_react/public\n/home/alta7/docker/front_end/e_commerce_react/src\n/home/alta7/docker/front_end/e_commerce_react/package.json\n/home/alta7/docker/front_end/e_commerce_react/package-lock.json\n/home/alta7/docker/front_end/e_commerce_react/README.md5a5e0b98
+ 5298  sudo docker stop 5a5e0b98890c
+ 5299  sudo docker rm 5a5e0b98890c
+ 5300  sudo docker images
+ 5301  sudo docker rmi 5f82a11216c6
+ 5302  sudo docker build -t fikriamri/e-commerce-frontend:v.1 .
+ 5303  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5304  sudo docker exec -it e86b127a84bd6cdeb1ae248138e52bc3dde7091b987091aa84da0cd3783571d6 bash
+ 5305  sudo docker stop e86b127a84bd6cdeb1ae248138e52bc3dde7091b987091aa84da0cd3783571d6
+ 5306  sudo docker rm e86b127a84bd6cdeb1ae248138e52bc3dde7091b987091aa84da0cd3783571d6
+ 5307  sudo docker images
+ 5308  sudo docker rmi d79cfb3e6fd7
+ 5309  sudo docker build -t fikriamri/e-commerce-frontend:v.1 .
+ 5310  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5311  sudo docker ps
+ 5317  sudo docker stop f0b0d02743cd
+ 5318  sudo docker rm f0b0d02743cd
+ 5319  sudo docker images
+ 5320  sudo docker rmi c7c167a566dd
+ 5321  sudo docker build -t fikriamri/e-commerce-frontend:v.1 .
+ 5322  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5323  sudo docker ps
+ 5324  sudo docker logs cea79e46cc78
+ 5325  sudo docker ps -a 
+ 5326  sudo docker exec -it cea79e46cc78 bash
+ 5330  sudo docker ps
+ 5331  sudo docker stop cea79e46cc78
+ 5337  sudo docker ps
+ 5338  sudo docker rm cea79e46cc78
+ 5339  sudo docker images
+ 5340  sudo docker rmi ef8c96c01186
+ 5343  sudo docker build -t fikriamri/e-commerce-frontend:v.1 .
+ 5344  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5345  sudo docker stop 1ac524ddf234ee240ff3e6578b2a6526f2382ca87cff07710642d31441f782cd
+ 5346  sudo docker rm 1ac524ddf234ee240ff3e6578b2a6526f2382ca87cff07710642d31441f782cd
+ 5347  sudo docker ps
+ 5348  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5349  sudo docker stop 1ac524ddf234ee240ff3e6578b2a6526f2382ca87cff07710642d31441f782cd
+ 5350  sudo docker ps
+ 5351  sudo docker stop 057d667283dd
+ 5352  sudo docker rm 057d667283dd
+ 5353  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.1
+ 5354  sudo docker stop edbd153514d60607dab1c813a37132c0946d6ee319d6421cd01b9695a0fa83ab
+ 5355  sudo docker start edbd153514d60607dab1c813a37132c0946d6ee319d6421cd01b9695a0fa83ab
+ 5356  sudo docker login 
+ 5357  sudo docker push fikriamri/e-commerce-frontend
+ 5362  sudo docker ps
+ 5363  sudo docker stop edbd153514d6
+ 5364  sudo docker rm edbd153514d6
+ 5365  sudo docker ps
+ 5367  sudo docker imagse
+ 5368  sudo docker images
+ 5369  sudo docker rmi b7aa7c650623
+ 5372  sudo docker build -t fikriamri/e-commerce-frontend:v.2 .
+ 5373  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.2
+ 5374  sudo docker ps
+ 5375  sudo docker stop b9ccbd476965
+ 5376  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:v.2
+ 5377  sudo docker start b9ccbd476965
+ 5378  sudo docker login
+ 5379  sudo docker push fikriamri/e-commerce-frontend
+ 5483  sudo docker ps
+ 5484  sudo docker ps -a
+ 5485  sudo docker build -t fikriamri/e-commerce-frontend:latest .
+ 5486  sudo docker run -d -p 3000:80 --name frontend fikriamri/e-commerce-frontend:latest
+ 5487  sudo docker run -d -p 3000:80 --name frontend2 fikriamri/e-commerce-frontend:latest
+ 5491  sudo docker ps
+ 5492  sudo docker stop c23cb1860379
+ 5493  sudo docker rm c23cb1860379
+ 5559  sudo docker ps -a
+ 6135  history | grep docker
+ 6136  history | grep docker freeze > docker_command.txt
+ 6137  history | grep docker > docker_command.txt
+ 6138  docker build build -t alfaruqi26/backend:v1
+ 6139  sudo docker build build -t alfaruqi26/backend:v1
+ 6140  sudo docker build -t alfaruqi26/backend:v1
+ 6141  docker build --help
+ 6142  sudo docker build -t alfaruqi26/backend:v1
+ 6143  docker --version
+ 6144  sudo docker --version
+ 6145  sudo docker images
+ 6146  sudo docker ps
+ 6147  sudo docker build -t alfaruqi26/backend:v1
+ 6148  sudo docker build -t alfaruqi26/backend:v1 .
+ 6149  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6150  sudo docker ps -a
+ 6151  sudo docker rmi 5d1667c2b217
+ 6152  sudo docker rm 5d1667c2b217
+ 6153  sudo docker rm b9ccbd476965
+ 6154  sudo docker images
+ 6155  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6157  sudo docker ps
+ 6158  sudo docker ps -a
+ 6159  sudo docker rm 1aac165609f9
+ 6160  sudo docker images
+ 6161  sudo docker build -t alfaruqi26/backend:v1
+ 6162  sudo docker build -t alfaruqi26/backend:v1 .
+ 6163  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6164  sudo docker ps
+ 6166  sudo docker build -t alfaruqi26/backend:v1 .
+ 6167  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6168  sudo docker ps -a
+ 6169  sudo docker rm b133d1b3ca1a
+ 6170  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6171  sudo docker ps
+ 6172  sudo docker ps -a
+ 6173  sudo docker rm 69a96c401c25
+ 6174  sudo docker images
+ 6175  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6176  sudo docker ps
+ 6177  sudo docker ps -a
+ 6178  sudo docker images
+ 6179  sudo docker rmi 6791d11cd03f
+ 6180  sudo docker rmi c37058848fa2
+ 6181  sudo docker imaes
+ 6182  sudo docker images
+ 6183  sudo docker run -d -p 5020:5020 --name backend fikriamri/e-commerce-backend:v.1
+ 6184  sudo docker rm backend
+ 6185  sudo docker run -d -p 5020:5020 --name backend fikriamri/e-commerce-backend:v.1
+ 6186  sudo docker ps
+ 6187  sudo docker rm backend
+ 6188  sudo docker stop backend
+ 6189  sudo docker rm backend
+ 6190  sudo docker ps -a
+ 6191  sudo docker images
+ 6192  sudo docker rmi python:3.6.8
+ 6193  sudo docker images
+ 6194  sudo docker rmi fikriamri/e-commerce-frontend:latest
+ 6195  sudo docker images
+ 6196  sudo docker build -t alfaruqi26/backend:v1 .
+ 6197  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6198  sudo docker ps
+ 6199  sudo docker ps -a
+ 6200  sudo docker rm backend
+ 6201  sudo docker images
+ 6202  sudo docker rmi 9196f546c153
+ 6203  sudo docker build -t alfaruqi26/backend:v1 .
+ 6204  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6205  sudo docker ps
+ 6208  docker-compose config
+ 6209  sudo apt-get docker-compose
+ 6210  sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+ 6211  sudo chmod +x /usr/local/bin/docker-compose
+ 6212  docker-compose --version
+ 6213  docker-compose config
+ 6214  docker-compose
+ 6215  docker-compose config
+ 6218  docker-compose config
+ 6219  docker-compose up
+ 6221  docker-compose up
+ 6222  sudo docker images
+ 6223  sudo docker ps
+ 6224  sudo docker ps -a
+ 6225  sudo docker rm backerd
+ 6226  sudo docker rm backend
+ 6243  sudo docker build -t alfaruqi26/backend:v1 .
+ 6244  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6245  sudo docker ps
+ 6254  docker-compose up
+ 6257  sudo docker ps
+ 6258  sudo docker ps -a
+ 6259  sudo docker images
+ 6260  sudo docker rmi aa30ec38a558 
+ 6261  sudo docker rmi 9cd9b284ef60
+ 6262  sudo docker ps
+ 6263  sudo docker run -d -p 5020:5020 --name backend fikriamri/e-commerce-backend:v.1
+ 6264  sudo docker run -d -p 5020:5020 --name e_commerce_backend fikriamri/e-commerce-backend:v.1
+ 6265  sudo docker ps
+ 6266  sudo docker stop backend
+ 6267  sudo docker rm backend
+ 6268  sudo docker build -t alfaruqi26/backend:v1 .
+ 6269  sudo docker ps
+ 6270  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6271  sudo docker ps
+ 6272  sudo docker stop backend
+ 6273  sudo docker rm backend
+ 6274  sudo docker build -t alfaruqi26/backend:v1 .
+ 6275  sudo docker images
+ 6276  sudo docker ps -a
+ 6277  sudo docker build -t alfaruqi26/backend:v1 .
+ 6278  sudo docker rmi alfaruqi26/backend:v1
+ 6279  sudo docker build -t alfaruqi26/backend:v1 .
+ 6287  sudo docker ps
+ 6288  sudo docker images
+ 6289  sudo docker run -d -p 5000:5000 --name backend alfaruqi26/backend:v1
+ 6290  sudo docker ps
+ 6291  sudo docker stop e_commerce_backend
+ 6292  sudo docker rm e_commerce_backend
+ 6293  sudo docker login
+ 6294  sudo docker logout
+ 6295  sudo docker login
+ 6296  sudo docker images
+ 6297  sudo docker push alfaruqi26/backend
+ 6298  grep docker freeze > docker_command.txt
